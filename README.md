@@ -101,3 +101,10 @@ Your app should now be running locally (e.g., `http://localhost:3000`).
 
 ## ⛏️ Project Structure
 
+Asset-MERN/
+├── backend/ — Express API
+├── frontend/ — React app
+├── .gitignore
+├── package.json
+└── README.md
+
