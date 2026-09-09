@@ -15,7 +15,7 @@ https://asset-4y7x.onrender.com/
 Use the following account to explore the deployed application:
 
 ```text
-Email: pavitra@admin.com
+Email: pavitra@gmail.com
 Password: admin1234
 ```
 
