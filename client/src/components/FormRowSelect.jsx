@@ -1,4 +1,4 @@
-import { USER_DEPARTMENTS } from "../../../utils/constants";
+import { USER_DEPARTMENTS } from "../utils/constants";
 const FormRowSelect = ({
   name,
   labelText,

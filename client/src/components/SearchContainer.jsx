@@ -5,7 +5,7 @@ import {
   PRODUCT_SORT_BY,
   PRODUCT_STATUS,
   WARRANTY_STATUS,
-} from "../../../utils/constants";
+} from "../utils/constants";
 import { useAllProductsContext } from "../pages/AllProducts";
 const SearchContainer = () => {
   const { searchValues } = useAllProductsContext();

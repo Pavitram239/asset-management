@@ -11,7 +11,7 @@ import {
 } from "../components";
 import Wrapper from "../assets/wrappers/DashboardFormPage";
 import { useLoaderData, useParams } from "react-router-dom";
-import { PRODUCT_STATUS, USER_DEPARTMENTS } from "../../../utils/constants";
+import { PRODUCT_STATUS, USER_DEPARTMENTS } from "../utils/constants";
 import { Form, redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";

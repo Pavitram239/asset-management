@@ -14,7 +14,7 @@ import { Form, redirect } from "react-router-dom";
 import { toast } from "react-toastify";
 import customFetch from "../utils/customFetch";
 import { saveAs } from "file-saver";
-import { PRODUCT_STATUS, USER_DEPARTMENTS } from "../../../utils/constants";
+import { PRODUCT_STATUS, USER_DEPARTMENTS } from "../utils/constants";
 import FormBtn from "../components/FormBtn";
 import { useDashboardContext } from "./DashboardLayout";
 import { useState } from "react";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FIELDS } from "../../../utils/constants";
+import { FIELDS } from "../utils/constants";
 import Wrapper from "../assets/wrappers/DynamicField";
 import FormBtn from "./FormBtn";
 
