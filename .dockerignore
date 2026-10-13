@@ -1,6 +1,8 @@
-node_modules
-client/node_modules
-client/dist
+**/node_modules
+**/dist
+client/legacy-public
 .git
-.env
+**/.env
+**/.env.*
 npm-debug.log*
+.verification

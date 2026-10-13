@@ -1,74 +1,28 @@
-import {
-  Form,
-  Link,
-  redirect,
-  useActionData,
-  useNavigate,
-} from "react-router-dom";
-import Wrapper from "../assets/wrappers/RegisterAndLoginPage";
-import { FormRow, Logo, SubmitBtn } from "../components";
-import customFetch from "../utils/customFetch";
-import { toast } from "react-toastify";
+import { Form, Link, redirect, useActionData } from 'react-router-dom';
+import { FormRow, SubmitBtn } from '../components';
+import AuthLayout from '../components/AuthLayout';
+import customFetch from '../utils/customFetch';
+import { toast } from 'react-toastify';
 
 export const action = async ({ request }) => {
-  const formData = await request.formData();
-  const data = Object.fromEntries(formData.entries());
-  const errors = { msg: "" };
-  if (data.password.length < 8) {
-    errors.msg = "Password must be at least 8 characters long";
-    return errors;
-  }
+  const data = Object.fromEntries((await request.formData()).entries());
   try {
-    await customFetch.post("/auth/login", data);
-    toast.success("Login successful");
-    return redirect("/dashboard");
-  } catch (error) {
-    errors.msg = error?.response?.data?.msg || error.message;
-    return errors;
-  }
+    await customFetch.post('/auth/login', data);
+    toast.success('Login successful');
+    return redirect('/dashboard');
+  } catch (error) { return { msg: error?.response?.data?.msg || 'Unable to sign in. Please try again.' }; }
 };
-
 const Login = () => {
   const errors = useActionData();
-  const navigate = useNavigate();
-
-  const testUser = async () => {
-    try {
-      const data = {
-        email: "test@test.com",
-        password: "secret123",
-      };
-      await customFetch.post("/auth/login", data);
-      toast.success("Take a test drive");
-      navigate("/dashboard");
-    } catch (error) {
-      toast.error(error?.response?.data?.msg || error.message);
-    }
-  };
-
-  return (
-    <Wrapper>
-      <Form method="POST" className="form">
-        <Logo />
-        <h4>Login</h4>
-        {errors?.msg && <p style={{ color: "red" }}>{errors.msg}</p>}
-        <FormRow type="email" name="email" placeholder="Enter Your Email" />
-        <FormRow
-          type="password"
-          name="password"
-          placeholder="Enter Your Password"
-        />
-        <SubmitBtn formBtn text="Login" waitingLabel="Signing In" />
-
-        <p>
-          Not a member yet?
-          <Link to="/register" className="member-btn">
-            Register
-          </Link>
-        </p>
-      </Form>
-    </Wrapper>
-  );
+  return <AuthLayout><Form method="post" className="auth-form">
+    <div className="page-heading"><h2>Welcome back</h2><p>Sign in to your asset workspace.</p></div>
+    {errors?.msg && <p className="form-error" role="alert">{errors.msg}</p>}
+    <div className="auth-fields">
+      <FormRow type="email" name="email" labelText="Email" placeholder="you@example.com" autoComplete="email" autoFocus maxLength={254} />
+      <FormRow type="password" name="password" labelText="Password" placeholder="Enter your password" autoComplete="current-password" minLength={8} maxLength={72} help="At least 8 characters." />
+    </div>
+    <SubmitBtn text="Sign In" waitingLabel="Signing in" className="btn-block" />
+    <p className="auth-switch">New to Asset Manager? <Link to="/register">Register</Link></p>
+  </Form></AuthLayout>;
 };
-
 export default Login;

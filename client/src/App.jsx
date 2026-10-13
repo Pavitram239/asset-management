@@ -25,6 +25,8 @@ import { loader as allProductsLoader } from "./pages/AllProducts";
 import { loader as adminLoader } from "./pages/Admin";
 import { loader as editProductLoader } from "./pages/EditProduct";
 import { loader as addProductLoader } from "./pages/AddProduct";
+import { loader as statsLoader } from './pages/Stats';
+import Users, { loader as usersLoader } from './pages/Users';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -59,6 +61,7 @@ const router = createBrowserRouter([
           },
           { path: "profile", element: <Profile />, action: profileAction },
           { path: "admin", element: <Admin />, loader: adminLoader },
+          { path: 'users', element: <Users />, loader: usersLoader },
           {
             path: "edit-product/:id",
             element: <EditProduct />,
@@ -66,7 +69,7 @@ const router = createBrowserRouter([
             action: editProductAction,
           },
           { path: "delete-product/:id", action: deleteProductAction },
-          { path: "stats", element: <Stats /> },
+          { path: "stats", element: <Stats />, loader: statsLoader },
         ],
       },
     ],

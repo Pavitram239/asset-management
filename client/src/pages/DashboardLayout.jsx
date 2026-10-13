@@ -1,9 +1,10 @@
 import { createContext, useContext, useState } from "react";
-import { Outlet, redirect, useLoaderData, useNavigate } from "react-router-dom";
+import { Outlet, redirect, useLoaderData, useNavigate, useNavigation } from "react-router-dom";
 import Wrapper from "../assets/wrappers/Dashboard";
 import { BigSidebar, Navbar, SmallSidebar } from "../components";
 import customFetch from "../utils/customFetch";
 import { toast } from "react-toastify";
+import useTheme from '../utils/useTheme';
 
 export const loader = async () => {
   try {
@@ -18,29 +19,23 @@ const DashboardContext = createContext();
 
 const DashboardLayout = () => {
   const { user } = useLoaderData();
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const { isDarkTheme, toggleDarkTheme } = useTheme();
   const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
-
-  const toggleDarkTheme = () => {
-    const newDarkTheme = !isDarkTheme;
-    setIsDarkTheme(newDarkTheme);
-    document.body.classList.toggle("dark-theme", newDarkTheme);
-    localStorage.setItem("dark-theme", newDarkTheme);
-  };
+  const navigation = useNavigation();
 
   const toggleSidebar = () => {
-    setShowSidebar(!showSidebar);
+    setSidebarCollapsed((previous) => !previous);
   };
 
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
 
   const logoutUser = async () => {
-    navigate("/");
     await customFetch.get("/auth/logout");
+    navigate("/");
     toast.success("Logout successful");
   };
 
@@ -48,7 +43,7 @@ const DashboardLayout = () => {
     <DashboardContext.Provider
       value={{
         user,
-        showSidebar,
+        sidebarCollapsed,
         isDarkTheme,
         toggleDarkTheme,
         toggleSidebar,
@@ -58,13 +53,14 @@ const DashboardLayout = () => {
         onCloseModal,
       }}
     >
-      <Wrapper>
+      <Wrapper className={sidebarCollapsed ? 'sidebar-collapsed' : ''}>
         <main className="dashboard">
           <SmallSidebar />
           <BigSidebar />
-          <div>
+          <div className="workspace-main">
             <Navbar />
             <div className="dashboard-page">
+              {navigation.state !== 'idle' && <div className="route-progress" role="status">Updating workspace…</div>}
               <Outlet context={{ user }} />
             </div>
           </div>

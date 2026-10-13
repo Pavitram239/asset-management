@@ -1,54 +1,15 @@
-import { useState } from "react";
-import { FIELDS } from "../utils/constants";
-import Wrapper from "../assets/wrappers/DynamicField";
-import FormBtn from "./FormBtn";
+import { useState } from 'react';
+import { FIELDS } from '../utils/constants';
 
-const DynamicField = ({ onClose, addFields }) => {
-  const [fields, setFields] = useState([]);
-
-  const checkedListHandler = () => {
-    addFields(fields);
-    onClose();
-  };
-
-  const onChecked = (e) => {
-    if (!Array.isArray(fields)) {
-      console.error("fields is not an array.");
-      return;
-    }
-    if (e.target.checked) {
-      setFields([
-        ...fields,
-        {
-          name: e.target.value,
-          type: e.target.dataset.type,
-          label: e.target.dataset.label,
-        },
-      ]);
-    } else {
-      setFields(fields.filter((field) => field.name !== e.target.value));
-    }
-  };
-  return (
-    <Wrapper>
-      {FIELDS.map((field, index) => {
-        return (
-          <div className="checkbox" key={index}>
-            <input
-              type="checkbox"
-              value={field.name}
-              name={field.name}
-              id={field.name}
-              onChange={onChecked}
-              data-type={field.type}
-              data-label={field.label}
-            />
-            <label htmlFor={field.name}>{field.label}</label>
-          </div>
-        );
-      })}
-      <FormBtn formBtn text="Add Fields" handler={checkedListHandler} />
-    </Wrapper>
-  );
+const DynamicField = ({ onClose, addFields, initialFields = [] }) => {
+  const [selected, setSelected] = useState(() => new Set(initialFields.map((field) => field.name)));
+  return <section className="optional-field-dialog">
+    <h2 id="dialog-title-fields">Optional fields</h2><p className="muted">Choose the details you want to record for this asset.</p>
+    <div className="optional-choices">{FIELDS.map((field) => <label key={field.name} className="optional-choice">
+      <input type="checkbox" checked={selected.has(field.name)} onChange={(event) => setSelected((previous) => { const next = new Set(previous); event.target.checked ? next.add(field.name) : next.delete(field.name); return next; })} />
+      <span>{field.label}</span>
+    </label>)}</div>
+    <div className="form-actions"><button type="button" className="btn" onClick={() => { addFields(FIELDS.filter((field) => selected.has(field.name))); onClose(); }}>Apply fields</button><button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button></div>
+  </section>;
 };
 export default DynamicField;

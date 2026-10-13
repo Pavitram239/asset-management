@@ -1,13 +1,17 @@
 services:
-  mongo:
-    image: mongo:7
+  postgres:
+    image: postgres:17-alpine
     restart: unless-stopped
     environment:
-      MONGO_INITDB_DATABASE: asset-management
+      POSTGRES_DB: asset_management
+      POSTGRES_USER: asset_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-asset-local-dev}
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5433}:5432"
     volumes:
-      - mongo-data:/data/db
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' localhost:27017/test | grep 1"]
+      test: ["CMD-SHELL", "pg_isready -U asset_user -d asset_management"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -15,27 +19,43 @@ services:
   server:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: server/Dockerfile
     restart: unless-stopped
     env_file:
-      - .env
+      - path: .env
+        required: false
+      - path: server/.env
+        required: false
     environment:
-      MONGO_URI: mongodb://mongo:27017/asset-management
+      DATABASE_URL: ""
+      PGHOST: postgres
+      PGPORT: 5432
+      PGUSER: asset_user
+      PGPASSWORD: ${POSTGRES_PASSWORD:-asset-local-dev}
+      PGDATABASE: asset_management
+      COOKIE_SECURE: "false" # Local HTTP only; hosted HTTPS must use true.
       PORT: 5100
       NODE_ENV: production
     depends_on:
-      mongo:
+      postgres:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5100/api/v1/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   client:
     build:
-      context: ./client
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: client/Dockerfile
     restart: unless-stopped
     ports:
       - "5173:80"
     depends_on:
-      - server
+      server:
+        condition: service_healthy
 
 volumes:
-  mongo-data:
+  postgres-data:

@@ -1,17 +1,9 @@
-import { BsFillSunFill, BsFillMoonFill } from "react-icons/bs";
-import Wrapper from "../assets/wrappers/ThemeToggle";
-import { useDashboardContext } from "../pages/DashboardLayout";
+import DesignIcon from './DesignIcon';
 
-const ThemeToggle = () => {
-  const { isDarkTheme, toggleDarkTheme } = useDashboardContext();
-  return (
-    <Wrapper onClick={toggleDarkTheme}>
-      {isDarkTheme ? (
-        <BsFillSunFill className="toggle-icon" />
-      ) : (
-        <BsFillMoonFill />
-      )}
-    </Wrapper>
-  );
-};
+const ThemeToggle = ({ isDarkTheme, onToggle }) => (
+  <button type="button" className="icon-button theme-toggle" onClick={onToggle}
+    aria-label={isDarkTheme ? 'Switch to light theme' : 'Switch to dark theme'} aria-pressed={isDarkTheme}>
+    <DesignIcon name="moon" />
+  </button>
+);
 export default ThemeToggle;

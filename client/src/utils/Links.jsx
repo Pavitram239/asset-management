@@ -1,19 +1,8 @@
-import React from "react";
-
-import { IoBarChartSharp } from "react-icons/io5";
-import { MdQueryStats } from "react-icons/md";
-import { FaWpforms } from "react-icons/fa";
-import { ImProfile } from "react-icons/im";
-import { MdAdminPanelSettings } from "react-icons/md";
-
 const links = [
-  // { text: "add product", path: ".", icon: <FaWpforms /> },
-  // { text: "all products", path: "all-products", icon: <MdQueryStats /> },
-  { text: "all products", path: ".", icon: <MdQueryStats /> },
-  { text: "add product", path: "add-product", icon: <FaWpforms /> },
-  // { text: "stats", path: "stats", icon: <IoBarChartSharp /> },
-  // { text: "profile", path: "profile", icon: <ImProfile /> },
-  // { text: "admin", path: "admin", icon: <MdAdminPanelSettings /> },
+  { text: 'Inventory', path: '.', icon: 'package' },
+  { text: 'Add asset', path: 'add-product', icon: 'plus', elevated: true },
+  { text: 'Profile', path: 'profile', icon: 'user' },
+  { text: 'Users & departments', path: 'users', icon: 'users', elevated: true },
+  { text: 'Admin statistics', path: 'admin', icon: 'chart', elevated: true },
 ];
-
 export default links;

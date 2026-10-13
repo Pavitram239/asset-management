@@ -1,16 +1,10 @@
-import { useNavigation } from "react-router-dom";
+import { useNavigation } from 'react-router-dom';
 
-const SubmitBtn = ({ formBtn, text, waitingLabel }) => {
+const SubmitBtn = ({ formBtn, text = 'Submit', waitingLabel = 'Saving', className = '' }) => {
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
-  return (
-    <button
-      type="submit"
-      className={`btn btn-block ${formBtn && "form-btn"}`}
-      disabled={isSubmitting}
-    >
-      {isSubmitting ? `${waitingLabel}...` || "submitting" : text || "Submit"}
-    </button>
-  );
+  const pending = navigation.state === 'submitting';
+  return <button type="submit" className={`btn ${formBtn ? 'form-btn' : ''} ${className}`} disabled={pending}>
+    {pending ? `${waitingLabel}…` : text}
+  </button>;
 };
 export default SubmitBtn;

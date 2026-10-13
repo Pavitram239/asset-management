@@ -1,41 +1,25 @@
 {
-  "name": "jobify",
+  "name": "asset-management",
+  "private": true,
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
   "type": "module",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "scripts": {
-    "setup-project": "npm i && cd client && npm i",
-    "setup-production-app": "npm i && cd client && npm i && npm run build ",
-    "server": "nodemon server",
-    "client": "cd client && npm run dev",
-    "dev": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\"",
-    "build": "cd client && npm run build"
+    "setup-project": "npm install",
+    "setup-production-app": "npm ci && npm run build",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "server": "npm run dev --workspace=server",
+    "client": "npm run dev --workspace=client",
+    "start": "npm run start --workspace=server",
+    "build": "npm run build --workspace=client",
+    "test": "npm test --workspace=server",
+    "db:migrate": "npm run db:migrate --workspace=server",
+    "test:integration": "npm run test:integration --workspace=server"
   },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "bcryptjs": "^2.4.3",
-    "cloudinary": "^1.40.0",
-    "concurrently": "^8.2.1",
-    "cookie-parser": "^1.4.6",
-    "dayjs": "^1.11.10",
-    "dotenv": "^16.3.1",
-    "express": "^4.18.2",
-    "express-async-errors": "^3.1.1",
-    "express-validator": "^7.0.1",
-    "firebase": "^10.4.0",
-    "http-status-codes": "^2.2.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.5.1",
-    "morgan": "^1.10.0",
-    "multer": "^1.4.5-lts.1",
-    "nanoid": "^5.0.1",
-    "nodemon": "^3.0.1",
-    "qr-with-logo": "^1.0.5",
-    "qrcode": "^1.5.3",
-    "qrcode-with-logos": "^1.0.3",
-    "sharp": "^0.32.6"
+  "devDependencies": {
+    "concurrently": "^8.2.1"
   }
 }

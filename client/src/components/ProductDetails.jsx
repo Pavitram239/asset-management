@@ -1,54 +1,24 @@
-import Wrapper from "../assets/wrappers/ProductDetails";
-import dayjs from "dayjs";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-import "dayjs/locale/en";
-import FormBtn from "./FormBtn";
+import dayjs from 'dayjs';
+import DesignIcon from './DesignIcon';
 
-dayjs.extend(advancedFormat);
+export const StatusBadge = ({ status }) => <span className={`status-pill ${status === 'In department' ? 'status-success' : status === 'Out of campus' ? 'status-warning' : 'status-muted'}`}>{status || 'Unknown'}</span>;
+export const AssetImage = ({ product, large = false }) => product.productImg
+  ? <img className={large ? 'detail-image' : 'asset-thumbnail'} src={product.productImg} alt={product.name} />
+  : <div className={large ? 'detail-image image-fallback' : 'asset-thumbnail image-fallback'}><DesignIcon name="image" /><span>No Image</span></div>;
 
 const ProductDetails = ({ product }) => {
-  const imgURL =
-    product.productImg || "https://fakeimg.pl/600x400?text=No+Image";
-
-  const downloadInvoice = () => {
-    window.open(product.invoice);
-  };
-  return (
-    <Wrapper>
-      <div className="img-container">
-        <img src={imgURL} alt={product.name} />
-      </div>
-      <div className="info">
-        {Object.keys(product).map((key) => {
-          if (
-            key === "productImg" ||
-            key === "qr" ||
-            key === "_id" ||
-            key === "productImgId" ||
-            key === "invoice" ||
-            key === "creator" ||
-            key === "createdAt" ||
-            key === "updatedAt"
-          )
-            return;
-
-          if (dayjs(product[key]).isValid()) {
-            product[key] = dayjs(product[key]).format("DD-MMM-YYYY");
-          }
-          return (
-            <p key={key}>
-              <span className="text">
-                <strong>{key} : </strong>
-              </span>
-              {product[key]}
-            </p>
-          );
-        })}
-        {product.invoice && (
-          <FormBtn text="Invoice" handler={downloadInvoice} formBtn />
-        )}
-      </div>
-    </Wrapper>
-  );
+  const fields = [
+    ['name', 'Name'], ['company', 'Company'], ['purchaseDate', 'Purchase date'], ['warranty', 'Warranty'],
+    ['createdBy', 'Created by'], ['assignedTo', 'Assigned to'], ['status', 'Status'], ['department', 'Department'],
+    ['warrantyDate', 'Warranty date'], ['customerCare', 'Customer care'], ['power', 'Power'], ['capacity', 'Capacity'], ['serialNumber', 'Serial number'],
+  ];
+  const display = (key, value) => ['purchaseDate', 'warrantyDate'].includes(key) && value && dayjs(value).isValid() ? dayjs(value).format('DD MMM YYYY') : value || 'Unassigned';
+  return <article className="asset-detail">
+    <h3 className="dialog-heading" id="dialog-title-detail">Asset details</h3>
+    <AssetImage product={product} large />
+    <div className="detail-identity"><div className="page-heading"><h2>{product.name}</h2><p>{product.company}</p></div><StatusBadge status={product.status} /></div>
+    <dl className="detail-metadata">{fields.filter(([key]) => ['name', 'company', 'assignedTo', 'status', 'department'].includes(key) || (product[key] !== undefined && product[key] !== null && product[key] !== '')).map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{display(key, product[key])}</dd></div>)}</dl>
+    {product.invoice && /^https:\/\//i.test(product.invoice) && <a className="btn btn-secondary" href={product.invoice} target="_blank" rel="noopener noreferrer">Invoice ↗</a>}
+  </article>;
 };
 export default ProductDetails;
