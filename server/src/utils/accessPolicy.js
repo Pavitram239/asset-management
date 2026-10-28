@@ -1,9 +1,6 @@
-import { BadRequestError, UnauthorizedError } from '../errors/customErrors.js';
-import { PRODUCT_STATUS, USER_DEPARTMENTS, WARRANTY_STATUS } from './constants.js';
+import { BadRequestError } from '../errors/customErrors.js';
+import { PRODUCT_STATUS, WARRANTY_STATUS } from './constants.js';
 export const isUUID = (value) => typeof value === 'string' && /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value);
-
-export const canAccessAsset = (user, asset) =>
-  user.role === 'admin' || user.department === asset.department;
 
 export const pickProfileFields = (body) => Object.fromEntries(
   ['name', 'firstName', 'email', 'location'].filter((key) => typeof body[key] === 'string')
@@ -26,19 +23,11 @@ export const assetInput = (body, user, partial = false) => {
   if (data.status && !Object.values(PRODUCT_STATUS).includes(data.status))
     throw new BadRequestError('Invalid asset status');
   if (data.assignedToId && !isUUID(data.assignedToId)) throw new BadRequestError('Invalid assigned user ID');
-  if (data.department && !Object.values(USER_DEPARTMENTS).includes(data.department))
-    throw new BadRequestError('Invalid department');
-  if (user.role !== 'admin') {
-    if (data.department && data.department !== user.department)
-      throw new UnauthorizedError('Cannot move an asset to another department');
-    data.department = user.department;
-  } else if (!partial && !data.department) {
-    throw new BadRequestError('Department is required');
-  }
+  if (!partial && !data.department) throw new BadRequestError('Department is required');
   for (const key of ['purchaseDate', 'warrantyDate']) {
     if (!(key in data)) continue;
-    if (data[key] && Number.isNaN(Date.parse(data[key]))) throw new BadRequestError(`Invalid ${key}`);
-    if (key === 'warrantyDate') data.warranty = data[key] && Date.parse(data[key]) > Date.now()
+    if (data[key] && (!/^\d{4}-\d{2}-\d{2}$/.test(data[key]) || Number.isNaN(Date.parse(data[key])) || new Date(data[key]).toISOString().slice(0,10)!==data[key])) throw new BadRequestError(`Invalid ${key}`);
+    if (key === 'warrantyDate') data.warranty = data[key] && data[key] > new Date().toISOString().slice(0,10)
       ? WARRANTY_STATUS.ACTIVE : WARRANTY_STATUS.EXPIRED;
     if (!data[key]) data[key] = null;
   }

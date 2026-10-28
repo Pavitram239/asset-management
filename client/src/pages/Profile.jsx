@@ -1,3 +1,4 @@
+import { hasPermission } from '../utils/permissions';
 import { Form, Link, useOutletContext } from 'react-router-dom';
 import customFetch from '../utils/customFetch';
 import { toast } from 'react-toastify';
@@ -29,8 +30,8 @@ const Profile = () => {
         <p className="caption">Your saved avatar appears in the workspace header. Updates keep you on this page.</p>
       </Form>
       <aside className="form-context">
-        <section className="panel account-context"><h3>Workspace menu</h3><strong>{user.name} · {user.role} · {user.department}</strong>
-          {user.role !== 'user' && <><Link to="/dashboard/users"><DesignIcon name="users" />Users & departments</Link><Link to="/dashboard/admin"><DesignIcon name="chart" />Admin statistics</Link></>}
+        <section className="panel account-context"><h3>Workspace menu</h3><strong>{user.name} · {user.department || 'No department'}</strong>
+          {hasPermission(user,'directory.read') && <><Link to="/dashboard/users"><DesignIcon name="users" />Users & departments</Link></>}{hasPermission(user,'statistics.read') && <><Link to="/dashboard/admin"><DesignIcon name="chart" />Admin statistics</Link></>}
           <button type="button" onClick={toggleDarkTheme}><DesignIcon name="moon" />Switch to {isDarkTheme ? 'light' : 'dark'} theme</button>
           <button type="button" onClick={logoutUser}><DesignIcon name="logout" />Log out</button>
         </section>

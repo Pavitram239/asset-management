@@ -1,26 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createLoginRateLimit } from '../src/middlewares/loginRateLimit.js';
-
-test('authentication throttling isolates clients and expires attempts', () => {
-  let time = 0;
-  const limit = createLoginRateLimit({ windowMs: 1000, max: 2, now: () => time });
-  const call = (ip) => {
-    const result = { status: 200, headers: {}, next: false };
-    const res = {
-      setHeader: (key, value) => { result.headers[key] = value; },
-      status: (status) => { result.status = status; return res; },
-      json: (body) => { result.body = body; },
-    };
-    limit({ ip }, res, () => { result.next = true; });
-    return result;
-  };
-  assert.equal(call('a').next, true);
-  assert.equal(call('a').next, true);
-  const blocked = call('a');
-  assert.equal(blocked.status, 429);
-  assert.equal(blocked.headers['Retry-After'], '1');
-  assert.equal(call('b').next, true);
-  time = 1000;
-  assert.equal(call('a').next, true);
+import { pool } from '../db/pool.js';
+import { sharedRateLimit } from '../src/middlewares/sharedRateLimit.js';
+test('shared authentication limit permits attempts and supplies a retry window after exhaustion',async(t)=>{
+  const original=pool.query;t.after(()=>{pool.query=original;});
+  const limiter=sharedRateLimit({max:2});let passed=0,status,retry;
+  const req={ip:'client'},res={setHeader(name,value){if(name==='Retry-After')retry=Number(value);},status(value){status=value;return this;},json(){}};
+  pool.query=async()=>({rows:[{count:2,reset_at:new Date(Date.now()+60000)}]});
+  await limiter(req,res,()=>passed++);assert.equal(passed,1);
+  pool.query=async()=>({rows:[{count:3,reset_at:new Date(Date.now()+60000)}]});
+  await limiter(req,res,()=>passed++);assert.equal(passed,1);assert.equal(status,429);assert.ok(retry>=59 && retry<=60);
+});
+test('shared limit fails closed when PostgreSQL is unavailable',async(t)=>{
+  const original=pool.query;t.after(()=>{pool.query=original;});pool.query=async()=>{throw new Error('unavailable');};
+  let passed=false;await assert.rejects(()=>sharedRateLimit()({ip:'client'},{},()=>{passed=true;}),/unavailable/);assert.equal(passed,false);
 });

@@ -12,17 +12,18 @@ import {
   checkForTestUser,
 } from "../middlewares/authMiddleware.js";
 import upload from "../middlewares/multerMiddleware.js";
+import { organizationContext } from '../utils/authorization.js';
 const router = Router();
 
 router.get("/current-user", getCurrentUser);
 router.get("/admin/app-stats", [
-  authorizePermissions("admin", "head"),
+  organizationContext, authorizePermissions('statistics.read'),
   getApplicationStats,
 ]);
-router.get("/users-list", authorizePermissions("admin", "head"), getUsersList);
+router.get("/users-list", organizationContext, authorizePermissions('directory.read'), getUsersList);
 router.get(
   "/departments",
-  authorizePermissions("admin", "head"),
+  organizationContext, authorizePermissions('directory.read'),
   getDepartmentList
 );
 router.patch(

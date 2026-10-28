@@ -20,9 +20,11 @@ test('authentication uses current database permissions instead of stale token cl
   let nextCalled = false;
   await authenticateUser(req, {}, () => { nextCalled = true; });
   assert.equal(nextCalled, true);
-  assert.equal(req.user.role, 'user');
-  assert.equal(req.user.department, 'kitchen');
+  assert.equal(req.user.role, undefined);
+  assert.equal(req.user.department, undefined);
   assert.throws(() => authorizePermissions('admin', 'head')(req, {}, () => {}), (error) => error.statusCode === 403);
+  users.findById = async () => ({ active:false });
+  await assert.rejects(() => authenticateUser(req, {}, () => {}), (error) => error.statusCode === 401);
   users.findById = async () => null;
   await assert.rejects(() => authenticateUser(req, {}, () => {}), (error) => error.statusCode === 401);
 });

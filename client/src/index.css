@@ -294,3 +294,33 @@ input:focus,select:focus { outline:none; border-color:var(--accent); box-shadow:
   .pagination { align-items:stretch; }
   .auth-fields .field-grid { grid-template-columns:minmax(0,1fr); }
 }
+
+.access-grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:1.5rem;align-items:start}
+.access-grid .panel {padding:1.5rem;min-width:0;overflow-wrap:anywhere}
+.access-grid form {display:grid;gap:.75rem;margin-block:1rem}
+.access-grid fieldset {border:1px solid var(--grey-200,#ccc);padding:1rem;max-height:320px;overflow:auto}
+.permission-option {display:flex;gap:.6rem;align-items:center;margin-block:.4rem}
+.organization-picker {display:flex;gap:.5rem;align-items:center;font-size:.85rem}
+.organization-picker select {max-width:200px;background:var(--background-color,#fff);color:inherit;border:1px solid #aab4c0;padding:.4rem;border-radius:.4rem}
+@media(max-width:600px){.organization-picker {font-size:0}.organization-picker select {font-size:.8rem;max-width:140px}}
+@media(max-width:600px){
+  .workspace-header {height:auto;min-height:112px;display:grid;grid-template-columns:minmax(0,1fr) 48px 40px;gap:8px;padding:12px 20px;}
+  .workspace-header .header-controls {display:contents;}
+  .workspace-header .mobile-brand {grid-column:1;grid-row:1;min-width:0;}
+  .workspace-header .theme-toggle {grid-column:2;grid-row:1;}
+  .workspace-header .user-menu {grid-column:3;grid-row:1;}
+  .workspace-header .organization-picker {grid-column:1 / -1;grid-row:2;display:flex;min-width:0;font-size:.8rem;}
+  .workspace-header .organization-picker select {flex:1;min-width:0;max-width:none;min-height:40px;}
+}
+@media(max-width:360px){.workspace-header .brand {font-size:14px;gap:6px;}}
+.verification-notice { margin-bottom: 1rem; overflow-wrap: anywhere; }
+.workspace-choice { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin: 1rem 0; overflow-wrap: anywhere; }
+.auth-form { overflow-wrap: anywhere; }
+.invitation-row { padding: 1rem 0; border-bottom: 1px solid var(--grey-200); overflow-wrap: anywhere; }
+.invitation-list { margin-top: 1rem; }
+.panel fieldset { border: 1px solid var(--grey-300); border-radius: 8px; padding: 1rem; margin: 1rem 0; min-width: 0; }
+.panel textarea { width: 100%; min-height: 96px; }
+.verification-notice h3 { margin-bottom: .5rem; }
+.verification-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; }
+.verification-actions .btn { white-space: normal; }
+@media (max-width: 600px) { .verification-actions { flex-direction: column; } }

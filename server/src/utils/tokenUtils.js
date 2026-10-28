@@ -8,6 +8,6 @@ export const createJWT = (payload) => {
 };
 
 export const verifyJWT = (token) => {
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const decoded = jwt.verify(token, process.env.JWT_SECRET, { algorithms: ['HS256'] });
   return decoded;
 };

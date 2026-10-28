@@ -22,6 +22,7 @@ const Login = () => {
       <FormRow type="password" name="password" labelText="Password" placeholder="Enter your password" autoComplete="current-password" minLength={8} maxLength={72} help="At least 8 characters." />
     </div>
     <SubmitBtn text="Sign In" waitingLabel="Signing in" className="btn-block" />
+    <p className="auth-switch"><Link to="/forgot-password">Forgot your password?</Link></p>
     <p className="auth-switch">New to Asset Manager? <Link to="/register">Register</Link></p>
   </Form></AuthLayout>;
 };

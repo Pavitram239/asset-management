@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { redirect, useLoaderData } from 'react-router-dom';
 import customFetch from '../utils/customFetch';
-import { useDashboardContext } from './DashboardLayout';
 
 export const loader = async () => {
   try {
@@ -11,7 +10,6 @@ export const loader = async () => {
 };
 const Users = () => {
   const { users, departments } = useLoaderData();
-  const { user } = useDashboardContext();
   const [tab, setTab] = useState('users');
   return <>
     <div className="page-heading"><h2>Users & departments</h2><p>Assignment lookup reference</p></div>
@@ -21,8 +19,8 @@ const Users = () => {
     </div>
     <div className="reference-layout"><section className="directory-table" id="directory-panel" role="tabpanel" aria-labelledby={`${tab}-tab`}>
       <table>{tab === 'users' ? <><thead><tr><th>Name</th><th>Department</th></tr></thead><tbody>{users.map((person) => <tr key={person._id}><td>{person.name}</td><td>{person.department}</td></tr>)}</tbody></> : <><thead><tr><th>Department</th><th>Users</th></tr></thead><tbody>{departments.map((department) => <tr key={department}><td>{department}</td><td>{users.filter((person) => person.department === department).length}</td></tr>)}</tbody></>}</table>
-      <p className="caption directory-footer">{user.role === 'admin' ? 'All departments' : user.department} · Read-only reference</p>
-    </section><aside className="panel department-context"><h3>Department values</h3>{departments.map((department) => <p key={department}>{department}</p>)}<p className="caption">{user.role === 'admin' ? 'Your account can access all departments.' : 'Your account can access your own department.'}</p></aside></div>
+      <p className="caption directory-footer">{'Authorized directory scope'} · Read-only reference</p>
+    </section><aside className="panel department-context"><h3>Department values</h3>{departments.map((department) => <p key={department}>{department}</p>)}<p className="caption">{'Your permissions determine the directory entries shown.'}</p></aside></div>
   </>;
 };
 export default Users;

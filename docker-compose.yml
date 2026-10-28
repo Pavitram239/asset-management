@@ -34,6 +34,7 @@ services:
       PGPASSWORD: ${POSTGRES_PASSWORD:-asset-local-dev}
       PGDATABASE: asset_management
       COOKIE_SECURE: "false" # Local HTTP only; hosted HTTPS must use true.
+      TRUST_PROXY_HOPS: "1" # API is reachable only through the trusted Nginx service.
       PORT: 5100
       NODE_ENV: production
     depends_on:

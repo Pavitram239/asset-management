@@ -8,7 +8,7 @@ export const action = async ({ request }) => {
   try {
     const { data } = await customFetch.post('/products', await request.formData());
     toast.success('Asset added successfully');
-    if (window.confirm('Download the QR code for this asset?')) saveAs(data.product.qr, `${data.product._id}.png`);
+    if (data.product?.qr && window.confirm('Download the QR code for this asset?')) saveAs(data.product.qr, `${data.product._id}.png`);
     return redirect('/dashboard');
   } catch (error) { toast.error(error?.response?.data?.msg || 'Unable to add the asset.'); return null; }
 };

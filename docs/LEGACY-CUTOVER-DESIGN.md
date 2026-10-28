@@ -1,0 +1,18 @@
+# Legacy cutover implementation decisions (B08)
+
+Design/acceptance record for the next slice; not evidence of implemented migration or passing behavior. The PRD and B08 backlog remain authoritative. B00–B07 evidence is separate in [catalog verification](CATALOG-INVENTORY-VERIFICATION.md).
+
+## Acceptance and preservation
+
+1. Preserve every products UUID, creator/assignee identifier, QR value, original metadata/file reference, created/updated timestamp and existing assignment-history row. Do not group records by name. Add one explicit individual catalog definition/import lot per previously unlinked product, including soft-deleted records.
+2. Preserve unknown receipt date, cost, placement and acknowledgement. A generated import tag is labelled as generated; it is not claimed to be a historical physical label. Existing known purchase/warranty dates and explicit locations remain known. Import lots expose receipt quantity/date as unknown separately from their registered baseline quantity.
+3. Assigned records become imported custody baselines with confirmation state legacy_imported, including inactive members and archived legacy records. No employee acknowledgement, physical receipt or new handover is invented. Unassigned records enter an unavailable legacy_unreconciled bucket until an explicit stock-review/lifecycle outcome; soft deletion is not inferred as disposal or loss.
+4. Technical import events use an explicit migration origin and no fabricated human actor/login. API command/history null actors are permitted only for constrained migration-origin records. Normal HTTP commands still derive a non-null current authenticated employee and cannot look up migration-only commands.
+5. Baseline units use one typed import source, balanced external/baseline entries, reconciled balances, immutable source/history/audit and durable domain-event pointers. Reruns preserve IDs/counts and applied checksums. No mail/confirmation task is manufactured by migration events.
+6. Gate legacy physical create/assignment/department/status/deletion with WORKFLOW_REQUIRED. Preserve authorized nonphysical unit metadata edits, existing route/response names and `_id`; acquisition/warranty changes use their controlled source/support workflows. Legacy invoice access/write additionally needs current independent cost.read.
+7. Add database protection against blind legacy physical writes and immutable unit/catalog/lot links. Current posting code synchronizes individual position/custodian projections from journal accounts, and current startup rejects unsupported schema migrations. Deployment must still stop older instances; this is not a claim that an arbitrary old binary has acquired the new read policy.
+8. UI labels imported/unknown states and generated tags clearly, keeps old metadata access usable, and routes new acquisition to Catalog & stock. Directory department remains an account attribute rather than a custody-integrity constraint.
+
+## Required evidence before delivery
+
+Use a dedicated pre-cutover fixture with long names, custom/inactive departments, current/inactive assignees, unknown/known location/dates, deleted records, old QR/file/serial metadata and a generated-tag collision. Reconcile original records/history before and after migration, test migration reruns/checksum protection and exact typed ledger/custody baselines, exercise legacy metadata/financial guards through HTTP and blind physical writes at the database, then review the migrated UI at desktop/mobile widths. Retain current multi-company/scope/cost/command regressions and update the current contract with actual tested changes. No application database or provider access changes are authorized by this design document.

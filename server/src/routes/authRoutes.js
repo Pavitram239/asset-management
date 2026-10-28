@@ -5,8 +5,8 @@ import {
   validateRegisterInput,
 } from "../middlewares/validationMiddleware.js";
 const router = Router();
-import { createLoginRateLimit } from '../middlewares/loginRateLimit.js';
-const authRateLimit = createLoginRateLimit();
+import { sharedRateLimit } from '../middlewares/sharedRateLimit.js';
+const authRateLimit = sharedRateLimit();
 
 router.post("/register", authRateLimit, validateRegisterInput, register);
 router.post("/login", authRateLimit, validateLoginInput, login);

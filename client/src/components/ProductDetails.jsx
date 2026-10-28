@@ -18,7 +18,7 @@ const ProductDetails = ({ product }) => {
     <AssetImage product={product} large />
     <div className="detail-identity"><div className="page-heading"><h2>{product.name}</h2><p>{product.company}</p></div><StatusBadge status={product.status} /></div>
     <dl className="detail-metadata">{fields.filter(([key]) => ['name', 'company', 'assignedTo', 'status', 'department'].includes(key) || (product[key] !== undefined && product[key] !== null && product[key] !== '')).map(([key, label]) => <div key={key}><dt>{label}</dt><dd>{display(key, product[key])}</dd></div>)}</dl>
-    {product.invoice && /^https:\/\//i.test(product.invoice) && <a className="btn btn-secondary" href={product.invoice} target="_blank" rel="noopener noreferrer">Invoice ↗</a>}
+    {product.invoice && /^\/api\/v1\/products\//.test(product.invoice) && <a className="btn btn-secondary" href={product.invoice} target="_blank" rel="noopener noreferrer">Invoice ↗</a>}
   </article>;
 };
 export default ProductDetails;

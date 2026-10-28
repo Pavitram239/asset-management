@@ -1,3 +1,4 @@
+import { hasPermission } from '../utils/permissions';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDashboardContext } from '../pages/DashboardLayout';
@@ -18,7 +19,7 @@ const LogoutContainer = () => {
       {user.avatar ? <img className="user-avatar" src={user.avatar} alt="" /> : <span className="user-avatar">{initials}</span>}
       <span className="user-name">{user.name} <span aria-hidden="true">▾</span></span>
     </button>
-    {open && <div className="account-dropdown"><Link to="profile" onClick={() => setOpen(false)}>Your profile</Link>{user.role !== 'user' && <><Link to="users" onClick={() => setOpen(false)}>Users & departments</Link><Link to="admin" onClick={() => setOpen(false)}>Admin statistics</Link></>}<button type="button" onClick={logoutUser}>Log out</button></div>}
+    {open && <div className="account-dropdown"><Link to="profile" onClick={() => setOpen(false)}>Your profile</Link><Link to="workspaces" onClick={()=>setOpen(false)}>Your workspaces</Link>{hasPermission(user,'membership.manage')&&hasPermission(user,'access.manage')&&<Link to="invitations" onClick={()=>setOpen(false)}>Employee invitations</Link>}{['catalog.read','catalog.manage','catalog.requestable.read','inventory.read','inventory.opening'].some(p=>hasPermission(user,p))&&<Link to="catalog" onClick={()=>setOpen(false)}>Catalog & stock</Link>}{['location.manage','category.manage','unit.manage'].some(p=>hasPermission(user,p))&&<Link to="inventory-setup" onClick={()=>setOpen(false)}>Inventory setup</Link>}{hasPermission(user,'directory.read') && <><Link to="users" onClick={() => setOpen(false)}>Users & departments</Link></>}{hasPermission(user,'statistics.read') && <><Link to="admin" onClick={() => setOpen(false)}>Admin statistics</Link></>}{['organization.manage','membership.manage','department.manage','role.manage','access.manage','ownership.manage'].some(p=>hasPermission(user,p))&&<Link to="access" onClick={()=>setOpen(false)}>Access management</Link>}<button type="button" onClick={logoutUser}>Log out</button></div>}
   </div>;
 };
 export default LogoutContainer;

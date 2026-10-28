@@ -1,3 +1,2 @@
-// Legacy MongoDB fixtures cannot be imported into the relational schema.
-// Create the initial administrator through /api/v1/auth/register.
-console.log('Use npm run db:migrate to initialize PostgreSQL, then register your first account in the application.');
+// Legacy MongoDB fixtures are not imported into the relational schema.
+console.log('Run database migrations, register the intended owner account, then use the operator-only bootstrap:owner command for an empty installation.');

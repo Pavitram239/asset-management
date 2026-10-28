@@ -1,10 +1,3 @@
-export const USER_DEPARTMENTS = {
-  KITCHEN: "kitchen",
-  ACCOUNTS: "accounts",
-  DECORATION: "decoration",
-  ALL: "all",
-};
-
 export const PRODUCT_STATUS = {
   IN_DEPT: "In department",
   NOT_IN_DEPT: "Not in Department",

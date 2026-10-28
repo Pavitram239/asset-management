@@ -3,7 +3,7 @@ import { Form, Link } from 'react-router-dom';
 import { useDashboardContext } from '../pages/DashboardLayout';
 import { FormRow, FormRowSelect, FormRowFile, FormDatePicker, FormSelectGroup, SubmitBtn, Modal, DynamicField } from '.';
 import DesignIcon from './DesignIcon';
-import { FIELDS, PRODUCT_STATUS, USER_DEPARTMENTS } from '../utils/constants';
+import { FIELDS, PRODUCT_STATUS } from '../utils/constants';
 
 const AssetForm = ({ product, users, departments }) => {
   const { user } = useDashboardContext();
@@ -23,9 +23,9 @@ const AssetForm = ({ product, users, departments }) => {
         <div className="field-grid"><FormRow name="name" labelText="Name" placeholder="Asset name" defaultValue={product?.name} maxLength={500} /><FormRow name="company" labelText="Company" placeholder="Company name" defaultValue={product?.company} maxLength={500} /></div>
         <div className="field-grid">
           <FormDatePicker name="purchaseDate" labelText="Purchase date" defaultValue={product?.purchaseDate} max help="Optional · latest date is today." />
-          <FormRowSelect name="department" labelText="Department" list={departments} value={department} onChange={(event) => setDepartment(event.target.value)} help={user.role === 'admin' ? 'Choose the department responsible for this asset.' : 'Assets remain within your department.'} />
+          <FormRowSelect name="department" labelText="Department" list={departments} value={department} onChange={(event) => setDepartment(event.target.value)} help="Access follows your assigned permission scope." />
         </div>
-        <FormSelectGroup key={department} name="assignedToId" labelText="Assigned to" list={usersList} categories={USER_DEPARTMENTS} defaultValue={product?.department === department ? product.assignedToId || '' : ''} help="Choose a user from this asset’s department, or leave it unassigned." />
+        <FormSelectGroup key={department} name="assignedToId" labelText="Assigned to" list={usersList} categories={departments} defaultValue={product?.department === department ? product.assignedToId || '' : ''} help="Choose a user from this asset’s department, or leave it unassigned." />
         <FormRowSelect name="status" labelText="Status" list={PRODUCT_STATUS} defaultValue={product?.status || PRODUCT_STATUS.IN_DEPT} help="In department · Not in Department · Out of campus" />
         <section className="optional-fields">
           <div className="optional-fields-heading"><h4>Optional fields</h4><button type="button" className="btn btn-secondary" onClick={() => setOpen(true)}><DesignIcon name="plus" />Add Fields</button></div>
@@ -40,7 +40,7 @@ const AssetForm = ({ product, users, departments }) => {
         <div className="form-actions"><SubmitBtn text={editing ? 'Update Product' : 'Add Product'} waitingLabel={editing ? 'Updating asset' : 'Adding asset'} /><Link to="/dashboard" className="btn btn-secondary">Cancel</Link></div>
       </Form>
       <aside className="form-context">
-        <section className="panel"><h3>Access & scope</h3><p>Admins can choose any of the department values.</p><p>Department heads manage assets in their own department. “all” is a department, not a permission to view every department.</p></section>
+        <section className="panel"><h3>Access & scope</h3><p>Your organization and assigned permissions determine which assets you can manage.</p></section>
         <div className="context-note"><DesignIcon name="info" /><p>{editing ? 'Review the assignment when transferring an asset to another department.' : 'After creation, you can download the asset’s QR code for its label.'}</p></div>
       </aside>
     </div>

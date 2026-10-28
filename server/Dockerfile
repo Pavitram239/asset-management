@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:22-alpine
 WORKDIR /app
 ENV NODE_ENV=production
 
@@ -9,5 +9,6 @@ RUN npm ci --workspace=server --omit=dev --include-workspace-root=false
 
 COPY server/ ./server/
 WORKDIR /app/server
+USER node
 EXPOSE 5100
 CMD ["node", "src/server.js"]

@@ -17,19 +17,6 @@ export const JOB_SORT_BY = {
   DESCENDING: "z-a",
 };
 
-export const USER_ROLES = {
-  ADMIN: "admin",
-  HEAD: "head",
-  USER: "user",
-};
-
-export const USER_DEPARTMENTS = {
-  KITCHEN: "kitchen",
-  ACCOUNTS: "accounts",
-  DECORATION: "decoration",
-  ALL: "all",
-};
-
 export const PRODUCT_STATUS = {
   IN_DEPT: "In department",
   NOT_IN_DEPT: "Not in Department",

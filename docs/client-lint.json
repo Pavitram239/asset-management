@@ -1,0 +1,4849 @@
+[
+  {
+    "filePath": "client/legacy-public/assets/index-c1281fab.js",
+    "messages": [
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'global' is not defined.",
+        "line": 1,
+        "column": 1137,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 1,
+        "endColumn": 1143
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 9,
+        "column": 1588,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 9,
+        "endColumn": 1602
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 9,
+        "column": 4560,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 9,
+        "endColumn": 4574
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 17,
+        "column": 376,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 17,
+        "endColumn": 390
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'setImmediate' is not defined.",
+        "line": 25,
+        "column": 923,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 25,
+        "endColumn": 935
+      },
+      {
+        "ruleId": "no-misleading-character-class",
+        "severity": 2,
+        "message": "Unexpected combined character in character class.",
+        "line": 33,
+        "column": 596,
+        "nodeType": "Literal",
+        "messageId": "combiningClass",
+        "endLine": 33,
+        "endColumn": 945
+      },
+      {
+        "ruleId": "no-useless-escape",
+        "severity": 2,
+        "message": "Unnecessary escape character: \\-.",
+        "line": 33,
+        "column": 3023,
+        "nodeType": "Literal",
+        "messageId": "unnecessaryEscape",
+        "endLine": 33,
+        "endColumn": 3024,
+        "suggestions": [
+          {
+            "messageId": "removeEscape",
+            "fix": {
+              "range": [
+                16493,
+                16494
+              ],
+              "text": ""
+            },
+            "desc": "Remove the `\\`. This maintains the current functionality."
+          },
+          {
+            "messageId": "escapeBackslash",
+            "fix": {
+              "range": [
+                16493,
+                16493
+              ],
+              "text": "\\"
+            },
+            "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 33,
+        "column": 4912,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 33,
+        "endColumn": 4926
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 37,
+        "column": 202,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 37,
+        "endColumn": 230
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 37,
+        "column": 1216,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 37,
+        "endColumn": 1218,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                21488,
+                21488
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 2389,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 2403
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 3869,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 3883
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 3910,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 3924
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 4077,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 4091
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 4104,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 4118
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 4695,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 4709
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'MSApp' is not defined.",
+        "line": 37,
+        "column": 6032,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 37,
+        "endColumn": 6037
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'MSApp' is not defined.",
+        "line": 37,
+        "column": 6080,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 37,
+        "endColumn": 6085
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 7460,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 7474
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 7553,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 7567
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 37,
+        "column": 8636,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 37,
+        "endColumn": 8643
+      },
+      {
+        "ruleId": "getter-return",
+        "severity": 2,
+        "message": "Expected to return a value in method 'get'.",
+        "line": 37,
+        "column": 9657,
+        "nodeType": "FunctionExpression",
+        "messageId": "expected",
+        "endLine": 37,
+        "endColumn": 9669
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'r' is defined but never used.",
+        "line": 37,
+        "column": 9790,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9791
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'o' is defined but never used.",
+        "line": 37,
+        "column": 9792,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9793
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'i' is defined but never used.",
+        "line": 37,
+        "column": 9794,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9795
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'a' is defined but never used.",
+        "line": 37,
+        "column": 9796,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9797
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'l' is defined but never used.",
+        "line": 37,
+        "column": 9798,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9799
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'s' is defined but never used.",
+        "line": 37,
+        "column": 9800,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9801
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'e' is defined but never used.",
+        "line": 37,
+        "column": 9973,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9974
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'t' is defined but never used.",
+        "line": 37,
+        "column": 9975,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9976
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'n' is defined but never used.",
+        "line": 37,
+        "column": 9977,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9978
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'r' is defined but never used.",
+        "line": 37,
+        "column": 9979,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9980
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'o' is defined but never used.",
+        "line": 37,
+        "column": 9981,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9982
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'i' is defined but never used.",
+        "line": 37,
+        "column": 9983,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9984
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'a' is defined but never used.",
+        "line": 37,
+        "column": 9985,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9986
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'l' is defined but never used.",
+        "line": 37,
+        "column": 9987,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9988
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'s' is defined but never used.",
+        "line": 37,
+        "column": 9989,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 9990
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'e' is defined but never used.",
+        "line": 37,
+        "column": 10041,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 10042
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'t' is defined but never used.",
+        "line": 37,
+        "column": 10043,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 10044
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'n' is defined but never used.",
+        "line": 37,
+        "column": 10045,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 10046
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'r' is defined but never used.",
+        "line": 37,
+        "column": 10047,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 10048
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'o' is defined but never used.",
+        "line": 37,
+        "column": 10049,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 10050
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'i' is defined but never used.",
+        "line": 37,
+        "column": 10051,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 10052
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'a' is defined but never used.",
+        "line": 37,
+        "column": 10053,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 10054
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'l' is defined but never used.",
+        "line": 37,
+        "column": 10055,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 10056
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'s' is defined but never used.",
+        "line": 37,
+        "column": 10057,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 37,
+        "endColumn": 10058
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 37,
+        "column": 11890,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 37,
+        "endColumn": 11892,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                32162,
+                32162
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 19777,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 19791
+      },
+      {
+        "ruleId": "valid-typeof",
+        "severity": 2,
+        "message": "Invalid typeof comparison value.",
+        "line": 37,
+        "column": 20120,
+        "nodeType": "Literal",
+        "messageId": "invalidValue",
+        "endLine": 37,
+        "endColumn": 20129
+      },
+      {
+        "ruleId": "valid-typeof",
+        "severity": 2,
+        "message": "Invalid typeof comparison value.",
+        "line": 37,
+        "column": 20294,
+        "nodeType": "Literal",
+        "messageId": "invalidValue",
+        "endLine": 37,
+        "endColumn": 20303
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 37,
+        "column": 22166,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 37,
+        "endColumn": 22173
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 37,
+        "column": 27731,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 37,
+        "endColumn": 27745
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 37,
+        "column": 29197,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 37,
+        "endColumn": 29211
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 37,
+        "column": 33298,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 37,
+        "endColumn": 33312
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 37,
+        "column": 33485,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 37,
+        "endColumn": 33500
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 37,
+        "column": 34602,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 37,
+        "endColumn": 34619
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 37,
+        "column": 36047,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 37,
+        "endColumn": 36061
+      },
+      {
+        "ruleId": "no-control-regex",
+        "severity": 2,
+        "message": "Unexpected control character(s) in regular expression: \\x00.",
+        "line": 37,
+        "column": 37477,
+        "nodeType": "Literal",
+        "messageId": "unexpected",
+        "endLine": 37,
+        "endColumn": 37493
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 38,
+        "column": 1506,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 38,
+        "endColumn": 1520
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 38,
+        "column": 1606,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 38,
+        "endColumn": 1613
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 38,
+        "column": 9015,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 38,
+        "endColumn": 9113
+      },
+      {
+        "ruleId": "no-constant-condition",
+        "severity": 2,
+        "message": "Unexpected constant condition.",
+        "line": 38,
+        "column": 9472,
+        "nodeType": "Literal",
+        "messageId": "unexpected",
+        "endLine": 38,
+        "endColumn": 9473
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 38,
+        "column": 10083,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 38,
+        "endColumn": 10102
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 38,
+        "column": 10946,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 38,
+        "endColumn": 10955
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 38,
+        "column": 18238,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 38,
+        "endColumn": 18257
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 38,
+        "column": 24810,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 38,
+        "endColumn": 24812,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                82638,
+                82638
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 38,
+        "column": 24819,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 38,
+        "endColumn": 24821,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                82647,
+                82647
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 40,
+        "column": 3968,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 40,
+        "endColumn": 3991
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 40,
+        "column": 5090,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 40,
+        "endColumn": 5117
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 12874,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 12888
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 12895,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 12909
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 12965,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 12979
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 13147,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 13161
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 13249,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 13263
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 13329,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 13343
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 13353,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 13367
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 13405,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 13419
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 13760,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 13774
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 15957,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 15971
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 16236,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 16250
+      },
+      {
+        "ruleId": "no-useless-escape",
+        "severity": 2,
+        "message": "Unnecessary escape character: \\/.",
+        "line": 40,
+        "column": 16683,
+        "nodeType": "Literal",
+        "messageId": "unnecessaryEscape",
+        "endLine": 40,
+        "endColumn": 16684,
+        "suggestions": [
+          {
+            "messageId": "removeEscape",
+            "fix": {
+              "range": [
+                102537,
+                102538
+              ],
+              "text": ""
+            },
+            "desc": "Remove the `\\`. This maintains the current functionality."
+          },
+          {
+            "messageId": "escapeBackslash",
+            "fix": {
+              "range": [
+                102537,
+                102537
+              ],
+              "text": "\\"
+            },
+            "desc": "Replace the `\\` with `\\\\` to include the actual backslash character."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 17565,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 17579
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 17874,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 17888
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 40,
+        "column": 25897,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 40,
+        "endColumn": 25899,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                111752,
+                111752
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 40,
+        "column": 25932,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 40,
+        "endColumn": 26112
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 40,
+        "column": 30010,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 40,
+        "endColumn": 30024
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'t' is defined but never used.",
+        "line": 40,
+        "column": 30990,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 40,
+        "endColumn": 30991
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'n' is defined but never used.",
+        "line": 40,
+        "column": 30992,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 40,
+        "endColumn": 30993
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'t' is defined but never used.",
+        "line": 40,
+        "column": 31019,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 40,
+        "endColumn": 31020
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'n' is defined but never used.",
+        "line": 40,
+        "column": 31021,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 40,
+        "endColumn": 31022
+      },
+      {
+        "ruleId": "no-constant-condition",
+        "severity": 2,
+        "message": "Unexpected constant condition.",
+        "line": 40,
+        "column": 34722,
+        "nodeType": "Literal",
+        "messageId": "unexpected",
+        "endLine": 40,
+        "endColumn": 34723
+      },
+      {
+        "ruleId": "no-constant-condition",
+        "severity": 2,
+        "message": "Unexpected constant condition.",
+        "line": 40,
+        "column": 39249,
+        "nodeType": "Literal",
+        "messageId": "unexpected",
+        "endLine": 40,
+        "endColumn": 39250
+      },
+      {
+        "ruleId": "no-constant-condition",
+        "severity": 2,
+        "message": "Unexpected constant condition.",
+        "line": 40,
+        "column": 39540,
+        "nodeType": "Literal",
+        "messageId": "unexpected",
+        "endLine": 40,
+        "endColumn": 39541
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 40,
+        "column": 42547,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 40,
+        "endColumn": 42549,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                128402,
+                128402
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 40,
+        "column": 52968,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 40,
+        "endColumn": 52981
+      },
+      {
+        "ruleId": "no-func-assign",
+        "severity": 2,
+        "message": "'ih' is a function.",
+        "line": 40,
+        "column": 54374,
+        "nodeType": "Identifier",
+        "messageId": "isAFunction",
+        "endLine": 40,
+        "endColumn": 54376
+      },
+      {
+        "ruleId": "no-func-assign",
+        "severity": 2,
+        "message": "'ah' is a function.",
+        "line": 40,
+        "column": 54380,
+        "nodeType": "Identifier",
+        "messageId": "isAFunction",
+        "endLine": 40,
+        "endColumn": 54382
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'__REACT_DEVTOOLS_GLOBAL_HOOK__' is not defined.",
+        "line": 40,
+        "column": 55297,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 40,
+        "endColumn": 55327
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 40,
+        "column": 55396,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 40,
+        "endColumn": 55398,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                141251,
+                141251
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'__REACT_DEVTOOLS_GLOBAL_HOOK__' is not defined.",
+        "line": 40,
+        "column": 57428,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 40,
+        "endColumn": 57458
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'__REACT_DEVTOOLS_GLOBAL_HOOK__' is not defined.",
+        "line": 40,
+        "column": 57485,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 40,
+        "endColumn": 57515
+      },
+      {
+        "ruleId": "no-func-assign",
+        "severity": 2,
+        "message": "'xe' is a function.",
+        "line": 49,
+        "column": 25,
+        "nodeType": "Identifier",
+        "messageId": "isAFunction",
+        "endLine": 49,
+        "endColumn": 27
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 49,
+        "column": 761,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 49,
+        "endColumn": 763,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                144524,
+                144524
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 50,
+        "column": 7088,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 50,
+        "endColumn": 7102
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 50,
+        "column": 7181,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 50,
+        "endColumn": 7195
+      },
+      {
+        "ruleId": "no-func-assign",
+        "severity": 2,
+        "message": "'el' is a function.",
+        "line": 59,
+        "column": 25,
+        "nodeType": "Identifier",
+        "messageId": "isAFunction",
+        "endLine": 59,
+        "endColumn": 27
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"e0\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 787,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 799
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useLayoutEffect\" is called in function \"e0\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 812,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 829
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"by\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 935,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 947
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"by\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 977,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 989
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"by\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 1006,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 1018
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useRef\" is called in function \"by\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 1090,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 1098
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useCallback\" is called in function \"by\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 1133,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 1146
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"n0\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 1464,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 1476
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'e' is defined but never used.",
+        "line": 59,
+        "column": 5436,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 59,
+        "endColumn": 5437
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'e' is defined but never used.",
+        "line": 59,
+        "column": 5493,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 59,
+        "endColumn": 5494
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"jl\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 5502,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 5514
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'e' is defined but never used.",
+        "line": 59,
+        "column": 5550,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 59,
+        "endColumn": 5551
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'e' is defined but never used.",
+        "line": 59,
+        "column": 5607,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 59,
+        "endColumn": 5608
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"o0\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 6139,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 6151
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"qy\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 6608,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 6618
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useCallback\" is called in function \"qy\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 6659,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 6672
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useLayoutEffect\" is called in function \"qy\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 6709,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 6726
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useMemo\" is called in function \"qy\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 6759,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 6768
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useMemo\" is called in function \"qy\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 59,
+        "column": 7078,
+        "nodeType": "MemberExpression",
+        "endLine": 59,
+        "endColumn": 7087
+      },
+      {
+        "ruleId": "no-func-assign",
+        "severity": 2,
+        "message": "'hn' is a function.",
+        "line": 68,
+        "column": 25,
+        "nodeType": "Identifier",
+        "messageId": "isAFunction",
+        "endLine": 68,
+        "endColumn": 27
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 68,
+        "column": 3034,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 68,
+        "endColumn": 3036,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                193675,
+                193675
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 68,
+        "column": 3643,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 68,
+        "endColumn": 3645,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                194284,
+                194284
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'e' is defined but never used.",
+        "line": 68,
+        "column": 5659,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 68,
+        "endColumn": 5660
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"y2\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 68,
+        "column": 5668,
+        "nodeType": "MemberExpression",
+        "endLine": 68,
+        "endColumn": 5680
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useCallback\" is called in function \"w2\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 68,
+        "column": 5843,
+        "nodeType": "MemberExpression",
+        "endLine": 68,
+        "endColumn": 5856
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"a0\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 68,
+        "column": 6229,
+        "nodeType": "MemberExpression",
+        "endLine": 68,
+        "endColumn": 6241
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useCallback\" is called in function \"a0\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 68,
+        "column": 6260,
+        "nodeType": "MemberExpression",
+        "endLine": 68,
+        "endColumn": 6273
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 68,
+        "column": 7764,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 68,
+        "endColumn": 7775
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 68,
+        "column": 9942,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 68,
+        "endColumn": 9950
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 68,
+        "column": 10180,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 68,
+        "endColumn": 10191
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 68,
+        "column": 10236,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 68,
+        "endColumn": 10354
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'default'.",
+        "line": 68,
+        "column": 10369,
+        "nodeType": "SwitchCase",
+        "messageId": "default",
+        "endLine": 68,
+        "endColumn": 10641
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'default'.",
+        "line": 68,
+        "column": 10695,
+        "nodeType": "SwitchCase",
+        "messageId": "default",
+        "endLine": 68,
+        "endColumn": 10965
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 68,
+        "column": 11977,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 68,
+        "endColumn": 11987
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 68,
+        "column": 13644,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 68,
+        "endColumn": 13738
+      },
+      {
+        "ruleId": "no-fallthrough",
+        "severity": 2,
+        "message": "Expected a 'break' statement before 'case'.",
+        "line": 68,
+        "column": 14503,
+        "nodeType": "SwitchCase",
+        "messageId": "case",
+        "endLine": 68,
+        "endColumn": 14511
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'process' is not defined.",
+        "line": 68,
+        "column": 16233,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 68,
+        "endColumn": 16240
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'SC_DISABLE_SPEEDY' is not defined.",
+        "line": 68,
+        "column": 16392,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 68,
+        "endColumn": 16409
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'process' is not defined.",
+        "line": 68,
+        "column": 16430,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 68,
+        "endColumn": 16437
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'process' is not defined.",
+        "line": 68,
+        "column": 16622,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 68,
+        "endColumn": 16629
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 68,
+        "column": 19581,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 68,
+        "endColumn": 19583,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                210222,
+                210222
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "no-redeclare",
+        "severity": 2,
+        "message": "'r' is already defined.",
+        "line": 68,
+        "column": 20152,
+        "nodeType": "Identifier",
+        "messageId": "redeclared",
+        "endLine": 68,
+        "endColumn": 20153
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'__webpack_nonce__' is not defined.",
+        "line": 70,
+        "column": 251,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 70,
+        "endColumn": 268
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'t' is defined but never used.",
+        "line": 70,
+        "column": 1692,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 70,
+        "endColumn": 1693
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"sp\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 71,
+        "column": 2324,
+        "nodeType": "MemberExpression",
+        "endLine": 71,
+        "endColumn": 2336
+      },
+      {
+        "ruleId": "no-prototype-builtins",
+        "severity": 2,
+        "message": "Do not access Object.prototype method 'hasOwnProperty' from target object.",
+        "line": 71,
+        "column": 3033,
+        "nodeType": "CallExpression",
+        "messageId": "prototypeBuildIn",
+        "endLine": 71,
+        "endColumn": 3047
+      },
+      {
+        "ruleId": "no-redeclare",
+        "severity": 2,
+        "message": "'r' is already defined.",
+        "line": 147,
+        "column": 581,
+        "nodeType": "Identifier",
+        "messageId": "redeclared",
+        "endLine": 147,
+        "endColumn": 582
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"qw\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 300,
+        "column": 22,
+        "nodeType": "MemberExpression",
+        "endLine": 300,
+        "endColumn": 32
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useRef\" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function.",
+        "line": 353,
+        "column": 1003,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 1011
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useLayoutEffect\" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function.",
+        "line": 353,
+        "column": 1022,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 1039
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useEffect\" cannot be called inside a callback. React Hooks must be called in a React function component or a custom React Hook function.",
+        "line": 353,
+        "column": 1396,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 1407
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useReducer\" is called in function \"ax\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 4253,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 4265
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"ax\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 4282,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 4292
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useRef\" is called in function \"ax\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 4299,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 4307
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useRef\" is called in function \"ax\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 4316,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 4324
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useRef\" is called in function \"ax\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 4367,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 4375
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'pe' is assigned a value but never used.",
+        "line": 353,
+        "column": 5136,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 353,
+        "endColumn": 5138
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useEffect\" is called in function \"ax\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 6725,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 6736
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useEffect\" is called in function \"ax\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 6872,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 6883
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"lx\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 7424,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 7434
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"lx\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 7445,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 7455
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useRef\" is called in function \"lx\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 7462,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 7470
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useRef\" is called in function \"lx\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 7479,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 7487
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useRef\" is called in function \"lx\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 7602,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 7610
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useEffect\" is called in function \"lx\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 9297,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 9308
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useEffect\" is called in function \"lx\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 9328,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 9339
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useEffect\" is called in function \"lx\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 353,
+        "column": 9573,
+        "nodeType": "MemberExpression",
+        "endLine": 353,
+        "endColumn": 9584
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'global' is not defined.",
+        "line": 353,
+        "column": 17851,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 353,
+        "endColumn": 17857
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'Buffer' is not defined.",
+        "line": 353,
+        "column": 23425,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 353,
+        "endColumn": 23431
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'WorkerGlobalScope' is not defined.",
+        "line": 353,
+        "column": 25865,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 353,
+        "endColumn": 25882
+      },
+      {
+        "ruleId": "no-cond-assign",
+        "severity": 2,
+        "message": "Expected a conditional expression and instead saw an assignment.",
+        "line": 354,
+        "column": 445,
+        "nodeType": "AssignmentExpression",
+        "messageId": "missing",
+        "endLine": 354,
+        "endColumn": 456
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 355,
+        "column": 5844,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 355,
+        "endColumn": 5846,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                280981,
+                280981
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useContext\" is called in function \"hd\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 355,
+        "column": 14349,
+        "nodeType": "MemberExpression",
+        "endLine": 355,
+        "endColumn": 14361
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'t' is defined but never used.",
+        "line": 464,
+        "column": 35,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 464,
+        "endColumn": 36
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'t' is defined but never used.",
+        "line": 464,
+        "column": 7177,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 464,
+        "endColumn": 7178
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'t' is defined but never used.",
+        "line": 480,
+        "column": 559,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 480,
+        "endColumn": 560
+      },
+      {
+        "ruleId": "no-empty",
+        "severity": 2,
+        "message": "Empty block statement.",
+        "line": 480,
+        "column": 1161,
+        "nodeType": "BlockStatement",
+        "messageId": "unexpected",
+        "endLine": 480,
+        "endColumn": 1163,
+        "suggestions": [
+          {
+            "messageId": "suggestComment",
+            "data": {
+              "type": "block"
+            },
+            "fix": {
+              "range": [
+                302982,
+                302982
+              ],
+              "text": " /* empty */ "
+            },
+            "desc": "Add comment inside empty block statement."
+          }
+        ]
+      },
+      {
+        "ruleId": "getter-return",
+        "severity": 2,
+        "message": "Expected to return a value in getter 'passive'.",
+        "line": 484,
+        "column": 737,
+        "nodeType": "FunctionExpression",
+        "messageId": "expected",
+        "endLine": 484,
+        "endColumn": 748
+      },
+      {
+        "ruleId": "no-func-assign",
+        "severity": 2,
+        "message": "'ul' is a function.",
+        "line": 484,
+        "column": 3220,
+        "nodeType": "Identifier",
+        "messageId": "isAFunction",
+        "endLine": 484,
+        "endColumn": 3222
+      },
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'process' is not defined.",
+        "line": 484,
+        "column": 4803,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 484,
+        "endColumn": 4810
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useEffect\" is called in function \"eS\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 484,
+        "column": 5976,
+        "nodeType": "MemberExpression",
+        "endLine": 484,
+        "endColumn": 5987
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useRef\" is called in function \"tS\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 484,
+        "column": 6085,
+        "nodeType": "MemberExpression",
+        "endLine": 484,
+        "endColumn": 6093
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useEffect\" is called in function \"tS\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 484,
+        "column": 6100,
+        "nodeType": "MemberExpression",
+        "endLine": 484,
+        "endColumn": 6111
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'t' is defined but never used.",
+        "line": 517,
+        "column": 35,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 517,
+        "endColumn": 36
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"aS\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 517,
+        "column": 1263,
+        "nodeType": "MemberExpression",
+        "endLine": 517,
+        "endColumn": 1273
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"c1\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 620,
+        "column": 45,
+        "nodeType": "MemberExpression",
+        "endLine": 620,
+        "endColumn": 55
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'i' is assigned a value but never used.",
+        "line": 620,
+        "column": 725,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 620,
+        "endColumn": 726
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"cl\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 620,
+        "column": 730,
+        "nodeType": "MemberExpression",
+        "endLine": 620,
+        "endColumn": 740
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"hS\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 620,
+        "column": 1751,
+        "nodeType": "MemberExpression",
+        "endLine": 620,
+        "endColumn": 1761
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"hS\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 620,
+        "column": 1772,
+        "nodeType": "MemberExpression",
+        "endLine": 620,
+        "endColumn": 1782
+      },
+      {
+        "ruleId": "react-hooks/rules-of-hooks",
+        "severity": 2,
+        "message": "React Hook \"C.useState\" is called in function \"hS\" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter. React Hook names must start with the word \"use\".",
+        "line": 620,
+        "column": 1793,
+        "nodeType": "MemberExpression",
+        "endLine": 620,
+        "endColumn": 1803
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'n' is assigned a value but never used.",
+        "line": 666,
+        "column": 339,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 666,
+        "endColumn": 340
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 198,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/App.jsx",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'React' is defined but never used.",
+        "line": 1,
+        "column": 8,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 1,
+        "endColumn": 13
+      },
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'Landing' is defined but never used.",
+        "line": 5,
+        "column": 3,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 5,
+        "endColumn": 10
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 2,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/figma/index.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/BigSidebar.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/ChartsContainer.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/Dashboard.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/DashboardFormPage.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/DynamicField.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/ErrorPage.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/LandingPage.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/LogoutContainer.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/Modal.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/Navbar.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/PageBtnContainer.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/Product.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/ProductDetails.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/ProductInfo.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/ProductsContainer.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/RegisterAndLoginPage.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/SmallSidebar.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/StatItem.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/StatsContainer.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/Testing.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/assets/wrappers/ThemeToggle.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/AssetForm.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product' is missing in props validation",
+        "line": 8,
+        "column": 22,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 8,
+        "endColumn": 29
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'users' is missing in props validation",
+        "line": 8,
+        "column": 31,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 8,
+        "endColumn": 36
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'departments' is missing in props validation",
+        "line": 8,
+        "column": 38,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 8,
+        "endColumn": 49
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.department' is missing in props validation",
+        "line": 14,
+        "column": 57,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 14,
+        "endColumn": 67
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'departments.includes' is missing in props validation",
+        "line": 14,
+        "column": 84,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 14,
+        "endColumn": 92
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'users.filter' is missing in props validation",
+        "line": 15,
+        "column": 27,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 15,
+        "endColumn": 33
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.name' is missing in props validation",
+        "line": 18,
+        "column": 107,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 18,
+        "endColumn": 111
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.company' is missing in props validation",
+        "line": 18,
+        "column": 125,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 18,
+        "endColumn": 132
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.productImg' is missing in props validation",
+        "line": 22,
+        "column": 87,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 22,
+        "endColumn": 97
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.name' is missing in props validation",
+        "line": 23,
+        "column": 123,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 23,
+        "endColumn": 127
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.company' is missing in props validation",
+        "line": 23,
+        "column": 241,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 23,
+        "endColumn": 248
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.purchaseDate' is missing in props validation",
+        "line": 25,
+        "column": 96,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 25,
+        "endColumn": 108
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.department' is missing in props validation",
+        "line": 28,
+        "column": 152,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 28,
+        "endColumn": 162
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.assignedToId' is missing in props validation",
+        "line": 28,
+        "column": 188,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 28,
+        "endColumn": 200
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.status' is missing in props validation",
+        "line": 29,
+        "column": 102,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 29,
+        "endColumn": 108
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 15,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/AuthLayout.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'children' is missing in props validation",
+        "line": 5,
+        "column": 23,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 31
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/BigSidebar.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/DesignIcon.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'name' is missing in props validation",
+        "line": 3,
+        "column": 23,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 27
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'className' is missing in props validation",
+        "line": 3,
+        "column": 29,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 43
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 2,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/DynamicField.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'onClose' is missing in props validation",
+        "line": 4,
+        "column": 25,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 32
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'addFields' is missing in props validation",
+        "line": 4,
+        "column": 34,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 43
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'initialFields' is missing in props validation",
+        "line": 4,
+        "column": 45,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 63
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 3,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/FormBtn.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'formBtn' is missing in props validation",
+        "line": 1,
+        "column": 20,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 27
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'text' is missing in props validation",
+        "line": 1,
+        "column": 29,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 33
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'handler' is missing in props validation",
+        "line": 1,
+        "column": 35,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 42
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 3,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/FormDatePicker.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'name' is missing in props validation",
+        "line": 7,
+        "column": 27,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 7,
+        "endColumn": 31
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'labelText' is missing in props validation",
+        "line": 7,
+        "column": 33,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 7,
+        "endColumn": 42
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'defaultValue' is missing in props validation",
+        "line": 7,
+        "column": 44,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 7,
+        "endColumn": 56
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'max' is missing in props validation",
+        "line": 7,
+        "column": 58,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 7,
+        "endColumn": 61
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'min' is missing in props validation",
+        "line": 7,
+        "column": 63,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 7,
+        "endColumn": 66
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'help' is missing in props validation",
+        "line": 7,
+        "column": 68,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 7,
+        "endColumn": 72
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 6,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/FormRow.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'type' is missing in props validation",
+        "line": 1,
+        "column": 20,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 33
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'name' is missing in props validation",
+        "line": 1,
+        "column": 35,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 39
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'defaultValue' is missing in props validation",
+        "line": 1,
+        "column": 41,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 53
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'labelText' is missing in props validation",
+        "line": 1,
+        "column": 55,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 64
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'onChange' is missing in props validation",
+        "line": 1,
+        "column": 66,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 74
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'placeholder' is missing in props validation",
+        "line": 1,
+        "column": 76,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 87
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'required' is missing in props validation",
+        "line": 1,
+        "column": 89,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 104
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'help' is missing in props validation",
+        "line": 1,
+        "column": 106,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 1,
+        "endColumn": 110
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 8,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/FormRowFile.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'name' is missing in props validation",
+        "line": 4,
+        "column": 24,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 28
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'label' is missing in props validation",
+        "line": 4,
+        "column": 30,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 35
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'accept' is missing in props validation",
+        "line": 4,
+        "column": 37,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 43
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'help' is missing in props validation",
+        "line": 4,
+        "column": 45,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 49
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 4,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/FormRowSelect.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'name' is missing in props validation",
+        "line": 3,
+        "column": 26,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 30
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'labelText' is missing in props validation",
+        "line": 3,
+        "column": 32,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 41
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'list' is missing in props validation",
+        "line": 3,
+        "column": 43,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 47
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'defaultValue' is missing in props validation",
+        "line": 3,
+        "column": 49,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 61
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'value' is missing in props validation",
+        "line": 3,
+        "column": 63,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 68
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'onChange' is missing in props validation",
+        "line": 3,
+        "column": 70,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 78
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'help' is missing in props validation",
+        "line": 3,
+        "column": 80,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 84
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'disabled' is missing in props validation",
+        "line": 3,
+        "column": 86,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 102
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 8,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/FormSelectGroup.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'name' is missing in props validation",
+        "line": 3,
+        "column": 28,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 32
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'labelText' is missing in props validation",
+        "line": 3,
+        "column": 34,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 43
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'list' is missing in props validation",
+        "line": 3,
+        "column": 45,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 54
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'categories' is missing in props validation",
+        "line": 3,
+        "column": 56,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 66
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'defaultValue' is missing in props validation",
+        "line": 3,
+        "column": 68,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 85
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'onChange' is missing in props validation",
+        "line": 3,
+        "column": 87,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 95
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'help' is missing in props validation",
+        "line": 3,
+        "column": 97,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 101
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 7,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/IconBtn.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'type' is missing in props validation",
+        "line": 3,
+        "column": 20,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 24
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'iconType' is missing in props validation",
+        "line": 3,
+        "column": 26,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 34
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'id' is missing in props validation",
+        "line": 3,
+        "column": 36,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 38
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'handler' is missing in props validation",
+        "line": 3,
+        "column": 40,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 47
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 4,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/Logo.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'inverse' is missing in props validation",
+        "line": 3,
+        "column": 17,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 32
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'compact' is missing in props validation",
+        "line": 3,
+        "column": 34,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 49
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 2,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/LogoutContainer.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/Modal.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'children' is missing in props validation",
+        "line": 5,
+        "column": 18,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 26
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'open' is missing in props validation",
+        "line": 5,
+        "column": 28,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 32
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'onClose' is missing in props validation",
+        "line": 5,
+        "column": 34,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 41
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'variant' is missing in props validation",
+        "line": 5,
+        "column": 43,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 61
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 4,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/NavLinks.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'mobile' is missing in props validation",
+        "line": 7,
+        "column": 21,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 7,
+        "endColumn": 35
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/Navbar.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/PageBtnContainer.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/Product.jsx",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'useAllProductsContext' is defined but never used.",
+        "line": 11,
+        "column": 10,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 11,
+        "endColumn": 31
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product' is missing in props validation",
+        "line": 15,
+        "column": 20,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 15,
+        "endColumn": 27
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.qr' is missing in props validation",
+        "line": 24,
+        "column": 22,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 24,
+        "endColumn": 24
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product._id' is missing in props validation",
+        "line": 24,
+        "column": 37,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 24,
+        "endColumn": 40
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.productImg' is missing in props validation",
+        "line": 33,
+        "column": 13,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 33,
+        "endColumn": 23
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.name' is missing in props validation",
+        "line": 42,
+        "column": 64,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 42,
+        "endColumn": 68
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.name' is missing in props validation",
+        "line": 44,
+        "column": 50,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 44,
+        "endColumn": 54
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.company' is missing in props validation",
+        "line": 47,
+        "column": 65,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 47,
+        "endColumn": 72
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.assignedTo' is missing in props validation",
+        "line": 48,
+        "column": 63,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 48,
+        "endColumn": 73
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.department' is missing in props validation",
+        "line": 49,
+        "column": 64,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 49,
+        "endColumn": 74
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.status' is missing in props validation",
+        "line": 51,
+        "column": 46,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 51,
+        "endColumn": 52
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.status' is missing in props validation",
+        "line": 53,
+        "column": 26,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 53,
+        "endColumn": 32
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product._id' is missing in props validation",
+        "line": 65,
+        "column": 49,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 65,
+        "endColumn": 52
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product._id' is missing in props validation",
+        "line": 68,
+        "column": 69,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 68,
+        "endColumn": 72
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product._id' is missing in props validation",
+        "line": 69,
+        "column": 70,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 69,
+        "endColumn": 73
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 15,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/ProductDetails.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'status' is missing in props validation",
+        "line": 4,
+        "column": 31,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 37
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product' is missing in props validation",
+        "line": 5,
+        "column": 30,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 37
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'large' is missing in props validation",
+        "line": 5,
+        "column": 39,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 52
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.productImg' is missing in props validation",
+        "line": 5,
+        "column": 67,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 77
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.productImg' is missing in props validation",
+        "line": 6,
+        "column": 78,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 6,
+        "endColumn": 88
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.name' is missing in props validation",
+        "line": 6,
+        "column": 103,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 6,
+        "endColumn": 107
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product' is missing in props validation",
+        "line": 9,
+        "column": 27,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 9,
+        "endColumn": 34
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.name' is missing in props validation",
+        "line": 19,
+        "column": 81,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 19,
+        "endColumn": 85
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.company' is missing in props validation",
+        "line": 19,
+        "column": 103,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 19,
+        "endColumn": 110
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.status' is missing in props validation",
+        "line": 19,
+        "column": 150,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 19,
+        "endColumn": 156
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.invoice' is missing in props validation",
+        "line": 21,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 21,
+        "endColumn": 21
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.invoice' is missing in props validation",
+        "line": 21,
+        "column": 63,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 21,
+        "endColumn": 70
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.invoice' is missing in props validation",
+        "line": 21,
+        "column": 122,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 21,
+        "endColumn": 129
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 13,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/ProductInfo.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'icon' is missing in props validation",
+        "line": 2,
+        "column": 24,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 2,
+        "endColumn": 28
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'text' is missing in props validation",
+        "line": 2,
+        "column": 30,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 2,
+        "endColumn": 34
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 2,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/ProductsContainer.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/QrDownload.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product' is missing in props validation",
+        "line": 4,
+        "column": 23,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 30
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'onClose' is missing in props validation",
+        "line": 4,
+        "column": 32,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 4,
+        "endColumn": 39
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.qr' is missing in props validation",
+        "line": 5,
+        "column": 29,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 31
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.qr' is missing in props validation",
+        "line": 5,
+        "column": 75,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 5,
+        "endColumn": 77
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.name' is missing in props validation",
+        "line": 8,
+        "column": 93,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 8,
+        "endColumn": 97
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.company' is missing in props validation",
+        "line": 8,
+        "column": 110,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 8,
+        "endColumn": 117
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.qr' is missing in props validation",
+        "line": 9,
+        "column": 67,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 9,
+        "endColumn": 69
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.name' is missing in props validation",
+        "line": 9,
+        "column": 99,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 9,
+        "endColumn": 103
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product._id' is missing in props validation",
+        "line": 10,
+        "column": 71,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 10,
+        "endColumn": 74
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product._id' is missing in props validation",
+        "line": 10,
+        "column": 164,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 10,
+        "endColumn": 167
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product.qr' is missing in props validation",
+        "line": 12,
+        "column": 105,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 12,
+        "endColumn": 107
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'product._id' is missing in props validation",
+        "line": 12,
+        "column": 120,
+        "nodeType": "Identifier",
+        "messageId": "missingPropType",
+        "endLine": 12,
+        "endColumn": 123
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 12,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/SearchContainer.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/SmallSidebar.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/StatItem.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'count' is missing in props validation",
+        "line": 3,
+        "column": 21,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 26
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'title' is missing in props validation",
+        "line": 3,
+        "column": 28,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 33
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'icon' is missing in props validation",
+        "line": 3,
+        "column": 35,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 39
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'color' is missing in props validation",
+        "line": 3,
+        "column": 41,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 46
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'bcg' is missing in props validation",
+        "line": 3,
+        "column": 48,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 51
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 5,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/SubmitBtn.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'formBtn' is missing in props validation",
+        "line": 3,
+        "column": 22,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 29
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'text' is missing in props validation",
+        "line": 3,
+        "column": 31,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 46
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'waitingLabel' is missing in props validation",
+        "line": 3,
+        "column": 48,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 71
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'className' is missing in props validation",
+        "line": 3,
+        "column": 73,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 87
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 4,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/ThemeToggle.jsx",
+    "messages": [
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'isDarkTheme' is missing in props validation",
+        "line": 3,
+        "column": 24,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 35
+      },
+      {
+        "ruleId": "react/prop-types",
+        "severity": 2,
+        "message": "'onToggle' is missing in props validation",
+        "line": 3,
+        "column": 37,
+        "nodeType": "Property",
+        "messageId": "missingPropType",
+        "endLine": 3,
+        "endColumn": 45
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 2,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/components/index.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/main.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/AccessManagement.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/AddProduct.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 7,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 7,
+        "endColumn": 20
+      },
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 15,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 15,
+        "endColumn": 20
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 2,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/Admin.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 4,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 4,
+        "endColumn": 20
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 1,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/AllProducts.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 12,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 12,
+        "endColumn": 20
+      },
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 59,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 59,
+        "endColumn": 35
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 2,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/DashboardLayout.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 9,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 9,
+        "endColumn": 20
+      },
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 83,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 83,
+        "endColumn": 33
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 2,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/DeleteProduct.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/EditProduct.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 6,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 6,
+        "endColumn": 20
+      },
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 12,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 12,
+        "endColumn": 20
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 2,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/Error.jsx",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'React' is defined but never used.",
+        "line": 1,
+        "column": 8,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 1,
+        "endColumn": 13
+      },
+      {
+        "ruleId": "react/no-unescaped-entities",
+        "severity": 2,
+        "message": "`'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.",
+        "line": 14,
+        "column": 20,
+        "nodeType": "JSXText",
+        "messageId": "unescapedEntityAlts"
+      },
+      {
+        "ruleId": "react/no-unescaped-entities",
+        "severity": 2,
+        "message": "`'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.",
+        "line": 14,
+        "column": 48,
+        "nodeType": "JSXText",
+        "messageId": "unescapedEntityAlts"
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 3,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/GetQr.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/HomeLayout.jsx",
+    "messages": [
+      {
+        "ruleId": "no-unused-vars",
+        "severity": 2,
+        "message": "'React' is defined but never used.",
+        "line": 1,
+        "column": 8,
+        "nodeType": "Identifier",
+        "messageId": "unusedVar",
+        "endLine": 1,
+        "endColumn": 13
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/Landing.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/Login.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 7,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 7,
+        "endColumn": 20
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 1,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/Profile.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 9,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 9,
+        "endColumn": 20
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 1,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/Register.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 9,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 9,
+        "endColumn": 20
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 1,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/Stats.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 4,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 4,
+        "endColumn": 20
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 1,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/Users.jsx",
+    "messages": [
+      {
+        "ruleId": "react-refresh/only-export-components",
+        "severity": 1,
+        "message": "Fast refresh only works when a file only exports components. Use a new file to share constants or functions between components.",
+        "line": 5,
+        "column": 14,
+        "nodeType": "Identifier",
+        "messageId": "namedExport",
+        "endLine": 5,
+        "endColumn": 20
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 1,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/pages/index.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/utils/Links.jsx",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/utils/constants.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/utils/context.js",
+    "messages": [
+      {
+        "ruleId": null,
+        "fatal": true,
+        "severity": 2,
+        "message": "Parsing error: Unexpected token )",
+        "line": 26,
+        "column": 34,
+        "nodeType": null
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 1,
+    "fatalErrorCount": 1,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/utils/customFetch.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/utils/permissions.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/src/utils/useTheme.js",
+    "messages": [],
+    "suppressedMessages": [],
+    "errorCount": 0,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  },
+  {
+    "filePath": "client/vite.config.js",
+    "messages": [
+      {
+        "ruleId": "no-undef",
+        "severity": 2,
+        "message": "'process' is not defined.",
+        "line": 10,
+        "column": 17,
+        "nodeType": "Identifier",
+        "messageId": "undef",
+        "endLine": 10,
+        "endColumn": 24
+      }
+    ],
+    "suppressedMessages": [],
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "warningCount": 0,
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "usedDeprecatedRules": []
+  }
+]

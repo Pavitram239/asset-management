@@ -1,8 +1,8 @@
 import { body, validationResult } from 'express-validator';
-import { BadRequestError, NotFoundError, UnauthorizedError } from '../errors/customErrors.js';
+import { BadRequestError, NotFoundError } from '../errors/customErrors.js';
 import { users } from '../repositories/users.js';
 import { products } from '../repositories/products.js';
-import { canAccessAsset, isUUID } from '../utils/accessPolicy.js';
+import { isUUID } from '../utils/accessPolicy.js';
 
 const withValidationErrors = (validators) => [
   validators,
@@ -18,13 +18,14 @@ const location = () => body('location').isString().bail().trim().notEmpty().with
 
 export const validateRegisterInput = withValidationErrors([
   name(), email().bail().custom(async (value) => {
-    if (await users.findByEmail(value)) throw new BadRequestError('Email already in use');
+    if (await users.findByEmail(value)) throw new BadRequestError('Unable to register using the supplied details');
   }),
-  body('password').isString().bail().isLength({ min: 8, max: 72 }).withMessage('Password must be between 8 and 72 characters'),
+  body('password').isString().bail().isLength({ min: 8, max: 72 }).withMessage('Password must be between 8 and 72 characters').bail().custom(value=>Buffer.byteLength(value,'utf8')<=72).withMessage('Password must be at most 72 UTF-8 bytes'),
   location(),
 ]);
 export const validateLoginInput = withValidationErrors([
-  email(), body('password').isString().bail().notEmpty().withMessage('Password is required').isLength({ max: 72 }),
+  email(), body('password').isString().bail().notEmpty().withMessage('Password is required').isLength({ max: 72 }).bail()
+    .custom(value=>Buffer.byteLength(value,'utf8')<=72).withMessage('Password must be at most 72 UTF-8 bytes'),
 ]);
 export const validateUpdateUserInput = withValidationErrors([
   name(), email().bail().custom(async (value, { req }) => {
@@ -35,9 +36,9 @@ export const validateUpdateUserInput = withValidationErrors([
 
 export const validateProductIdParam = async (req, res, next) => {
   if (!isUUID(req.params.id)) throw new BadRequestError('Invalid asset ID');
-  const product = await products.findById(req.params.id);
+  const permission = req.params.category ? 'asset.file.read' : req.method === 'GET' ? 'asset.read' : req.method === 'DELETE' ? 'asset.delete' : 'asset.update';
+  const product = await products.findById(req.params.id, req.user, permission);
   if (!product) throw new NotFoundError('Asset not found');
-  if (!canAccessAsset(req.user, product)) throw new UnauthorizedError('Not authorized to access this asset');
   req.product = product;
   next();
 };

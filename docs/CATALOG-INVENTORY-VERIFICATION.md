@@ -1,0 +1,44 @@
+# Catalog, opening inventory and private files verification (B07)
+
+Local delivery verified on 20 October 2026. This implements catalog/opening-stock workflows and typed inventory-file metadata/access. It does not establish full first-release acceptance or configured provider/storage behavior.
+
+## Delivered behavior and boundaries
+
+- Individually tracked assets, pooled reusable stock and consumables use explicit catalog items/base units and the shared ledger. Opening entries record actual existing-stock reason/date/location, exact quantities and original acquisition lots. Individual entries require one company-unique normalized tag per whole unit, up to 200 per entry; serial numbers may repeat.
+- Known acquisition unit cost (including zero) requires independent cost.read for item and destination. Omitted cost stays unknown. Lot DTOs omit unitCost/costBasis entirely without current cost visibility; authorized unknown cost is null. Every replay reserializes the current resource, including after price access is revoked while a response cache remains. No currency conversion is performed.
+- Typed nonfinancial category attributes, immutable item history, current-definition compatibility warnings and review before new acquisition. Archive preserves existing stock/history, including when a category is inactive. Mode/unit cannot be edited through generic item metadata, and posted meaning is protected in the database.
+- Acquisition lot warranty/support history preserves the first-uncovered-day meaning of expiresOn. Civil receipt/purchase dates are read as SQL calendar strings; future-receipt validation uses company time zone, with explicit midnight/year-boundary unit checks.
+- Current location/department/organization capabilities enforce catalog, actual balances, complete-lot views and cost independently. A whole lot is hidden if its opening/positive-account contexts are not all visible; partial/mixed-location projections remain work for movement modules. The employee-safe request catalog exposes names/category/unit/mode only, never balances, unit identities or custodians.
+- New individual product UUIDs remain compatible with /products reads. Catalog-linked legacy PATCH/DELETE are gated with WORKFLOW_REQUIRED to prevent ledger bypass. Unlinked legacy behavior remains unchanged until B08. Existing serialNumber attributes are preserved through the compatibility projection.
+- Typed private attachment metadata links exactly one item, acquisition lot or individual unit, with same-company FKs. Uploader-only staging lasts 24 hours; target read/write and attachment grants are independent. Invoice/quotation/contract categories always require cost.read, and an explicit containsCost classification protects other financial files. List responses omit financial filenames as well as content when cost access is absent. Generic documents must be classified correctly by their uploader; this is not content inspection/DLP.
+- Removal preserves typed link/audit history and queues durable cleanup. Cleanup protects linked files and unexpired staging. No provider object key or permanent provider URL is returned. Staging records cleanup intent before provider I/O; metadata/command commit only after upload. Code bounds the upload wait to 20 seconds; configured-provider success/timeout/orphan cleanup remain unverified.
+- Catalog/stock UI supports all three modes, existing-stock entry, lot/warranty/support, revision history, typed file targets and protected file actions. Stock-only accounts enter the catalog from the workspace root. Mutation intents pin their selected company before asynchronous hashing and include record path/method; legacy pending intent keys remain recoverable.
+
+## Persistence and interface
+
+Earlier applied migrations 001–009 were preserved. Only generated schemas in the dedicated test database were migrated.
+
+| Migration | SHA-256 | Implemented structures |
+| --- | --- | --- |
+| 010_catalog_inventory_access.sql | `315f5f7ea3bedb1b2bbb3b34251b302d7acdd7d394f1f4b985f471130612df14` | Catalog/inventory/cost capabilities, immutable item and lot-support histories |
+| 011_private_inventory_attachments.sql | `aba39c954fb84957ada4af68dcc9d7bb222e806f05d5b01c12b2491a5428855b` | Attachment capabilities, private metadata, typed targets, command/tenant/actor FK and history/state constraints |
+
+Reviewed protected owners receive these explicit new capabilities; existing custom roles are unchanged. New-workspace asset managers get applicable resource capabilities, excluding cost.read. Ordinary owner appointments still grant no automatic business bypass.
+
+Current contract **2.6.0** promotes 11 catalog/opening core operations and four attachment operations, plus a new authorized target-file list (16 operations total): create/update/list/detail/requestable catalog and item history; balances, opening acquisition, lot list/detail/support; stage/link/remove/download/list attachments. Their planned duplicates were removed. Contacts/suppliers and other typed file targets are extended only with their enforcing modules; they are not free UUID inputs.
+
+## Actual validation
+
+- Final full dedicated PostgreSQL/HTTP integration run: **86 passed, zero failed/skipped**, including existing identity/company/RBAC/delivery regressions and actual response-schema checks. Ledger-only fixture boundaries remain described in [ledger verification](INVENTORY-LEDGER-VERIFICATION.md).
+- Catalog scenarios include all three modes, exact fractional stock, tag uniqueness and atomic duplicate rollback, replay after response-cache expiry, stale versions, category changes/history/review, archived references, financial-field rejection, unknown versus zero cost, cost revocation on replay, employee-safe projection, tenant/location isolation and gated legacy physical writes.
+- Private-file scenarios use **synthetic metadata with no uploaded provider objects**: typed/FK/immutable links, unauthorized/cross-company/expired access, financial filename/list/content/replay denial, scoped lot/unit targets, retained removal history and queued cleanup. A valid synthetic upload with storage explicitly disabled returns typed 503 without committing file/command metadata; forged file content is rejected before provider I/O.
+- npm test without TEST_DATABASE_URL: **15 passed, nine database suites skipped**; the dedicated run above is separate. npm run build: **passed**. Current and planned OpenAPI Swagger validation: **passed**; current duplicate list-parameter artifact was corrected. Documentation checker validates examples/references/links separately.
+- Actual browser writes: create/post two pans with cost/warranty; invalid 1.5 EA error preserves inputs and corrected 2 EA succeeds; support update keeps acquisition cost; create/post two individually tagged laptops; create/post 10.125 KG consumable stock. Company switching clears the old form/context and shows the second company's empty catalog.
+- Browser desktop 1280, mobile 390 and 320, light/dark: no horizontal overflow observed; keyboard progression from quantity reaches receiving location. A location-scoped stock reviewer sees only North store choices, all permitted physical quantities/tags, product support and a nonfinancial guide; price 250.5 and the synthetic invoice filename are absent. The guide/invoice browser rows are **metadata fixtures**, not successful storage uploads. The real file chooser submitted a harmless synthetic PDF with external storage disabled; the UI showed Private file storage is not configured and enabled retry.
+- [Mobile stock](screenshots/catalog-stock-mobile-light.png), [320px dark scoped view](screenshots/catalog-stock-320-dark-scoped.png) and [desktop scoped view](screenshots/catalog-stock-desktop-scoped.png) are browser evidence. Temporary review servers, generated schemas and synthetic upload files were removed.
+
+## Remaining limitations and next dependencies
+
+No application database migration, deployment, live mail/provider call or successful storage upload/download/deletion is claimed. Before release B23 must exercise configured private storage or an appropriate provider simulation, unknown upload outcomes, cleanup worker behavior and restricted runtime permissions. Domain inventory events are durable pointers; business recipient fan-out remains B18.
+
+B08 must backfill/reconcile legacy assets and imported custody, preserve unknown location/cost/acknowledgement, protect all legacy physical edits and adapt financial legacy files. B09 onward retains all accepted custody, purchasing, maintenance, messaging, count/report/QR and release scope. Existing-stock entry never substitutes for procurement receiving. Whole-lot scope restrictions must gain explicit safe partial projections with movement/custody modules; no hidden-location totals should leak. Full accessibility, large-data performance and live-device/release review remain B22/B23.

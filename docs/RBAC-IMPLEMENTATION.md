@@ -1,0 +1,20 @@
+# Dynamic RBAC implementation
+
+This guide describes the current RBAC foundation and the earlier RBAC delivery scope. References below to invitations/locations being outside that change do not defer them from the accepted first release in [PRD](../PRD.md). The [technical blueprint](TECHNICAL-BLUEPRINT.md) defines those planned extensions; its existence does not change current access behavior.
+
+## Plan and acceptance criteria
+1. Preserve migration 001; add transactional migration 002. Backfill one legacy organization, memberships, configurable departments and roles; preserve all user and asset IDs. Acceptance: migration reruns safely, tenant foreign keys reject cross-organization assignments.
+2. Resolve current grants from PostgreSQL per request. Explicit X-Organization-Id selects an active membership. Permissions combine additively; no grants means deny. Department/self grants never imply organization-wide management. Acceptance: SQL-scoped reads and object checks reject other tenants and departments, revoked grants stop on the next request.
+3. Add organization, department, membership, role, direct grant and audit management endpoints and React management screen. No first-signup administrator. Operator CLI provisions initial owner; subsequent organizations require an organization.create grant. Acceptance: no self escalation, serialized last-administrator protection.
+4. Record asset mutations and assignment history transactionally, soft delete assets; improve upload content validation and rate limiting. Acceptance: audit/history consistent with writes, failure tests cover compensating storage cleanup.
+5. Run unit/integration tests, build, lint, dependency audit; record actual results and outstanding deployment constraints.
+
+## Contract decisions
+Existing /api/v1/products response names and profile endpoints remain. Organization-scoped endpoints now require X-Organization-Id (UUID); /users/current-user and /access/organizations do not. Missing context is 400, invalid membership or missing permission is 403; scoped asset misses are 404. JWT contains identity only. /users/current-user returns organizations, activeOrganizationId and user.grants. A new account has no memberships or permissions. Membership assignment uses an existing registered email; outbound invitations are outside this release.
+
+Stable permissions are defined in authorization.js and migration 002. Administrative capabilities require organization scope. Asset capabilities support organization, department, self (assigned user). No explicit deny, nested roles, implicit role inheritance or cross-tenant bypass. Historical baseline note: migration 008 now adds nullable legacy asset location_id and location-descendant scopes; see [configuration verification](INVENTORY-CONFIGURATION-VERIFICATION.md). Direct grants use the same scope rules as roles. A membership department is a directory attribute, not a grant.
+
+## Migration and operations
+Back up PostgreSQL and storage first; stop old application instances, apply migrations using a schema owner, then deploy backend and frontend together. Old binaries are incompatible with the new access policy. Migration 001 is unchanged. Migration 002 creates a single organization only when legacy users exist, migrates legacy admin/head/user roles into editable grants, and preserves IDs, asset fields and department codes. Existing administrators keep organization-wide access; heads retain department access; legacy users keep department asset reads. New signups receive none. Legacy fields remain for data preservation only and do not authorize requests. No automatic down migration: restore the pre-deployment backup for rollback, accounting for writes after deployment.
+
+Audit append-only triggers prevent UPDATE/DELETE (including ordinary application sessions); production must use a non-owner, non-superuser runtime database role. Database owners can bypass database controls and must be operationally restricted. No code-based cross-organization access exists.

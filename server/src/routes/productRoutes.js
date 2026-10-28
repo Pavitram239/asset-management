@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { pool } from '../../db/pool.js';
 const router = Router();
 
 import {
@@ -8,20 +9,26 @@ import {
   updateProduct,
   deleteProduct,
   getOverview,
+  downloadFile,
 } from "../controllers/productController.js";
 import { authorizePermissions } from "../middlewares/authMiddleware.js";
 import { validateProductIdParam } from "../middlewares/validationMiddleware.js";
-import { USER_ROLES } from "../utils/constants.js";
+
 import upload from "../middlewares/multerMiddleware.js";
 import { checkForTestUser } from '../middlewares/authMiddleware.js';
 
-router.get('/overview', getOverview);
+router.get('/:id/history', authorizePermissions('asset.read'), validateProductIdParam, async(req,res)=>{
+  const {rows}=await pool.query('SELECT id,actor_id,previous_department,department,previous_user_id,user_id,created_at FROM asset_assignment_history WHERE organization_id=$1 AND asset_id=$2 ORDER BY id DESC LIMIT 100',[req.user.organizationId,req.params.id]);
+  res.json({history:rows});
+});
+router.get('/overview', authorizePermissions('asset.read'), getOverview);
+router.get('/:id/files/:category', authorizePermissions('asset.file.read'), validateProductIdParam, downloadFile);
 
 router
   .route("/")
-  .get(getAllProducts)
+  .get(authorizePermissions('asset.read'), getAllProducts)
   .post(
-    authorizePermissions(USER_ROLES.ADMIN, USER_ROLES.HEAD),
+    authorizePermissions('asset.create'),
     checkForTestUser,
     upload.fields([
       { name: "productImg", maxCount: 1 },
@@ -32,9 +39,9 @@ router
 
 router
   .route("/:id")
-  .get(validateProductIdParam, getProduct)
+  .get(authorizePermissions('asset.read'), validateProductIdParam, getProduct)
   .patch(
-    authorizePermissions(USER_ROLES.ADMIN, USER_ROLES.HEAD),
+    authorizePermissions('asset.update'),
     checkForTestUser,
     validateProductIdParam,
     upload.fields([
@@ -44,7 +51,7 @@ router
     updateProduct
   )
   .delete(
-    authorizePermissions(USER_ROLES.ADMIN, USER_ROLES.HEAD),
+    authorizePermissions('asset.delete'),
     checkForTestUser,
     validateProductIdParam,
     deleteProduct
