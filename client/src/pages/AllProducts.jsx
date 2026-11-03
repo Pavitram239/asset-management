@@ -23,7 +23,13 @@ export const loader = async ({ request }) => {
       if(['catalog.read','catalog.manage','catalog.requestable.read','inventory.read','inventory.opening'].some(permission=>hasPermission(user,permission)))return redirect('/dashboard/catalog');
       return {data:{products:[],totalProducts:0,numOfPages:0,currentPage:1},searchValues:params};
     }
-  }catch(error){if(error.response?.status===401)return redirect('/');}
+  }catch(error){
+    if(error.response?.status===401)return redirect('/');
+    // Parent and child loaders run concurrently. Stop here when membership
+    // disappears; the parent recovers account navigation and explains why.
+    if(error.response?.status===403)return {data:{products:[],totalProducts:0,numOfPages:0,currentPage:1},searchValues:params};
+    throw error;
+  }
   return await customFetch
     .get("/products", {
       params,
@@ -32,6 +38,12 @@ export const loader = async ({ request }) => {
       return { data, searchValues: { ...params } };
     })
     .catch((error) => {
+      // The parent may have cleared a revoked workspace while this loader ran.
+      if([400,403].includes(error.response?.status) && !sessionStorage.getItem(organizationKey)) return {data:{products:[],totalProducts:0,numOfPages:0,currentPage:1},searchValues:params};
+      if(error.response?.status===403){
+        toast.error('Your access to this inventory is unavailable. Refresh the page or contact your workspace administrator.');
+        return {data:{products:[],totalProducts:0,numOfPages:0,currentPage:1},searchValues:params};
+      }
       toast.error(error?.response?.data?.msg || error.message);
       if([400,403].includes(error.response?.status)) return {data:{products:[],totalProducts:0,numOfPages:0,currentPage:1},searchValues:params};
       throw error;

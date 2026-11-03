@@ -12,7 +12,11 @@ export const loader = async () => {
     const { data } = await customFetch.get("/users/current-user");
     return data;
   } catch (error) {
-    if(error.response?.status===403){sessionStorage.removeItem(organizationKey);const {data}=await customFetch.get('/users/current-user');return data;}
+    if(error.response?.status===403){
+      sessionStorage.removeItem(organizationKey);
+      const {data}=await customFetch.get('/users/current-user',{identityContext:true});
+      return {...data,workspaceUnavailable:true};
+    }
     return redirect("/");
   }
 };
@@ -20,7 +24,7 @@ export const loader = async () => {
 const DashboardContext = createContext();
 
 const DashboardLayout = () => {
-  const { user, organizations, activeOrganizationId } = useLoaderData();
+  const { user, organizations, activeOrganizationId, workspaceUnavailable } = useLoaderData();
   const revalidator=useRevalidator();
   const switchOrganization=(id)=>{
     sessionStorage.setItem(organizationKey,id);
@@ -70,6 +74,7 @@ const DashboardLayout = () => {
             <div className="dashboard-page">
               {navigation.state !== 'idle' && <div className="route-progress" role="status">Updating workspace…</div>}
               <VerificationNotice key={user.email} user={user} refresh={()=>revalidator.revalidate()} />
+              {workspaceUnavailable && <section className="panel" role="status"><h2>Workspace access unavailable</h2><p>You no longer have access to the selected workspace. Contact its administrator if you need access restored.</p>{organizations.length > 0 && <p>Choose another organization in the header to continue.</p>}</section>}
               {!activeOrganizationId && <section className="panel"><h2>{organizations.length ? 'Select an organization' : 'Set up your workspace'}</h2>
                 {organizations.length ? <p>Choose your organization in the header to open its workspace.</p> : <p>{user.emailVerified ? <>Create your company workspace or reopen an employee invitation. <Link to="/dashboard/workspaces">Create workspace</Link></> : 'Verify your email above, then create your company or accept an invitation.'}</p>}
               </section>}

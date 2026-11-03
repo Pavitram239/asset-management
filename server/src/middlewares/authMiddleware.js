@@ -6,7 +6,7 @@ import { verifyJWT } from "../utils/tokenUtils.js";
 import { users } from '../repositories/users.js';
 import { isUUID } from '../utils/accessPolicy.js';
 export const authenticateUser = async (req, res, next) => {
-  const { token } = req.cookies;
+  const token = req.cookies?.token || (req.headers?.authorization?.startsWith('Bearer ') ? req.headers.authorization.split(' ')[1] : null);
   if (!token) throw new UnauthenticatedError("Authentication invalid");
   try {
     const { userId, sessionVersion = 0 } = verifyJWT(token);

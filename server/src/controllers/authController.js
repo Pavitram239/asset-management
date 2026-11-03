@@ -32,7 +32,7 @@ export const login = async (req, res) => {
         ? process.env.COOKIE_SECURE === "true"
         : process.env.NODE_ENV === "production",
   });
-  res.status(200).json({ msg: "User logged in" });
+  res.status(200).json({ msg: "User logged in", token });
 };
 export const logout = async (req, res) => {
   res.clearCookie("token", { httpOnly: true, sameSite: "lax" });

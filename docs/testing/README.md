@@ -7,7 +7,7 @@ Baseline: [PRD](../../PRD.md), [journeys](../../UX-FLOWS.md), and the current [c
 | Module | Journey | PRD coverage | Current campaign status |
 | --- | --- | --- | --- |
 | M01 Accounts and onboarding | Register, verify, create company, login/logout, recover | Sections 3, 13; A01 | Paused/unaccepted: 20 Pass, 2 Partial; user left reset handoff pending. [Remaining-case evidence](RUN-2026-10-28-M01-REMAINING.md). [Backend failures resolved](BACKEND-REGRESSION-FIXES.md), 87 passing integration records. |
-| M02 Employees and access | Invite, accept, roles/scopes, revoke, deactivate | Sections 3–4; A02–A03 | Starting independent checks; [cases](M02-employees-access.md) |
+| M02 Employees and access | Invite, accept, roles/scopes, revoke, deactivate | Sections 3–4; A02–A03 | Unaccepted: 18 Pass, 2 Partial, 0 Fail after BUG-004 fix/retest. [Execution/evidence](RUN-2026-11-03-M02.md), [cases](M02-employees-access.md). 38 integration records passed on 3 Nov; fix also passed build and 7 frontend records. |
 | M03 Company configuration | Departments, location hierarchy, categories, units | Sections 3–6; A03–A04, A09 | Not run |
 | M04 Inventory | Three tracking modes, opening stock, lots, costs, files | Section 5; A03–A05 | Not run |
 | M05 Requests and handovers | Request/approve/handover, direct issue, confirm/dispute | Section 7; A05–A07 | Not run |
