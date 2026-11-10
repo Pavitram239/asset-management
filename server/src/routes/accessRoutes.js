@@ -8,7 +8,7 @@ import {
   PERMISSIONS,
 } from "../utils/authorization.js";
 import { uuid, requireRow } from "../utils/accessInput.js";
-import { BadRequestError } from "../errors/customErrors.js";
+import { BadRequestError, UnauthorizedError } from "../errors/customErrors.js";
 import { checkForTestUser } from "../middlewares/authMiddleware.js";
 import { sharedRateLimit } from "../middlewares/sharedRateLimit.js";
 import organizationManagementRouter from "./organizationManagementRoutes.js";
@@ -32,6 +32,21 @@ router.get("/effective", async (req, res) =>
 router.get("/management", async (req, res) => {
   const actor = req.user,
     org = actor.organizationId;
+  const canAccessManagement = [
+    'access.manage',
+    'role.manage',
+    'department.manage',
+    'membership.manage',
+    'organization.manage',
+    'ownership.manage',
+    'audit.read',
+    'catalog.manage',
+    'inventory.opening',
+    'location.manage',
+  ].some((perm) => allows(actor, perm));
+  if (!canAccessManagement) {
+    throw new UnauthorizedError('Access management permissions required');
+  }
   const read = async (permission, sql) =>
     allows(actor, permission) ||
     (["role.manage", "membership.manage", "department.manage"].includes(
@@ -95,7 +110,11 @@ router.get("/audit", async (req, res) => {
   if (!Number.isSafeInteger(before) || before < 1)
     throw new BadRequestError("Invalid audit cursor");
   const { rows } = await pool.query(
-    "SELECT * FROM audit_events WHERE organization_id=$1 AND id<$2 ORDER BY id DESC LIMIT 100",
+    `SELECT a.*, u.name AS actor_name, u.email AS actor_email 
+     FROM audit_events a 
+     LEFT JOIN users u ON a.actor_id = u.id 
+     WHERE a.organization_id=$1 AND a.id<$2 
+     ORDER BY a.id DESC LIMIT 100`,
     [req.user.organizationId, before],
   );
   res.json({ events: rows });

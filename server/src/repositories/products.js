@@ -17,7 +17,7 @@ const select = `SELECT p.organization_id AS "organizationId", p.id AS "_id", p.l
   p.created_at AS "createdAt", p.updated_at AS "updatedAt"
   FROM products p LEFT JOIN users u ON p.assigned_to_id = u.id`;
 const dto = ({ attributes, ...row }) => ({ ...attributes, ...row });
-const attributes = ["customerCare", "power", "capacity", "serialNumber"];
+const attributes = ["customerCare", "power", "capacity", "serialNumber", "damageNotes"];
 
 export const productFilter = ({
   department,

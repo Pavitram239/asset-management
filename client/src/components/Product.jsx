@@ -29,6 +29,10 @@ const Product = ({ product }) => {
     onOpenModal();
   };
 
+  const isCatalogLinked = Boolean(product.catalogItemId);
+  const canUpdate = Boolean(product.capabilities?.update) && !isCatalogLinked;
+  const canDelete = Boolean(product.capabilities?.delete) && !isCatalogLinked;
+
   const imgURL =
     product.productImg || "https://fakeimg.pl/600x400?text=No+Image";
   return (
@@ -62,12 +66,16 @@ const Product = ({ product }) => {
               handler={viewDetailsHandler}
             />
             <IconBtn type="button" iconType="qr" handler={downloadQrHandler} />
-            <Link to={`./edit-product/${product._id}`}>
-              <IconBtn type="button" iconType="edit" />
-            </Link>
-            <Form method="post" action={`./delete-product/${product._id}`}>
-              <IconBtn type="submit" iconType="trash" value={product._id} />
-            </Form>
+            {canUpdate ? (
+              <Link to={`./edit-product/${product._id}`}>
+                <IconBtn type="button" iconType="edit" />
+              </Link>
+            ) : null}
+            {canDelete ? (
+              <Form method="post" action={`./delete-product/${product._id}`}>
+                <IconBtn type="submit" iconType="trash" value={product._id} />
+              </Form>
+            ) : null}
           </div>
         </div>
       </Wrapper>

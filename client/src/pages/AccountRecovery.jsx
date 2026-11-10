@@ -35,10 +35,21 @@ export const AccountLink = ({ verification = false }) => {
     finally { setPending(false); }
   };
   return <AuthLayout><form className="auth-form" onSubmit={submit}>
-    <div className="page-heading"><h2>{done ? (verification ? 'Email verified' : 'Password updated') : verification ? 'Verify your email' : 'Reset your password'}</h2>
-      <p>{done ? (verification ? 'Your email is confirmed. Return to your account to continue.' : 'Your previous sessions have ended. Sign in with your new password.') : verification ? 'Confirm your email to continue setting up your account.' : 'Choose a new password for your account.'}</p></div>
+    <div className="page-heading">
+      <h2>{done ? (verification ? 'Email verified' : 'Password updated') : verification ? 'Verify your email' : 'Reset your password'}</h2>
+      <p>{done ? (verification ? 'Your email is confirmed. Return to your account to continue.' : 'Your previous sessions have ended. Sign in with your new password.') : verification ? 'Confirm your email to continue setting up your account.' : 'Choose a new password for your account.'}</p>
+    </div>
     {!done && !token && <p className="form-error" role="alert">This link is missing or has expired. Open the latest email link or request another.</p>}
-    {error && <p className="form-error" role="alert">{error}</p>}
+    {error && (
+      <div className="form-error" role="alert" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <span>{error}</span>
+        {verification && (
+          <span style={{ fontSize: '13px' }}>
+            If you have already clicked this link, your email is confirmed! <Link to="/dashboard" style={{ textDecoration: 'underline', fontWeight: 600, color: 'inherit' }}>Continue to your dashboard</Link>.
+          </span>
+        )}
+      </div>
+    )}
     {!done && token && <>
       {!verification && <div className="auth-fields">
         <FormRow name="password" type="password" labelText="New password" minLength={12} maxLength={72} autoComplete="new-password" help="12–72 characters; at most 72 UTF-8 bytes." />
@@ -58,16 +69,22 @@ export const ForgotPassword = () => {
   const [error, setError] = useState('');
   const submit = async event => {
     event.preventDefault(); setPending(true); setError('');
-    const email = new FormData(event.currentTarget).get('email');
-    try { await customFetch.post('/auth/recovery-requests', { email }); setDone(true); }
-    catch (failure) { setError(failure.response?.data?.msg || 'Unable to request a reset link. Please try again.'); }
-    finally { setPending(false); }
+    const fields = new FormData(event.currentTarget);
+    try {
+      await customFetch.post('/auth/recovery-requests', { email: fields.get('email') });
+      setDone(true);
+    } catch (failure) {
+      setError(failure.response?.status === 429 ? 'Please wait before requesting another recovery email.' : failure.response?.data?.msg || 'Request could not be confirmed.');
+    } finally { setPending(false); }
   };
   return <AuthLayout><form className="auth-form" onSubmit={submit}>
-    <div className="page-heading"><h2>{done ? 'Check your email' : 'Forgot your password?'}</h2><p>{done ? 'If an eligible account exists for that email, a reset link has been requested. Use the latest link within 30 minutes.' : 'Enter your account email to request a password reset link.'}</p></div>
+    <div className="page-heading"><h2>Reset your password</h2><p>We will send a recovery link if this email matches an account.</p></div>
+    {done && <p className="context-note">If an account matches that address, we have sent password reset instructions.</p>}
     {error && <p className="form-error" role="alert">{error}</p>}
-    {!done && <><FormRow type="email" name="email" labelText="Email" maxLength={254} autoComplete="email" />
-      <button className="btn btn-block" type="submit" disabled={pending}>{pending ? 'Requesting…' : 'Send reset link'}</button></>}
+    {!done && <>
+      <FormRow type="email" name="email" labelText="Account email" placeholder="you@example.com" autoComplete="email" maxLength={254} />
+      <button className="btn btn-block" type="submit" disabled={pending}>{pending ? 'Sending…' : 'Send reset link'}</button>
+    </>}
     <p className="auth-switch"><Link to="/">Back to sign in</Link></p>
   </form></AuthLayout>;
 };

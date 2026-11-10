@@ -9,7 +9,12 @@ import VerificationNotice from '../components/VerificationNotice';
 
 export const loader = async () => {
   try {
-    const { data } = await customFetch.get("/users/current-user");
+    let { data } = await customFetch.get("/users/current-user");
+    if (!data.activeOrganizationId && data.organizations?.length > 0) {
+      sessionStorage.setItem(organizationKey, data.organizations[0].id);
+      const refetched = await customFetch.get("/users/current-user");
+      return refetched.data;
+    }
     return data;
   } catch (error) {
     if(error.response?.status===403){
@@ -76,7 +81,23 @@ const DashboardLayout = () => {
               <VerificationNotice key={user.email} user={user} refresh={()=>revalidator.revalidate()} />
               {workspaceUnavailable && <section className="panel" role="status"><h2>Workspace access unavailable</h2><p>You no longer have access to the selected workspace. Contact its administrator if you need access restored.</p>{organizations.length > 0 && <p>Choose another organization in the header to continue.</p>}</section>}
               {!activeOrganizationId && <section className="panel"><h2>{organizations.length ? 'Select an organization' : 'Set up your workspace'}</h2>
-                {organizations.length ? <p>Choose your organization in the header to open its workspace.</p> : <p>{user.emailVerified ? <>Create your company workspace or reopen an employee invitation. <Link to="/dashboard/workspaces">Create workspace</Link></> : 'Verify your email above, then create your company or accept an invitation.'}</p>}
+                {organizations.length ? (
+                  <div>
+                    <p>Choose your organization to open its workspace:</p>
+                    <div style={{ display: 'flex', gap: '10px', marginTop: '12px', flexWrap: 'wrap' }}>
+                      {organizations.map((org) => (
+                        <button
+                          key={org.id}
+                          type="button"
+                          className="btn"
+                          onClick={() => switchOrganization(org.id)}
+                        >
+                          Open {org.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ) : <p>{user.emailVerified ? <>Create your company workspace or reopen an employee invitation. <Link to="/dashboard/workspaces">Create workspace</Link></> : 'Verify your email above, then create your company or accept an invitation.'}</p>}
               </section>}
               <Outlet context={{ user }} />
             </div>

@@ -22,13 +22,15 @@ export const PERMISSIONS = Object.freeze([
   "location.manage",
   "category.manage",
   "unit.manage",
-  'catalog.read','catalog.manage','catalog.requestable.read','inventory.read','inventory.opening','cost.read','attachment.read','attachment.write',
+  'catalog.read','catalog.manage','catalog.requestable.read','inventory.read','inventory.opening','cost.read','attachment.read','attachment.write','requisition.create','requisition.read','requisition.approve','requisition.fulfill',
 ]);
 const assetPermission = (permission) =>
   permission.startsWith("asset.") ||
   ["directory.read", "statistics.read"].includes(permission);
-const businessScoped = new Set(['catalog.read','catalog.manage','catalog.requestable.read','inventory.read','inventory.opening','cost.read','attachment.read','attachment.write']);
+const businessScoped = new Set(['catalog.read','catalog.manage','catalog.requestable.read','inventory.read','inventory.opening','cost.read','attachment.read','attachment.write','requisition.fulfill']);
 export const permissionScopes = permission => assetPermission(permission)?['organization','department','location','self']:
+  ['requisition.create','requisition.read'].includes(permission)?['organization','department','self']:
+  permission === 'requisition.approve'?['organization','department']:
   businessScoped.has(permission)?['organization','department','location']:['organization'];
 export const resolveGrants = async (userId, organizationId, db = pool) => {
   const { rows } = await db.query(
@@ -115,13 +117,14 @@ export const organizationContext = async (req, res, next) => {
       "Select an active organization using X-Organization-Id",
     );
   const { rows } = await pool.query(
-    `SELECT m.department_code FROM memberships m JOIN organizations o ON o.id=m.organization_id
+    `SELECT m.department_code, o.schema_name FROM memberships m JOIN organizations o ON o.id=m.organization_id
     WHERE m.user_id=$1 AND m.organization_id=$2 AND m.active AND o.active`,
     [req.user.userId, id],
   );
   if (!rows.length)
     throw new UnauthorizedError("Organization membership required");
   req.user.organizationId = id;
+  req.user.schemaName = rows[0].schema_name;
   req.user.department = rows[0].department_code;
   req.user.grants = await resolveGrants(req.user.userId, id);
   next();

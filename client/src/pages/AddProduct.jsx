@@ -2,6 +2,7 @@ import { useLoaderData, redirect } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { saveAs } from 'file-saver';
 import customFetch from '../utils/customFetch';
+import { hasPermission } from '../utils/permissions';
 import AssetForm from '../components/AssetForm';
 
 export const action = async ({ request }) => {
@@ -14,6 +15,11 @@ export const action = async ({ request }) => {
 };
 export const loader = async () => {
   try {
+    const { data: { user } } = await customFetch.get('/users/current-user');
+    if (!hasPermission(user, 'asset.create')) {
+      toast.error('You are not authorized to create assets.');
+      return redirect('/dashboard');
+    }
     const [users, departments] = await Promise.all([customFetch.get('/users/users-list'), customFetch.get('/users/departments')]);
     return { users: users.data.users, departments: departments.data.departments };
   } catch { toast.error('You are not authorized to add assets.'); return redirect('/dashboard'); }

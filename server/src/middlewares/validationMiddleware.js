@@ -21,7 +21,8 @@ export const validateRegisterInput = withValidationErrors([
     if (await users.findByEmail(value)) throw new BadRequestError('Unable to register using the supplied details');
   }),
   body('password').isString().bail().isLength({ min: 8, max: 72 }).withMessage('Password must be between 8 and 72 characters').bail().custom(value=>Buffer.byteLength(value,'utf8')<=72).withMessage('Password must be at most 72 UTF-8 bytes'),
-  location(),
+  body('companyName').optional().isString().trim().isLength({ min: 2, max: 200 }),
+  body('location').optional().isString().trim().isLength({ max: 500 }),
 ]);
 export const validateLoginInput = withValidationErrors([
   email(), body('password').isString().bail().notEmpty().withMessage('Password is required').isLength({ max: 72 }).bail()

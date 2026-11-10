@@ -86,6 +86,24 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> {
   }
 
   void _showStatusDialog(AssetModel asset) {
+    if (asset.isCatalogLinked) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Catalog Item'),
+          content: const Text(
+            'This unit is tracked in the Catalog Inventory ledger. Changes to its status and physical location must be recorded via Inventory Stock Movements.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
     final assetProvider = Provider.of<AssetProvider>(context, listen: false);
     final statuses = [
       'In department',
@@ -138,6 +156,24 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> {
   }
 
   void _showDamageReportDialog(AssetModel asset) {
+    if (asset.isCatalogLinked) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Catalog Item'),
+          content: const Text(
+            'This unit is tracked in the Catalog Inventory ledger. Changes to its status or scrap/damage dispositions must be recorded via Inventory Stock Movements.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
     final assetProvider = Provider.of<AssetProvider>(context, listen: false);
     final noteController = TextEditingController();
     XFile? capturedImage;
@@ -280,15 +316,28 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> {
                 ),
                 onPressed: () async {
                   final messenger = ScaffoldMessenger.of(context);
+                  final notesText = noteController.text.trim();
                   Navigator.pop(ctx);
-                  final success = await assetProvider.updateAssetStatus(asset.id, 'Out of campus');
-                  if (mounted && success) {
-                    messenger.showSnackBar(
-                      const SnackBar(
-                        content: Text('Issue logged: Asset marked Out of campus / Repair'),
-                        backgroundColor: AppConstants.badgeErrorText,
-                      ),
-                    );
+                  final success = await assetProvider.reportDamage(
+                    asset.id,
+                    notes: notesText.isNotEmpty ? notesText : null,
+                  );
+                  if (mounted) {
+                    if (success) {
+                      messenger.showSnackBar(
+                        const SnackBar(
+                          content: Text('Damage reported and logged successfully.'),
+                          backgroundColor: AppConstants.badgeErrorText,
+                        ),
+                      );
+                    } else if (assetProvider.errorMessage != null) {
+                      messenger.showSnackBar(
+                        SnackBar(
+                          content: Text(assetProvider.errorMessage!),
+                          backgroundColor: AppConstants.badgeErrorText,
+                        ),
+                      );
+                    }
                   }
                 },
               ),
@@ -300,6 +349,24 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> {
   }
 
   void _showReturnDialog(AssetModel asset) {
+    if (asset.isCatalogLinked) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Catalog Item'),
+          content: const Text(
+            'This unit is tracked in the Catalog Inventory ledger. Returns must be recorded via Inventory Stock Movements.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
     final assetProvider = Provider.of<AssetProvider>(context, listen: false);
 
     showDialog(
@@ -352,6 +419,24 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> {
   }
 
   void _showAssignDialog(AssetModel asset) {
+    if (asset.isCatalogLinked) {
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: const Text('Catalog Item'),
+          content: const Text(
+            'This unit is tracked in the Catalog Inventory ledger. Custody assignments must be recorded via Inventory Stock Movements.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+      return;
+    }
     final assetProvider = Provider.of<AssetProvider>(context, listen: false);
     final userController = TextEditingController();
     final deptController = TextEditingController(text: asset.department ?? '');
@@ -365,6 +450,7 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> {
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextField(
               controller: userController,
@@ -379,9 +465,12 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> {
             const SizedBox(height: 12),
             TextField(
               controller: deptController,
+              readOnly: asset.department != null && asset.department!.isNotEmpty,
               decoration: InputDecoration(
                 labelText: 'Department',
                 hintText: 'e.g. IT, Operations',
+                helperText: 'Custodian must be an active member of this department.',
+                helperMaxLines: 2,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(AppConstants.radiusControl),
                 ),
@@ -522,6 +611,34 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> {
             ),
             const SizedBox(height: 18),
 
+            if (asset.isCatalogLinked) ...[
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.amber.shade50,
+                  borderRadius: BorderRadius.circular(AppConstants.radiusControl),
+                  border: Border.all(color: Colors.amber.shade300),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.inventory_2_outlined, color: Colors.amber.shade900, size: 22),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'This unit is tracked in the Catalog Inventory ledger. Changes to physical custody, locations, or status must be completed via Inventory Movements.',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.amber.shade950,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 14),
+            ],
+
             // Quick Actions Panel
             const Text(
               'Field Actions',
@@ -649,6 +766,14 @@ class _AssetDetailScreenState extends State<AssetDetailScreen> {
                       icon: Icons.pin_outlined,
                       label: 'Serial Number',
                       value: asset.serialNumber!,
+                    ),
+                  ],
+                  if (asset.damageNotes != null && asset.damageNotes!.isNotEmpty) ...[
+                    const Divider(height: 24, color: AppConstants.borderLight),
+                    _buildDetailRow(
+                      icon: Icons.warning_amber_rounded,
+                      label: 'Damage Notes',
+                      value: asset.damageNotes!,
                     ),
                   ],
                 ],

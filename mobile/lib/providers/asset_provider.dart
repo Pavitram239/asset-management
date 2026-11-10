@@ -189,6 +189,45 @@ class AssetProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> reportDamage(String assetId, {required String notes, String? imagePath}) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final payload = <String, dynamic>{
+        'status': 'Out of campus',
+        'productStatus': 'Out of campus',
+      };
+      if (notes.isNotEmpty) {
+        payload['damageNotes'] = notes;
+      }
+
+      final response = await _api.updateProduct(assetId, payload);
+      if (response['updatedProduct'] != null) {
+        final updated = AssetModel.fromJson(response['updatedProduct'] as Map<String, dynamic>);
+        _selectedAsset = updated;
+        final index = _assets.indexWhere((a) => a.id == assetId);
+        if (index != -1) {
+          _assets[index] = updated;
+        }
+      }
+      _isLoading = false;
+      notifyListeners();
+      return true;
+    } on DioException catch (e) {
+      _isLoading = false;
+      _errorMessage = e.response?.data?['msg'] ?? 'Failed to log damage report';
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<bool> assignAsset(String assetId, {required String assignedToId, required String department}) async {
     _isLoading = true;
     _errorMessage = null;

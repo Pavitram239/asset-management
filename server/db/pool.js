@@ -25,3 +25,39 @@ export const transaction = async (operation) => {
     client.release();
   }
 };
+
+export const withTenantClient = async (schemaName, operation) => {
+  const client = await pool.connect();
+  try {
+    if (schemaName) {
+      await client.query(`SET search_path TO "${schemaName}", public`);
+    }
+    return await operation(client);
+  } finally {
+    try {
+      await client.query('SET search_path TO public');
+    } catch (_) {}
+    client.release();
+  }
+};
+
+export const tenantTransaction = async (schemaName, operation) => {
+  const client = await pool.connect();
+  try {
+    if (schemaName) {
+      await client.query(`SET search_path TO "${schemaName}", public`);
+    }
+    await client.query('BEGIN');
+    const result = await operation(client);
+    await client.query('COMMIT');
+    return result;
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    try {
+      await client.query('SET search_path TO public');
+    } catch (_) {}
+    client.release();
+  }
+};

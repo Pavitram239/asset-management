@@ -34,6 +34,7 @@ import Invitations from './pages/Invitations';
 import AcceptInvitation from './pages/AcceptInvitation';
 import InventorySetup from './pages/InventorySetup';
 import CatalogInventory from './pages/CatalogInventory';
+import Requisitions from './pages/Requisitions';
 const router = createBrowserRouter([
   {
     path: "/",
@@ -75,6 +76,7 @@ const router = createBrowserRouter([
           { path: 'invitations', element: <Invitations /> },
           { path: 'inventory-setup', element: <InventorySetup /> },
           { path: 'catalog', element: <CatalogInventory /> },
+          { path: 'requisitions', element: <Requisitions /> },
           { path: "profile", element: <Profile />, action: profileAction },
           { path: "admin", element: <Admin />, loader: adminLoader },
           { path: 'users', element: <Users />, loader: usersLoader },

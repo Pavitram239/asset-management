@@ -5,16 +5,31 @@ import AssetForm from '../components/AssetForm';
 
 export const loader = async ({ params }) => {
   try {
-    const [product, users, departments] = await Promise.all([customFetch.get(`/products/${params.id}`), customFetch.get('/users/users-list'), customFetch.get('/users/departments')]);
-    return { product: product.data.product, users: users.data.users, departments: departments.data.departments };
-  } catch (error) { toast.error(error?.response?.data?.msg || 'Unable to load this asset.'); return redirect('/dashboard'); }
+    const [productRes, users, departments] = await Promise.all([
+      customFetch.get(`/products/${params.id}`),
+      customFetch.get('/users/users-list'),
+      customFetch.get('/users/departments'),
+    ]);
+    const product = productRes.data.product;
+    if (!product?.capabilities?.update) {
+      toast.error('You are not authorized to edit this asset.');
+      return redirect('/dashboard');
+    }
+    return { product, users: users.data.users, departments: departments.data.departments };
+  } catch (error) {
+    toast.error(error?.response?.data?.msg || 'Unable to load this asset.');
+    return redirect('/dashboard');
+  }
 };
 export const action = async ({ request, params }) => {
   try {
     await customFetch.patch(`/products/${params.id}`, await request.formData());
     toast.success('Asset updated successfully');
     return redirect('/dashboard');
-  } catch (error) { toast.error(error?.response?.data?.msg || 'Unable to update this asset.'); return null; }
+  } catch (error) {
+    toast.error(error?.response?.data?.msg || 'Unable to update this asset.');
+    return null;
+  }
 };
 const EditProduct = () => {
   const { product, users, departments } = useLoaderData();

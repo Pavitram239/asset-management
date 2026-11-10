@@ -9,7 +9,7 @@ export const pickProfileFields = (body) => Object.fromEntries(
 
 export const assetInput = (body, user, partial = false) => {
   const fields = ['name', 'company', 'purchaseDate', 'warrantyDate', 'assignedToId',
-    'status', 'department', 'customerCare', 'power', 'capacity', 'serialNumber'];
+    'status', 'department', 'customerCare', 'power', 'capacity', 'serialNumber', 'damageNotes'];
   const data = {};
   for (const key of fields) {
     if (body[key] === undefined) continue;
