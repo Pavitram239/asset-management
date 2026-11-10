@@ -21,7 +21,8 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.1",
-    "exceljs": "^4.4.0"
+    "exceljs": "^4.4.0",
+    "playwright": "^1.65.0"
   },
   "engines": {
     "node": ">=22.12.0"
