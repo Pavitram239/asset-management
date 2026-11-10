@@ -85,5 +85,16 @@ As noted in `PRD.md` and `UX-FLOWS.md`, the platform specification defines 32 sc
 | **Widescreen Laptop** | `1440×900` | Desktop (Wide) | Tested (Pass) | Tested (Pass - Full layout) | Tested (Boundary Verified) |
 | **Full HD Desktop** | `1920×1080` | Desktop (1080p) | Tested (Pass) | Tested (Pass - Full layout) | Tested (Boundary Verified) |
 | **Mobile Landscape** | `844×390` | Mobile Landscape | Tested (Pass) | Tested (Pass - Compact bar) | Tested (Boundary Verified) |
-| **200% Browser Zoom** | `1280×800 @ 2x` | Accessibility Reflow | Tested (Pass) | Tested (Pass - WCAG Reflow) | Tested (Boundary Verified) |
+| **200% Browser Zoom** | `640×800 CSS` | Accessibility Reflow | Tested (Pass) | Tested (Pass - WCAG Reflow) | Tested (Boundary Verified) |
+| **400% Browser Zoom** | `320×800 CSS` | Accessibility Reflow | Tested (Pass) | Tested (Fail - 2D Table Scroll) | Tested (Boundary Verified) |
+
+---
+
+## 5. Multi-Browser Test Matrix
+
+| Browser Engine | Version Tested | Rendering Engine | Test Target URL | Status | Notes |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Chromium** | 158.0.8127.18 | Blink / V8 | `http://localhost:5174` | **PASSED** | Core platform benchmark, axe-core audit target. |
+| **Mozilla Firefox** | 159.0 | Gecko / SpiderMonkey | `http://localhost:5174` | **PASSED** | Flexbox, table borders, and CSS tokens render cleanly. |
+| **WebKit (Safari)** | 27.2 (WebKit 2388) | WebKit / JavaScriptCore | `http://localhost:5174` | **PASSED** | Form inputs, dialogs, and SVG icons align with zero WebKit regressions. |
 

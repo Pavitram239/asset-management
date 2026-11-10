@@ -1,344 +1,58 @@
-"Test ID","Module / Screen","Scenario","Test Steps","Expected Result","Actual Result","Viewport","Browser","User Role","Status","Screenshot / Evidence"
-"TC-UI-001","Auth: Login","Responsive layout at 320x568","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","320x568","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_320x568_iphone_se1.png"
-"TC-UI-002","Auth: Register","Responsive layout at 320x568","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","320x568","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_320x568_iphone_se1.png"
-"TC-UI-003","Auth: Forgot Password","Layout and inputs at 320x568","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","320x568","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_320x568_iphone_se1.png"
-"TC-UI-004","Auth: Accept Invitation","Empty/Missing token state at 320x568","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","320x568","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_320x568_iphone_se1.png"
-"TC-UI-005","Core: Error Handling","404 Not Found Page at 320x568","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","320x568","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_320x568_iphone_se1.png"
-"TC-UI-006","Auth: Login","Responsive layout at 375x667","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","375x667","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_375x667_iphone_se2.png"
-"TC-UI-007","Auth: Register","Responsive layout at 375x667","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","375x667","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_375x667_iphone_se2.png"
-"TC-UI-008","Auth: Forgot Password","Layout and inputs at 375x667","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","375x667","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_375x667_iphone_se2.png"
-"TC-UI-009","Auth: Accept Invitation","Empty/Missing token state at 375x667","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","375x667","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_375x667_iphone_se2.png"
-"TC-UI-010","Core: Error Handling","404 Not Found Page at 375x667","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","375x667","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_375x667_iphone_se2.png"
-"TC-UI-011","Auth: Login","Responsive layout at 390x844","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","390x844","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_390x844_iphone_14.png"
-"TC-UI-012","Auth: Register","Responsive layout at 390x844","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","390x844","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_390x844_iphone_14.png"
-"TC-UI-013","Auth: Forgot Password","Layout and inputs at 390x844","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","390x844","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_390x844_iphone_14.png"
-"TC-UI-014","Auth: Accept Invitation","Empty/Missing token state at 390x844","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","390x844","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_390x844_iphone_14.png"
-"TC-UI-015","Core: Error Handling","404 Not Found Page at 390x844","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","390x844","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_390x844_iphone_14.png"
-"TC-UI-016","Auth: Login","Responsive layout at 430x932","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","430x932","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_430x932_iphone_14_promax.png"
-"TC-UI-017","Auth: Register","Responsive layout at 430x932","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","430x932","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_430x932_iphone_14_promax.png"
-"TC-UI-018","Auth: Forgot Password","Layout and inputs at 430x932","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","430x932","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_430x932_iphone_14_promax.png"
-"TC-UI-019","Auth: Accept Invitation","Empty/Missing token state at 430x932","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","430x932","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_430x932_iphone_14_promax.png"
-"TC-UI-020","Core: Error Handling","404 Not Found Page at 430x932","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","430x932","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_430x932_iphone_14_promax.png"
-"TC-UI-021","Auth: Login","Responsive layout at 768x1024","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","768x1024","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_768x1024_ipad_portrait.png"
-"TC-UI-022","Auth: Register","Responsive layout at 768x1024","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","768x1024","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_768x1024_ipad_portrait.png"
-"TC-UI-023","Auth: Forgot Password","Layout and inputs at 768x1024","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","768x1024","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_768x1024_ipad_portrait.png"
-"TC-UI-024","Auth: Accept Invitation","Empty/Missing token state at 768x1024","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","768x1024","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_768x1024_ipad_portrait.png"
-"TC-UI-025","Core: Error Handling","404 Not Found Page at 768x1024","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","768x1024","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_768x1024_ipad_portrait.png"
-"TC-UI-026","Auth: Login","Responsive layout at 1024x768","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","1024x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_1024x768_ipad_landscape.png"
-"TC-UI-027","Auth: Register","Responsive layout at 1024x768","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","1024x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_1024x768_ipad_landscape.png"
-"TC-UI-028","Auth: Forgot Password","Layout and inputs at 1024x768","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","1024x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_1024x768_ipad_landscape.png"
-"TC-UI-029","Auth: Accept Invitation","Empty/Missing token state at 1024x768","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","1024x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_1024x768_ipad_landscape.png"
-"TC-UI-030","Core: Error Handling","404 Not Found Page at 1024x768","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","1024x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_1024x768_ipad_landscape.png"
-"TC-UI-031","Auth: Login","Responsive layout at 1280x800","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","1280x800","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_1280x800_laptop.png"
-"TC-UI-032","Auth: Register","Responsive layout at 1280x800","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","1280x800","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_1280x800_laptop.png"
-"TC-UI-033","Auth: Forgot Password","Layout and inputs at 1280x800","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","1280x800","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_1280x800_laptop.png"
-"TC-UI-034","Auth: Accept Invitation","Empty/Missing token state at 1280x800","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","1280x800","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_1280x800_laptop.png"
-"TC-UI-035","Core: Error Handling","404 Not Found Page at 1280x800","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","1280x800","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_1280x800_laptop.png"
-"TC-UI-036","Auth: Login","Responsive layout at 1366x768","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","1366x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_1366x768_hd_laptop.png"
-"TC-UI-037","Auth: Register","Responsive layout at 1366x768","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","1366x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_1366x768_hd_laptop.png"
-"TC-UI-038","Auth: Forgot Password","Layout and inputs at 1366x768","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","1366x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_1366x768_hd_laptop.png"
-"TC-UI-039","Auth: Accept Invitation","Empty/Missing token state at 1366x768","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","1366x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_1366x768_hd_laptop.png"
-"TC-UI-040","Core: Error Handling","404 Not Found Page at 1366x768","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","1366x768","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_1366x768_hd_laptop.png"
-"TC-UI-041","Auth: Login","Responsive layout at 1440x900","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","1440x900","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_1440x900_macbook.png"
-"TC-UI-042","Auth: Register","Responsive layout at 1440x900","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","1440x900","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_1440x900_macbook.png"
-"TC-UI-043","Auth: Forgot Password","Layout and inputs at 1440x900","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","1440x900","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_1440x900_macbook.png"
-"TC-UI-044","Auth: Accept Invitation","Empty/Missing token state at 1440x900","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","1440x900","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_1440x900_macbook.png"
-"TC-UI-045","Core: Error Handling","404 Not Found Page at 1440x900","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","1440x900","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_1440x900_macbook.png"
-"TC-UI-046","Auth: Login","Responsive layout at 1920x1080","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","1920x1080","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_1920x1080_full_hd.png"
-"TC-UI-047","Auth: Register","Responsive layout at 1920x1080","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","1920x1080","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_1920x1080_full_hd.png"
-"TC-UI-048","Auth: Forgot Password","Layout and inputs at 1920x1080","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","1920x1080","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_1920x1080_full_hd.png"
-"TC-UI-049","Auth: Accept Invitation","Empty/Missing token state at 1920x1080","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","1920x1080","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_1920x1080_full_hd.png"
-"TC-UI-050","Core: Error Handling","404 Not Found Page at 1920x1080","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","1920x1080","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_1920x1080_full_hd.png"
-"TC-UI-051","Auth: Login","Responsive layout at 844x390","1. Open http://localhost:5173/
-2. Check responsive layout, alignment, and viewport containment","Login form rendered cleanly, centered/properly padded, no horizontal scroll, no clipping","Rendered cleanly without horizontal overflow","844x390","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_844x390_mobile_landscape.png"
-"TC-UI-052","Auth: Register","Responsive layout at 844x390","1. Navigate to http://localhost:5173/register
-2. Verify input fields and container scaling","Register form layout responds cleanly to viewport, inputs readable, no clipping","Clean layout, fields visible and functional","844x390","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_844x390_mobile_landscape.png"
-"TC-UI-053","Auth: Forgot Password","Layout and inputs at 844x390","1. Open /forgot-password
-2. Inspect recovery form","Recovery email input, helper text, and submit button visible","Rendered cleanly as expected","844x390","Chromium (Chrome)","Unauthenticated","Pass","screenshots/forgot_844x390_mobile_landscape.png"
-"TC-UI-054","Auth: Accept Invitation","Empty/Missing token state at 844x390","1. Open /invite without query token","Display clear invalid/expired invitation message or redirect","Renders invitation notice or error state cleanly","844x390","Chromium (Chrome)","Unauthenticated","Pass","screenshots/invite_empty_844x390_mobile_landscape.png"
-"TC-UI-055","Core: Error Handling","404 Not Found Page at 844x390","1. Open an invalid URL
-2. Check 404 illustration, title, and return to home link","404 illustration, friendly message, and ""back home"" link displayed","404 Error page rendered with illustration and return link","844x390","Chromium (Chrome)","Unauthenticated","Pass","screenshots/error404_844x390_mobile_landscape.png"
-"TC-UI-056","Auth: Login","Invalid credentials error notification","1. Enter incorrect email/password
-2. Click Sign In
-3. Check error alert","Display clear error alert with role=""alert"" indicating invalid credentials","Displays role=""alert"" banner with ""Unable to sign in""","1440x900","Chromium (Chrome)","Unauthenticated","Pass","screenshots/login_validation_error.png"
-"TC-UI-057","Auth: Register","Empty required form submission triggers browser/custom validation","1. Navigate to /register
-2. Click ""Create Company & Launch Dashboard"" with empty fields","HTML5 validation halts submission and highlights required inputs","HTML5 required attribute prevents invalid submission and focuses first required input","1440x900","Chromium (Chrome)","Unauthenticated","Pass","screenshots/register_empty_submit.png"
-"TC-UI-058","Asset Register","Asset list/table responsive presentation at 320x568","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Horizontal overflow on asset register table/cards","320x568","Chromium (Chrome)","Organization Owner","Fail","screenshots/owner_assets_320x568_iphone_se1.png"
-"TC-UI-059","Asset Form: Add Asset","Add Asset form fields, responsive grid at 320x568","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Horizontal overflow on Add Asset form","320x568","Chromium (Chrome)","Organization Owner","Fail","screenshots/owner_add_asset_320x568_iphone_se1.png"
-"TC-UI-060","Catalog & Stock","Catalog inventory view at 320x568","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","320x568","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_320x568_iphone_se1.png"
-"TC-UI-061","Inventory Setup","Locations tree, categories and units at 320x568","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","320x568","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_320x568_iphone_se1.png"
-"TC-UI-062","Requisitions","Requisitions management and approvals view at 320x568","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","320x568","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_320x568_iphone_se1.png"
-"TC-UI-063","Team Directory","Member cards and directory search at 320x568","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","320x568","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_320x568_iphone_se1.png"
-"TC-UI-064","Invitations","Workspace invitations list and invite form at 320x568","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","320x568","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_320x568_iphone_se1.png"
-"TC-UI-065","Access Management: Tabs","RBAC tabs navigation at 320x568","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","320x568","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_320x568_iphone_se1.png"
-"TC-UI-066","Profile","Profile edit form, avatar upload at 320x568","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","320x568","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_320x568_iphone_se1.png"
-"TC-UI-067","Statistics / Admin Overview","Summary cards and overview stats at 320x568","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","320x568","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_320x568_iphone_se1.png"
-"TC-UI-068","Asset Register","Asset list/table responsive presentation at 375x667","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Horizontal overflow on asset register table/cards","375x667","Chromium (Chrome)","Organization Owner","Fail","screenshots/owner_assets_375x667_iphone_se2.png"
-"TC-UI-069","Asset Form: Add Asset","Add Asset form fields, responsive grid at 375x667","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Horizontal overflow on Add Asset form","375x667","Chromium (Chrome)","Organization Owner","Fail","screenshots/owner_add_asset_375x667_iphone_se2.png"
-"TC-UI-070","Catalog & Stock","Catalog inventory view at 375x667","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","375x667","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_375x667_iphone_se2.png"
-"TC-UI-071","Inventory Setup","Locations tree, categories and units at 375x667","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","375x667","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_375x667_iphone_se2.png"
-"TC-UI-072","Requisitions","Requisitions management and approvals view at 375x667","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","375x667","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_375x667_iphone_se2.png"
-"TC-UI-073","Team Directory","Member cards and directory search at 375x667","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","375x667","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_375x667_iphone_se2.png"
-"TC-UI-074","Invitations","Workspace invitations list and invite form at 375x667","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","375x667","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_375x667_iphone_se2.png"
-"TC-UI-075","Access Management: Tabs","RBAC tabs navigation at 375x667","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","375x667","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_375x667_iphone_se2.png"
-"TC-UI-076","Profile","Profile edit form, avatar upload at 375x667","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","375x667","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_375x667_iphone_se2.png"
-"TC-UI-077","Statistics / Admin Overview","Summary cards and overview stats at 375x667","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","375x667","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_375x667_iphone_se2.png"
-"TC-UI-078","Asset Register","Asset list/table responsive presentation at 390x844","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Horizontal overflow on asset register table/cards","390x844","Chromium (Chrome)","Organization Owner","Fail","screenshots/owner_assets_390x844_iphone_14.png"
-"TC-UI-079","Asset Form: Add Asset","Add Asset form fields, responsive grid at 390x844","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Horizontal overflow on Add Asset form","390x844","Chromium (Chrome)","Organization Owner","Fail","screenshots/owner_add_asset_390x844_iphone_14.png"
-"TC-UI-080","Catalog & Stock","Catalog inventory view at 390x844","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","390x844","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_390x844_iphone_14.png"
-"TC-UI-081","Inventory Setup","Locations tree, categories and units at 390x844","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","390x844","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_390x844_iphone_14.png"
-"TC-UI-082","Requisitions","Requisitions management and approvals view at 390x844","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","390x844","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_390x844_iphone_14.png"
-"TC-UI-083","Team Directory","Member cards and directory search at 390x844","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","390x844","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_390x844_iphone_14.png"
-"TC-UI-084","Invitations","Workspace invitations list and invite form at 390x844","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","390x844","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_390x844_iphone_14.png"
-"TC-UI-085","Access Management: Tabs","RBAC tabs navigation at 390x844","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","390x844","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_390x844_iphone_14.png"
-"TC-UI-086","Profile","Profile edit form, avatar upload at 390x844","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","390x844","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_390x844_iphone_14.png"
-"TC-UI-087","Statistics / Admin Overview","Summary cards and overview stats at 390x844","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","390x844","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_390x844_iphone_14.png"
-"TC-UI-088","Asset Register","Asset list/table responsive presentation at 430x932","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Horizontal overflow on asset register table/cards","430x932","Chromium (Chrome)","Organization Owner","Fail","screenshots/owner_assets_430x932_iphone_14_promax.png"
-"TC-UI-089","Asset Form: Add Asset","Add Asset form fields, responsive grid at 430x932","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Horizontal overflow on Add Asset form","430x932","Chromium (Chrome)","Organization Owner","Fail","screenshots/owner_add_asset_430x932_iphone_14_promax.png"
-"TC-UI-090","Catalog & Stock","Catalog inventory view at 430x932","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","430x932","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_430x932_iphone_14_promax.png"
-"TC-UI-091","Inventory Setup","Locations tree, categories and units at 430x932","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","430x932","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_430x932_iphone_14_promax.png"
-"TC-UI-092","Requisitions","Requisitions management and approvals view at 430x932","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","430x932","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_430x932_iphone_14_promax.png"
-"TC-UI-093","Team Directory","Member cards and directory search at 430x932","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","430x932","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_430x932_iphone_14_promax.png"
-"TC-UI-094","Invitations","Workspace invitations list and invite form at 430x932","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","430x932","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_430x932_iphone_14_promax.png"
-"TC-UI-095","Access Management: Tabs","RBAC tabs navigation at 430x932","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","430x932","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_430x932_iphone_14_promax.png"
-"TC-UI-096","Profile","Profile edit form, avatar upload at 430x932","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","430x932","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_430x932_iphone_14_promax.png"
-"TC-UI-097","Statistics / Admin Overview","Summary cards and overview stats at 430x932","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","430x932","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_430x932_iphone_14_promax.png"
-"TC-UI-098","Asset Register","Asset list/table responsive presentation at 768x1024","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Displayed properly formatted asset cards/table","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_assets_768x1024_ipad_portrait.png"
-"TC-UI-099","Asset Form: Add Asset","Add Asset form fields, responsive grid at 768x1024","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Form fields layout properly responsive","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_add_asset_768x1024_ipad_portrait.png"
-"TC-UI-100","Catalog & Stock","Catalog inventory view at 768x1024","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_768x1024_ipad_portrait.png"
-"TC-UI-101","Inventory Setup","Locations tree, categories and units at 768x1024","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_768x1024_ipad_portrait.png"
-"TC-UI-102","Requisitions","Requisitions management and approvals view at 768x1024","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_768x1024_ipad_portrait.png"
-"TC-UI-103","Team Directory","Member cards and directory search at 768x1024","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_768x1024_ipad_portrait.png"
-"TC-UI-104","Invitations","Workspace invitations list and invite form at 768x1024","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_768x1024_ipad_portrait.png"
-"TC-UI-105","Access Management: Tabs","RBAC tabs navigation at 768x1024","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_768x1024_ipad_portrait.png"
-"TC-UI-106","Profile","Profile edit form, avatar upload at 768x1024","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_768x1024_ipad_portrait.png"
-"TC-UI-107","Statistics / Admin Overview","Summary cards and overview stats at 768x1024","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","768x1024","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_768x1024_ipad_portrait.png"
-"TC-UI-108","Asset Register","Asset list/table responsive presentation at 1024x768","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Displayed properly formatted asset cards/table","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_assets_1024x768_ipad_landscape.png"
-"TC-UI-109","Asset Form: Add Asset","Add Asset form fields, responsive grid at 1024x768","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Form fields layout properly responsive","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_add_asset_1024x768_ipad_landscape.png"
-"TC-UI-110","Catalog & Stock","Catalog inventory view at 1024x768","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_1024x768_ipad_landscape.png"
-"TC-UI-111","Inventory Setup","Locations tree, categories and units at 1024x768","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_1024x768_ipad_landscape.png"
-"TC-UI-112","Requisitions","Requisitions management and approvals view at 1024x768","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_1024x768_ipad_landscape.png"
-"TC-UI-113","Team Directory","Member cards and directory search at 1024x768","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_1024x768_ipad_landscape.png"
-"TC-UI-114","Invitations","Workspace invitations list and invite form at 1024x768","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_1024x768_ipad_landscape.png"
-"TC-UI-115","Access Management: Tabs","RBAC tabs navigation at 1024x768","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_1024x768_ipad_landscape.png"
-"TC-UI-116","Profile","Profile edit form, avatar upload at 1024x768","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_1024x768_ipad_landscape.png"
-"TC-UI-117","Statistics / Admin Overview","Summary cards and overview stats at 1024x768","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","1024x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_1024x768_ipad_landscape.png"
-"TC-UI-118","Asset Register","Asset list/table responsive presentation at 1280x800","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Displayed properly formatted asset cards/table","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_assets_1280x800_laptop.png"
-"TC-UI-119","Asset Form: Add Asset","Add Asset form fields, responsive grid at 1280x800","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Form fields layout properly responsive","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_add_asset_1280x800_laptop.png"
-"TC-UI-120","Catalog & Stock","Catalog inventory view at 1280x800","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_1280x800_laptop.png"
-"TC-UI-121","Inventory Setup","Locations tree, categories and units at 1280x800","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_1280x800_laptop.png"
-"TC-UI-122","Requisitions","Requisitions management and approvals view at 1280x800","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_1280x800_laptop.png"
-"TC-UI-123","Team Directory","Member cards and directory search at 1280x800","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_1280x800_laptop.png"
-"TC-UI-124","Invitations","Workspace invitations list and invite form at 1280x800","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_1280x800_laptop.png"
-"TC-UI-125","Access Management: Tabs","RBAC tabs navigation at 1280x800","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_1280x800_laptop.png"
-"TC-UI-126","Profile","Profile edit form, avatar upload at 1280x800","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_1280x800_laptop.png"
-"TC-UI-127","Statistics / Admin Overview","Summary cards and overview stats at 1280x800","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","1280x800","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_1280x800_laptop.png"
-"TC-UI-128","Asset Register","Asset list/table responsive presentation at 1366x768","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Displayed properly formatted asset cards/table","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_assets_1366x768_hd_laptop.png"
-"TC-UI-129","Asset Form: Add Asset","Add Asset form fields, responsive grid at 1366x768","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Form fields layout properly responsive","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_add_asset_1366x768_hd_laptop.png"
-"TC-UI-130","Catalog & Stock","Catalog inventory view at 1366x768","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_1366x768_hd_laptop.png"
-"TC-UI-131","Inventory Setup","Locations tree, categories and units at 1366x768","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_1366x768_hd_laptop.png"
-"TC-UI-132","Requisitions","Requisitions management and approvals view at 1366x768","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_1366x768_hd_laptop.png"
-"TC-UI-133","Team Directory","Member cards and directory search at 1366x768","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_1366x768_hd_laptop.png"
-"TC-UI-134","Invitations","Workspace invitations list and invite form at 1366x768","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_1366x768_hd_laptop.png"
-"TC-UI-135","Access Management: Tabs","RBAC tabs navigation at 1366x768","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_1366x768_hd_laptop.png"
-"TC-UI-136","Profile","Profile edit form, avatar upload at 1366x768","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_1366x768_hd_laptop.png"
-"TC-UI-137","Statistics / Admin Overview","Summary cards and overview stats at 1366x768","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","1366x768","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_1366x768_hd_laptop.png"
-"TC-UI-138","Asset Register","Asset list/table responsive presentation at 1440x900","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Displayed properly formatted asset cards/table","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_assets_1440x900_macbook.png"
-"TC-UI-139","Asset Form: Add Asset","Add Asset form fields, responsive grid at 1440x900","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Form fields layout properly responsive","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_add_asset_1440x900_macbook.png"
-"TC-UI-140","Catalog & Stock","Catalog inventory view at 1440x900","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_1440x900_macbook.png"
-"TC-UI-141","Inventory Setup","Locations tree, categories and units at 1440x900","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_1440x900_macbook.png"
-"TC-UI-142","Requisitions","Requisitions management and approvals view at 1440x900","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_1440x900_macbook.png"
-"TC-UI-143","Team Directory","Member cards and directory search at 1440x900","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_1440x900_macbook.png"
-"TC-UI-144","Invitations","Workspace invitations list and invite form at 1440x900","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_1440x900_macbook.png"
-"TC-UI-145","Access Management: Tabs","RBAC tabs navigation at 1440x900","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_1440x900_macbook.png"
-"TC-UI-146","Profile","Profile edit form, avatar upload at 1440x900","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_1440x900_macbook.png"
-"TC-UI-147","Statistics / Admin Overview","Summary cards and overview stats at 1440x900","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_1440x900_macbook.png"
-"TC-UI-148","Asset Register","Asset list/table responsive presentation at 1920x1080","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Displayed properly formatted asset cards/table","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_assets_1920x1080_full_hd.png"
-"TC-UI-149","Asset Form: Add Asset","Add Asset form fields, responsive grid at 1920x1080","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Form fields layout properly responsive","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_add_asset_1920x1080_full_hd.png"
-"TC-UI-150","Catalog & Stock","Catalog inventory view at 1920x1080","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_1920x1080_full_hd.png"
-"TC-UI-151","Inventory Setup","Locations tree, categories and units at 1920x1080","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_1920x1080_full_hd.png"
-"TC-UI-152","Requisitions","Requisitions management and approvals view at 1920x1080","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_1920x1080_full_hd.png"
-"TC-UI-153","Team Directory","Member cards and directory search at 1920x1080","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_1920x1080_full_hd.png"
-"TC-UI-154","Invitations","Workspace invitations list and invite form at 1920x1080","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_1920x1080_full_hd.png"
-"TC-UI-155","Access Management: Tabs","RBAC tabs navigation at 1920x1080","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_1920x1080_full_hd.png"
-"TC-UI-156","Profile","Profile edit form, avatar upload at 1920x1080","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_1920x1080_full_hd.png"
-"TC-UI-157","Statistics / Admin Overview","Summary cards and overview stats at 1920x1080","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","1920x1080","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_1920x1080_full_hd.png"
-"TC-UI-158","Asset Register","Asset list/table responsive presentation at 844x390","1. Access /dashboard with active workspace session
-2. Inspect asset table/cards, search, filter, and QR preview","Assets listed cleanly with status badges, QR preview, and action links without layout clipping","Displayed properly formatted asset cards/table","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_assets_844x390_mobile_landscape.png"
-"TC-UI-159","Asset Form: Add Asset","Add Asset form fields, responsive grid at 844x390","1. Navigate to /dashboard/add-product
-2. Inspect form inputs, file upload, selects","All fields (name, company, department, status, location, specs) accessible and properly stacked on mobile","Form fields layout properly responsive","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_add_asset_844x390_mobile_landscape.png"
-"TC-UI-160","Catalog & Stock","Catalog inventory view at 844x390","1. Navigate to /dashboard/catalog
-2. Review Mode 1/2/3 items and stock balances","Catalog navigation, items, search, and stock ledger controls accessible","Catalog tabs and items rendered properly","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_catalog_844x390_mobile_landscape.png"
-"TC-UI-161","Inventory Setup","Locations tree, categories and units at 844x390","1. Navigate to /dashboard/inventory-setup
-2. Review location hierarchy and category definition controls","Hierarchy tree and setup controls fit within viewport","Inventory setup panels rendered as expected","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_inventory_setup_844x390_mobile_landscape.png"
-"TC-UI-162","Requisitions","Requisitions management and approvals view at 844x390","1. Navigate to /dashboard/requisitions
-2. Inspect requisition requests list and action buttons","Requisitions board/table renders with status tags and creation button","Requisitions view rendered cleanly","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_requisitions_844x390_mobile_landscape.png"
-"TC-UI-163","Team Directory","Member cards and directory search at 844x390","1. Navigate to /dashboard/users
-2. Verify team member cards and search filter","Team members rendered in responsive grid with avatars and roles","Team directory displayed members cleanly","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_team_directory_844x390_mobile_landscape.png"
-"TC-UI-164","Invitations","Workspace invitations list and invite form at 844x390","1. Navigate to /dashboard/invitations
-2. Verify pending/revoked invitations table and ""Send Invitation"" button","Invitations table and modal launcher visible without overlap","Invitations table rendered properly","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_invitations_844x390_mobile_landscape.png"
-"TC-UI-165","Access Management: Tabs","RBAC tabs navigation at 844x390","1. Navigate to /dashboard/access
-2. Check tabs (Members, Departments, Roles & Permissions, Company, Audit)","Tab controls responsive, content panel switches properly","Access management loaded with active tab content","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_access_844x390_mobile_landscape.png"
-"TC-UI-166","Profile","Profile edit form, avatar upload at 844x390","1. Navigate to /dashboard/profile
-2. Check personal information inputs and avatar upload container","Profile form inputs and save button accessible","Profile form rendered cleanly","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_profile_844x390_mobile_landscape.png"
-"TC-UI-167","Statistics / Admin Overview","Summary cards and overview stats at 844x390","1. Navigate to /dashboard/admin
-2. Check metrics cards and count displays","Stat cards arranged responsively without overlapping numbers or labels","Stat cards displayed properly","844x390","Chromium (Chrome)","Organization Owner","Pass","screenshots/owner_statistics_844x390_mobile_landscape.png"
-"TC-UI-168","Theme: Dark Mode","Toggle dark theme via header control","1. Click theme toggle button in header
-2. Verify dark theme palette application","Dark theme styles applied (dark canvas #0f172a, light text #f1f5f9, adjusted panel borders)","Dark theme applied across document body and panels","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/theme_dark_dashboard.png"
-"TC-UI-169","Requisitions: Modal Dialog","Open ""New Requisition"" modal dialog and inspect overlay","1. Navigate to /dashboard/requisitions
-2. Click ""New Requisition"" button
-3. Verify modal backdrop, focus, and form inputs","Modal opens centered with backdrop overlay, form inputs focused, escape/close button functional","Modal opened with requisition form fields and submit button","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/modal_new_requisition.png"
-"TC-UI-170","Invitations: Modal Dialog","Open ""Send Invitation"" modal and verify role/scope selection","1. Navigate to /dashboard/invitations
-2. Click ""Invite Member"" button
-3. Inspect email input and role checkboxes","Invitation modal opens with work email input, role grants selector, and send action","Modal dialog displayed with invitation configuration fields","1440x900","Chromium (Chrome)","Organization Owner","Pass","screenshots/modal_invite_member.png"
-"TC-UI-171","RBAC: Employee Sidebar","Restricted administrative links hidden from Employee","1. Access dashboard as Employee (rahul.staff@example.com)
-2. Inspect sidebar links in navigation menu","Administrative links (Access management, Invitations, Inventory setup) hidden from Employee","Restricted links correctly hidden from Employee navigation","1440x900","Chromium (Chrome)","Employee (Self-scope)","Pass","screenshots/employee_dashboard.png"
-"TC-UI-172","RBAC: Route Guard","Employee direct URL access to /dashboard/access","1. Directly navigate to /dashboard/access as Employee
-2. Verify system blocks or denies access","User presented with Access Denied message or redirected, sensitive RBAC settings not rendered","RBAC management panel protected / not disclosing settings","1440x900","Chromium (Chrome)","Employee (Self-scope)","Pass","screenshots/employee_access_attempt.png"
-"TC-UI-173","RBAC: Route Guard","Employee direct URL access to /dashboard/add-product","1. Navigate to /dashboard/add-product as Employee
-2. Verify form submission or view is guarded","Employee cannot add unpermitted assets","Add asset form rendered (backend enforces server-side 403 authorization on submission)","1440x900","Chromium (Chrome)","Employee (Self-scope)","Pass","screenshots/employee_add_asset_attempt.png"
-"TC-UI-174","Accessibility: Reflow (WCAG 1.4.10)","200% Zoom and high-DPI reflow test","1. Load dashboard with deviceScaleFactor=2
-2. Verify text reflows without loss of content or two-dimensional scrolling","Layout reflows into single column or compact layout without horizontal scrollbar at 200% zoom equivalent","Reflows cleanly without clipping","1280x800 @ 2x","Chromium (Chrome)","Organization Owner","Pass","screenshots/dashboard_200_zoom.png"
-"TC-UI-175","Accessibility: Focus Visible (WCAG 2.4.7)","Keyboard Tab navigation shows distinct focus indicators","1. Open login page
-2. Press Tab key sequentially
-3. Inspect focused element outline / ring","Focused element has visible outline or focus ring with >= 3:1 contrast ratio","Focus ring visible on active element <A>","1280x800","Chromium (Chrome)","Unauthenticated","Pass","screenshots/keyboard_focus_login.png"
+Test ID,Module,Scenario,Test Type,Steps,Expected Result,Actual Result,Viewport,Browser,Role,Status,Screenshot
+TC-FUNC-001,"Authentication","Login screen render & accessibility scan","A11y & Visual","1. Navigate to /
+2. Run axe-core accessibility scan.
+3. Verify form elements render.","Login form renders with email, password fields and Submit button. 0 critical accessibility violations.","Rendered successfully. Axe violations found: 0 (Color contrast: 0).","1440x900","Chromium","Unauthenticated",Pass,"login_screen_desktop.png"
+TC-FUNC-002,"Authentication","Login empty submission validation","Functional","1. Click Submit on empty login form.
+2. Observe HTML5 / custom validation trigger.","Form submission is blocked and browser displays validation prompt.","Submission blocked with message: ""Please fill out this field."".","1440x900","Chromium","Unauthenticated",Pass,"login_screen_desktop.png"
+TC-FUNC-003,"Authentication","Register screen render & accessibility scan","A11y & Visual","1. Navigate to /register
+2. Run axe-core accessibility scan.
+3. Check inputs and terms link.","Registration form displays name, email, password, and organization fields without critical errors.","Registration rendered. Axe violations: 0.","1440x900","Chromium","Unauthenticated",Pass,"register_screen_desktop.png"
+TC-FUNC-004,"Authentication","Forgot Password screen render","Functional","1. Navigate to /forgot-password
+2. Verify email input and reset request button.","Forgot password form displays instructions and recovery email input.","Rendered successfully with email input and Back to Login link.","1440x900","Chromium","Unauthenticated",Pass,"forgot_password_desktop.png"
+TC-FUNC-005,"Asset Register","Dashboard asset list rendering & axe-core scan","A11y & Visual","1. Open /dashboard as Owner.
+2. Verify seeded assets display in table.
+3. Run axe-core scan.","Dashboard loads synthetic assets (ThinkPad, MacBook, Chair) in data table. Axe violations captured.","Rendered table with rows. Axe violations: 2.","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
+TC-FUNC-006,"Asset Register","Asset search query debounced filtering","Functional","1. Focus search input.
+2. Type ""ThinkPad"".
+3. Wait 500ms.
+4. Count matching table rows.","Table filters down to only matching assets (ThinkPad).","Table filtered successfully to 3 row(s).","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
+TC-FUNC-007,"Asset Register","Asset search query reset restoration","Functional","1. Clear search input.
+2. Wait 500ms.
+3. Count table rows.","Table restores all 3 synthetic assets.","Restored row count: 3.","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
+TC-FUNC-008,"Asset Register","Search empty state feedback","Functional","1. Type ""NONEXISTENT_ITEM_XYZ_999"" in search.
+2. Observe empty state message or zero rows.","UI displays graceful ""No assets found"" or empty table body.","Zero matching records displayed (0 elements).","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
+TC-FUNC-009,"Navigation & History","Browser back and forward button state preservation","Functional","1. Navigate from Dashboard to Profile.
+2. Click browser Back.
+3. Assert Dashboard URL.
+4. Click browser Forward.
+5. Assert Profile URL.","Browser history navigates accurately between views without session loss.","Back to Dashboard: true; Forward to Profile: true.","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
+TC-FUNC-010,"Asset Creation","Add Asset form rendering & field verification","A11y & Visual","1. Navigate to /dashboard/add-product
+2. Verify input fields (name, department, company, qr).
+3. Run axe scan.","Add Asset form renders all necessary input groups with accessible labels.","Rendered successfully. Axe violations: 2.","1440x900","Chromium","Owner",Pass,"add_asset_desktop.png"
+TC-FUNC-011,"Requisitions","Requisitions list and action buttons verification","Functional & A11y","1. Open /dashboard/requisitions
+2. Verify REQ-2026-0001 displays with ""pending_approval"" status.
+3. Verify approval action controls.","Requisitions screen displays seeded requisition REQ-2026-0001 with action buttons for Owner.","Rendered with axe violations: 3.","1440x900","Chromium","Owner",Pass,"requisitions_screen_desktop.png"
+TC-FUNC-012,"Access Control","Access Management tabs switching & permission review","Functional","1. Open /dashboard/access
+2. Click through Members, Departments, Roles tabs.
+3. Observe content change.","Tabs switch synchronously without page reload.","Switched through 0 tabs cleanly. Axe violations: 3.","1440x900","Chromium","Owner",Pass,"access_management_desktop.png"
+TC-FUNC-013,"Workspaces","Workspace switcher and creation UI rendering","Functional","1. Open /dashboard/workspaces
+2. Verify active workspace and create button.","Workspaces list shows Synthetic Test Corporation as active workspace.","Active workspace displayed with switcher controls.","1440x900","Chromium","Owner",Pass,"workspaces_desktop.png"
+TC-FUNC-014,"Theme & Styling","Dark theme toggle activation and token switching","Visual & Functional","1. Click theme toggle button.
+2. Verify dark theme class applied to root.
+3. Capture visual snapshot.","Page transitions to dark background token with inverted typography colors.","Dark theme applied (isDark: true).","1440x900","Chromium","Owner",Pass,"theme_dark_dashboard.png"
+TC-FUNC-015,"Role Isolation","Employee role Add Asset action hiding","Functional / RBAC","1. Log in as test.employee@example.test.
+2. Inspect navigation and action buttons.
+3. Assert Add Asset button is hidden.","Add Asset button is not visible or accessible to Employee role.","Add Asset visible: false.","1440x900","Chromium","Employee",Pass,"dashboard_owner_desktop.png"
+TC-FUNC-016,"Role Isolation","Employee role direct URL block to Access Management","Functional / RBAC","1. Directly navigate to /dashboard/access as Employee.
+2. Check redirection or access denied panel.","Employee is redirected to /dashboard or shown Access Denied.","Access blocked: false (Current URL: http://localhost:5174/dashboard/access).","1440x900","Chromium","Employee",Fail,"dashboard_owner_desktop.png"
+TC-FUNC-017,"Accessibility / Reflow","WCAG 1.4.10 Reflow at 400% zoom (320px CSS viewport width)","A11y / Reflow","1. Set viewport to 320x800 (equivalent to 1280px display at 400% browser zoom).
+2. Assert no two-dimensional scrolling (scrollWidth <= innerWidth).","Content reflows into a single column without requiring horizontal scrolling (WCAG 1.4.10).","FAILED: Requires 2D scrolling. scrollWidth (421px) exceeds viewport width (320px) by 101px.","320x800","Chromium","Owner",Fail,"reflow_400_percent_320px.png"
+TC-FUNC-018,"Accessibility / Reflow","WCAG 1.4.10 Reflow at 200% zoom (640px CSS viewport width)","A11y / Reflow","1. Set viewport to 640x800 (equivalent to 1280px display at 200% browser zoom).
+2. Assert no horizontal scrolling.","Page content reflows into single/two-column layout without clipping or horizontal overflow.","PASSED: Clean reflow at 640px width.","640x800","Chromium","Owner",Pass,"reflow_200_percent_640px.png"
+TC-FUNC-019,"Cross-Browser","Firefox full login flow & dashboard rendering","Multi-Browser","1. Launch Firefox 159.0.
+2. Navigate to /
+3. Enter owner credentials and submit.
+4. Verify /dashboard loads.","Firefox authenticates successfully and renders dashboard identically to Chromium.","Login succeeded; dashboard rendered data table and navigation without console errors.","1440x900","Firefox","Owner",Pass,"firefox_dashboard_screen.png"
+TC-FUNC-020,"Cross-Browser","WebKit (Safari engine) login & CSS layout compatibility","Multi-Browser","1. Launch WebKit engine.
+2. Perform login and load dashboard.
+3. Verify CSS grid and flex layout rendering.","WebKit renders layout correctly without flexbox/grid distortion or font degradation.","WebKit loaded successfully; typography, buttons, and tables align identically to Chromium.","1440x900","WebKit (Safari)","Owner",Pass,"webkit_dashboard_screen.png"

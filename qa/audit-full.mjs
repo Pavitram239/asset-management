@@ -8,7 +8,11 @@ dotenv.config({ path: 'server/.env' });
 const outDir = 'qa/ui-audit/screenshots';
 fs.mkdirSync(outDir, { recursive: true });
 
-const BASE_URL = 'http://localhost:5173';
+const BASE_URL = process.env.QA_BASE_URL || 'http://localhost:5174';
+const OWNER_EMAIL = process.env.QA_OWNER_EMAIL || 'test.owner@example.test';
+const OWNER_PASSWORD = process.env.QA_OWNER_PASSWORD || 'SyntheticTestPass123!';
+const EMPLOYEE_EMAIL = process.env.QA_EMPLOYEE_EMAIL || 'test.employee@example.test';
+const EMPLOYEE_PASSWORD = process.env.QA_EMPLOYEE_PASSWORD || 'SyntheticTestPass123!';
 
 const ALL_VIEWPORTS = [
   { name: '320x568_iphone_se1', width: 320, height: 568 },
@@ -142,12 +146,14 @@ async function evaluateA11y(page) {
 async function runAudit() {
   console.log('=== STARTING OPTIMIZED COMPLETE PLAYWRIGHT UI/UX AUDIT ===\n');
 
-  // Reset local authentication rate limits before starting
-  const pgClient = new pg.Client({ connectionString: process.env.DATABASE_URL });
-  await pgClient.connect();
-  await pgClient.query("DELETE FROM authentication_attempts WHERE key LIKE 'authentication:%'");
-  await pgClient.end();
-  console.log('Auth rate limits reset for audit session.\n');
+  const testDbUrl = process.env.QA_DATABASE_URL || 'postgresql://asset_user:asset-local-dev@localhost:5432/asset_management_ui_test';
+  if (testDbUrl.includes('asset_management_ui_test')) {
+    const pgClient = new pg.Client({ connectionString: testDbUrl });
+    await pgClient.connect();
+    await pgClient.query("DELETE FROM authentication_attempts WHERE key LIKE 'authentication:%'");
+    await pgClient.end();
+    console.log('Isolated test DB auth rate limits cleared.\n');
+  }
 
   const browser = await chromium.launch({ channel: 'chrome', headless: true });
 
@@ -158,8 +164,8 @@ async function runAudit() {
   const ownerContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const ownerPage = await ownerContext.newPage();
   await ownerPage.goto(`${BASE_URL}/`);
-  await ownerPage.fill('input[type="email"]', 'pavitrab895@gmail.com');
-  await ownerPage.fill('input[type="password"]', 'Password123!');
+  await ownerPage.fill('input[type="email"]', OWNER_EMAIL);
+  await ownerPage.fill('input[type="password"]', OWNER_PASSWORD);
   await ownerPage.click('button[type="submit"]');
   await ownerPage.waitForURL('**/dashboard', { timeout: 15000 });
   await ownerPage.waitForLoadState('networkidle');
@@ -171,8 +177,8 @@ async function runAudit() {
   const empContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const empPage = await empContext.newPage();
   await empPage.goto(`${BASE_URL}/`);
-  await empPage.fill('input[type="email"]', 'rahul.staff@example.com');
-  await empPage.fill('input[type="password"]', 'Password123!');
+  await empPage.fill('input[type="email"]', EMPLOYEE_EMAIL);
+  await empPage.fill('input[type="password"]', EMPLOYEE_PASSWORD);
   await empPage.click('button[type="submit"]');
   await empPage.waitForURL('**/dashboard', { timeout: 15000 });
   await empPage.waitForLoadState('networkidle');

@@ -20,6 +20,7 @@
     "test:integration": "npm run test:integration --workspace=server"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
     "concurrently": "^8.2.1",
     "exceljs": "^4.4.0",
     "playwright": "^1.65.0"
