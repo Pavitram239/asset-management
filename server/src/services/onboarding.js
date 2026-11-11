@@ -117,15 +117,19 @@ export const createWorkspace = accountCommand({ operationId: 'createWorkspace', 
   }, execute: async (db, req, { name, settings }) => {
     const org = await provisionOrganization(db, req.user.userId, name);
     await db.query('UPDATE organizations SET currency=$2,time_zone=$3 WHERE id=$1', [org.id, settings.currency, settings.timeZone]);
-    await reviewLegacyOwner(db, org.id, req.user.userId);
+    if (!org.ownership_activated_at) {
+      await reviewLegacyOwner(db, org.id, req.user.userId);
+    }
     const starters = [
       ['Administrator', PERMISSIONS.filter(code => !['ownership.manage', 'organization.create'].includes(code))],
       ['Asset manager', PERMISSIONS.filter(resourcePermission)],
       ['Employee', ['asset.read', 'asset.file.read']],
     ];
     for (const [roleName, permissions] of starters) {
-      const role = (await db.query('INSERT INTO roles(organization_id,name) VALUES($1,$2) RETURNING id', [org.id, roleName])).rows[0];
-      await db.query('INSERT INTO role_permissions(role_id,permission_id) SELECT $1,unnest($2::text[])', [role.id, permissions]);
+      const role = (await db.query('INSERT INTO roles(organization_id,name) VALUES($1,$2) ON CONFLICT (organization_id, name) DO NOTHING RETURNING id', [org.id, roleName])).rows[0];
+      if (role) {
+        await db.query('INSERT INTO role_permissions(role_id,permission_id) SELECT $1,unnest($2::text[]) ON CONFLICT DO NOTHING', [role.id, permissions]);
+      }
     }
     return memberWorkspace(db, org.id);
   },
