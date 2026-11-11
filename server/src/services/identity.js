@@ -14,7 +14,10 @@ export const identityConfiguration = () => {
     const url = new URL(process.env.APP_PUBLIC_URL);
     if (url.username || url.password || url.pathname !== '/' || url.search || url.hash ||
         !(url.protocol === 'https:' || (url.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname)))) throw new Error();
-    if (process.env.MAIL_ADAPTER !== 'capture' || !['development', 'test'].includes(process.env.NODE_ENV)) throw new Error();
+    const isLocalOrDev = ['development', 'test'].includes(process.env.NODE_ENV) ||
+      process.env.ALLOW_CAPTURE_MAIL === 'true' ||
+      process.env.COOKIE_SECURE === 'false';
+    if (process.env.MAIL_ADAPTER !== 'capture' || !isLocalOrDev) throw new Error();
     return url.origin;
   } catch { throw identityError(503, 'DELIVERY_UNAVAILABLE', 'Account mail is not configured'); }
 };

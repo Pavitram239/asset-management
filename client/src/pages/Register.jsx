@@ -45,7 +45,7 @@ const Register = () => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
               <FormRow
                 name="name"
-                labelText="Full Name *"
+                labelText="Full Name"
                 placeholder="e.g. Jane Doe"
                 required
                 maxLength={60}
@@ -61,7 +61,7 @@ const Register = () => {
             <FormRow
               type="email"
               name="email"
-              labelText="Work Email *"
+              labelText="Work Email"
               placeholder="you@company.com"
               autoComplete="email"
               required
@@ -71,7 +71,7 @@ const Register = () => {
             <FormRow
               type="password"
               name="password"
-              labelText="Password *"
+              labelText="Password"
               placeholder="At least 8 characters"
               autoComplete="new-password"
               required

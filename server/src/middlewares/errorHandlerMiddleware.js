@@ -14,7 +14,8 @@ const errorHandlerMiddleware = async (err, req, res, next) => {
   const statusCode = err.statusCode || (err.name === 'MulterError' || err.name === 'ValidationError' ? 400 : StatusCodes.INTERNAL_SERVER_ERROR);
   if (statusCode >= 500) console.error(JSON.stringify({event:'request_failed',requestId:req.requestId,errorType:err.name,code:err.code}));
   const safeStorageMessage=statusCode===503&&err.apiCode==='STORAGE_UNAVAILABLE';
-  const msg = statusCode >= 500&&!safeStorageMessage ? 'Something went wrong, please try again later' : err.message;
+  const safeDeliveryMessage=statusCode===503&&err.apiCode==='DELIVERY_UNAVAILABLE';
+  const msg = statusCode >= 500&&!safeStorageMessage&&!safeDeliveryMessage ? 'Something went wrong, please try again later' : err.message;
   send(statusCode,msg,({400:'VALIDATION_ERROR',401:'UNAUTHENTICATED',403:'FORBIDDEN',404:'NOT_FOUND',409:'CONFLICT',429:'RATE_LIMITED'}[statusCode] || 'INTERNAL_ERROR'));
 };
 
