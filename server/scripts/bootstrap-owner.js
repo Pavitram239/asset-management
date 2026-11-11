@@ -23,7 +23,9 @@ try {
     );
     if (!rows.length) throw new Error("Register the owner account first");
     const organization=await provisionOrganization(db, rows[0].id, name.trim());
-    await reviewLegacyOwner(db,organization.id,rows[0].id);
+    if (!organization.ownership_activated_at) {
+      await reviewLegacyOwner(db,organization.id,rows[0].id);
+    }
     await audit(db,{organizationId:organization.id},'ownership.operator_review',rows[0].id,{source:'bootstrap-owner CLI'});
   });
   console.log("Owner organization provisioned");
