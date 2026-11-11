@@ -15,6 +15,8 @@ This document details the migration path, operational procedures, backup strateg
 
 ### Dedicated Client Databases (`client_asset_<slug>_<id>`)
 - Every client organization operates in its own separate PostgreSQL database.
+- Database schemas are managed via versioned client migrations tracked in `client_schema_migrations` (`server/db/clientMigrations/`):
+  - `001_client_initial.sql`: Canonical initial client migration containing all 29 client tables.
 - All client business tables live in the standard `public` schema within that database:
   - `products`, `asset_assignment_history`
   - `locations`, `location_ancestry`, `location_move_previews`
@@ -24,6 +26,19 @@ This document details the migration path, operational procedures, backup strateg
   - `attachments`, `attachment_links`
   - `asset_requisitions`, `requisition_items`
   - `audit_events`, `api_commands`
+
+### Initial Client Administrator Setup Flow
+- When a client organization is created, an expiring, single-use setup link is generated and placed into `outbox_events` (`client.admin_setup`).
+- Setup tokens are hashed with SHA-256 before storage in `client_setup_tokens`; tokens are never returned in API responses or logs.
+- New administrators receive an email with the link `https://<host>/setup-admin#<token>`.
+- The setup page verifies the token (`GET /auth/setup-admin/verify`), verifies ownership of the email upon completion, and allows the admin to set their password (`POST /auth/setup-admin`).
+- For existing users, their existing password is authenticated before granting access, preserving their password and existing company memberships.
+
+### Connection Pool Management & Security Boundaries
+- Client connection pools are managed via an LRU cache bounded by `MAX_CACHED_POOLS = 50`.
+- Client lifecycle status (`active`, `suspended`, `provisioning`, `failed`) is validated on every pool acquisition—cached pools cannot bypass suspension.
+- Suspended clients reject all business operations with `403 Forbidden` and block retry attempts.
+- Privileged provisioning credentials (`PROVISIONING_DATABASE_URL`) are isolated from runtime queries.
 
 ---
 

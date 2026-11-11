@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, logout, register } from "../controllers/authController.js";
+import { login, logout, register, verifyAdminSetupToken, completeAdminSetup } from "../controllers/authController.js";
 import {
   validateLoginInput,
   validateRegisterInput,
@@ -11,5 +11,7 @@ const authRateLimit = sharedRateLimit();
 router.post("/register", authRateLimit, validateRegisterInput, register);
 router.post("/login", authRateLimit, validateLoginInput, login);
 router.get("/logout", logout);
+router.get("/setup-admin/verify", verifyAdminSetupToken);
+router.post("/setup-admin", completeAdminSetup);
 
 export default router;

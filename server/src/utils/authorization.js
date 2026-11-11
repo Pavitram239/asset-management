@@ -38,51 +38,28 @@ export const permissionScopes = permission => assetPermission(permission)?['orga
   businessScoped.has(permission)?['organization','department','location']:['organization'];
 
 export const resolveGrants = async (userId, organizationId, db = pool) => {
-  try {
-    const { rows } = await db.query(
-      `SELECT rp.permission_id AS permission, ur.scope, ur.department_code AS department,
-              ur.location_id AS "locationId",
-              COALESCE((SELECT jsonb_agg(a.descendant_id ORDER BY a.descendant_id) FROM location_ancestry a WHERE (a.organization_id=$2 OR a.organization_id IS NULL) AND a.ancestor_id=ur.location_id),'[]'::jsonb) AS "locationIds"
-       FROM user_roles ur 
-       JOIN roles r ON r.id=ur.role_id AND r.active
-       JOIN role_permissions rp ON rp.role_id=r.id
-       LEFT JOIN organization_departments d ON (d.organization_id=$2 OR d.organization_id IS NULL) AND d.code=ur.department_code
-       WHERE ur.user_id=$1 AND (ur.organization_id=$2 OR ur.organization_id IS NULL) AND (ur.scope<>'department' OR d.active)
-       UNION 
-       SELECT up.permission_id, up.scope, up.department_code, up.location_id,
-              COALESCE((SELECT jsonb_agg(a.descendant_id ORDER BY a.descendant_id) FROM location_ancestry a WHERE (a.organization_id=$2 OR a.organization_id IS NULL) AND a.ancestor_id=up.location_id),'[]'::jsonb)
-       FROM user_permissions up
-       LEFT JOIN organization_departments d ON (d.organization_id=$2 OR d.organization_id IS NULL) AND d.code=up.department_code
-       WHERE up.user_id=$1 AND (up.organization_id=$2 OR up.organization_id IS NULL) AND (up.scope<>'department' OR d.active)`,
-      [userId, organizationId]
-    );
-    return rows.map(row=>row.scope==='location'?row:({permission:row.permission,scope:row.scope,department:row.department})).filter(
-      (grant) =>
-        PERMISSIONS.includes(grant.permission) &&
-        permissionScopes(grant.permission).includes(grant.scope),
-    );
-  } catch (_) {
-    const { rows } = await pool.query(
-      `WITH eligible AS (
-      SELECT m.organization_id,m.user_id FROM memberships m JOIN organizations o ON o.id=m.organization_id AND o.active
-      JOIN users u ON u.id=m.user_id AND u.active WHERE m.user_id=$1 AND m.organization_id=$2 AND m.active
-    ) SELECT rp.permission_id AS permission, ur.scope, ur.department_code AS department
-      , ur.location_id AS "locationId",COALESCE((SELECT jsonb_agg(a.descendant_id ORDER BY a.descendant_id) FROM location_ancestry a WHERE a.organization_id=ur.organization_id AND a.ancestor_id=ur.location_id),'[]'::jsonb) AS "locationIds"
-      FROM eligible e JOIN user_roles ur ON ur.organization_id=e.organization_id AND ur.user_id=e.user_id JOIN roles r ON r.id=ur.role_id AND r.active
-      JOIN role_permissions rp ON rp.role_id=r.id
-      LEFT JOIN organization_departments d ON d.organization_id=ur.organization_id AND d.code=ur.department_code
-      WHERE ur.user_id=$1 AND ur.organization_id=$2 AND (ur.scope<>'department' OR d.active)
-      UNION SELECT up.permission_id,up.scope,up.department_code,up.location_id,COALESCE((SELECT jsonb_agg(a.descendant_id ORDER BY a.descendant_id) FROM location_ancestry a WHERE a.organization_id=up.organization_id AND a.ancestor_id=up.location_id),'[]'::jsonb) FROM eligible e JOIN user_permissions up ON up.organization_id=e.organization_id AND up.user_id=e.user_id
-      LEFT JOIN organization_departments d ON d.organization_id=up.organization_id AND d.code=up.department_code
-      WHERE up.user_id=$1 AND up.organization_id=$2 AND (up.scope<>'department' OR d.active)`,
-      [userId, organizationId],
-    );
-    return rows.map(row=>row.scope==='location'?row:({permission:row.permission,scope:row.scope,department:row.department})).filter(
-      (grant) =>
-        PERMISSIONS.includes(grant.permission) &&
-        permissionScopes(grant.permission).includes(grant.scope),
-    );
-  }
+  const { rows } = await db.query(
+    `SELECT rp.permission_id AS permission, ur.scope, ur.department_code AS department,
+            ur.location_id AS "locationId",
+            COALESCE((SELECT jsonb_agg(a.descendant_id ORDER BY a.descendant_id) FROM location_ancestry a WHERE (a.organization_id=$2 OR a.organization_id IS NULL) AND a.ancestor_id=ur.location_id),'[]'::jsonb) AS "locationIds"
+     FROM user_roles ur 
+     JOIN roles r ON r.id=ur.role_id AND r.active
+     JOIN role_permissions rp ON rp.role_id=r.id
+     LEFT JOIN organization_departments d ON (d.organization_id=$2 OR d.organization_id IS NULL) AND d.code=ur.department_code
+     WHERE ur.user_id=$1 AND (ur.organization_id=$2 OR ur.organization_id IS NULL) AND (ur.scope<>'department' OR d.active)
+     UNION 
+     SELECT up.permission_id, up.scope, up.department_code, up.location_id,
+            COALESCE((SELECT jsonb_agg(a.descendant_id ORDER BY a.descendant_id) FROM location_ancestry a WHERE (a.organization_id=$2 OR a.organization_id IS NULL) AND a.ancestor_id=up.location_id),'[]'::jsonb)
+     FROM user_permissions up
+     LEFT JOIN organization_departments d ON (d.organization_id=$2 OR d.organization_id IS NULL) AND d.code=up.department_code
+     WHERE up.user_id=$1 AND (up.organization_id=$2 OR up.organization_id IS NULL) AND (up.scope<>'department' OR d.active)`,
+    [userId, organizationId]
+  );
+  return rows.map(row=>row.scope==='location'?row:({permission:row.permission,scope:row.scope,department:row.department})).filter(
+    (grant) =>
+      PERMISSIONS.includes(grant.permission) &&
+      permissionScopes(grant.permission).includes(grant.scope),
+  );
 };
 
 export const allows = (actor, permission, resource) => {

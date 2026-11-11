@@ -15,6 +15,7 @@ import {
   EditProduct,
   PlatformAdmin,
   platformAdminLoader,
+  SetupAdmin,
 } from "./pages";
 import { action as registerAction } from "./pages/Register";
 import { action as loginAction } from "./pages/Login";
@@ -58,6 +59,7 @@ const router = createBrowserRouter([
       { path: 'reset-password', element: <AccountLink key="reset" /> },
       { path: 'verify-email', element: <AccountLink key="verify" verification /> },
       { path: 'invite', element: <AcceptInvitation /> },
+      { path: 'setup-admin', element: <SetupAdmin /> },
       {
         path: "dashboard",
         element: <DashboardLayout />,

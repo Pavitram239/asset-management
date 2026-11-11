@@ -6,6 +6,7 @@ import { configuredMailAdapter } from '../src/services/mailAdapter.js';
 import { processDelivery } from '../src/services/deliveryWorker.js';
 import { identityRenderers } from '../src/services/identity.js';
 import { invitationRenderers } from '../src/services/onboarding.js';
+import { adminSetupRenderer } from '../src/services/provisioning.js';
 
 const controller = new AbortController();
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => controller.abort());
@@ -14,7 +15,7 @@ try {
   await verifyMigrations();
   verifyDeliveryKey();
   const adapter = configuredMailAdapter();
-  const renderers = { ...identityRenderers, ...invitationRenderers };
+  const renderers = { ...identityRenderers, ...invitationRenderers, ...adminSetupRenderer };
   do {
     const processed = await processDelivery({ adapter, renderers, signal: controller.signal });
     if (process.argv[2] === 'once') break;

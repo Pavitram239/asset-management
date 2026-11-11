@@ -3,6 +3,7 @@ import { closeClientPool } from '../../db/clientPoolManager.js';
 import { provisionClientDatabase, retryClientProvisioning } from '../services/provisioning.js';
 import { BadRequestError, NotFoundError } from '../errors/customErrors.js';
 import { isUUID } from '../utils/accessPolicy.js';
+import { commandHash } from '../utils/commands.js';
 
 /**
  * Super Admin audit logger.
@@ -99,12 +100,20 @@ export const createClient = async (req, res) => {
     throw new BadRequestError('Valid administrator email is required');
   }
 
+  const idempotencyKey = req.get('Idempotency-Key') || null;
+  const requestHash = idempotencyKey
+    ? commandHash({ name: name.trim(), adminEmail: adminEmail?.trim().toLowerCase(), currency, timeZone })
+    : null;
+
   const result = await provisionClientDatabase({
     name: name.trim(),
     adminEmail,
     adminName,
     currency,
     timeZone,
+    idempotencyKey,
+    requestHash,
+    actorId: req.user.userId,
   });
 
   await platformAudit(req.user.userId, 'client.create_and_provision', result.organizationId, {
@@ -119,10 +128,10 @@ export const createClient = async (req, res) => {
       id: result.organizationId,
       name: result.name,
       databaseName: result.databaseName,
-      status: 'active',
-      provisioningStatus: 'provisioned',
+      status: result.status || 'active',
+      provisioningStatus: result.provisioningStatus || 'provisioned',
     },
-    adminSetupToken: result.admin?.setupToken || null,
+    adminInvitationPending: !!result.admin?.setupInvitationPending,
   });
 };
 

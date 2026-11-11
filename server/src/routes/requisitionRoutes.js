@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { withTenantClient, tenantTransaction } from "../../db/pool.js";
+import { pool, transaction } from "../../db/pool.js";
 import { authorize, audit, allows } from "../utils/authorization.js";
 import { BadRequestError, NotFoundError, UnauthorizedError } from "../errors/customErrors.js";
 import { isUUID } from "../utils/accessPolicy.js";
@@ -68,25 +68,24 @@ router.get("/", async (req, res) => {
     conditions.push(`(LOWER(r.item_name) LIKE $${params.length} OR LOWER(r.requisition_number) LIKE $${params.length} OR LOWER(r.purpose) LIKE $${params.length})`);
   }
 
-  const result = await withTenantClient(req.user.schemaName, async (client) => {
-    const query = `
-      SELECT r.*,
-             u.name AS requester_name,
-             u.email AS requester_email,
-             app.name AS approver_name,
-             iss.name AS issued_by_name,
-             p.name AS target_asset_name
-      FROM asset_requisitions r
-      JOIN public.users u ON u.id = r.requester_id
-      LEFT JOIN public.users app ON app.id = r.approver_id
-      LEFT JOIN public.users iss ON iss.id = r.issued_by_id
-      LEFT JOIN products p ON p.id = r.target_asset_id
-      WHERE ${conditions.join(" AND ")}
-      ORDER BY r.created_at DESC
-      LIMIT 100
-    `;
-    return (await client.query(query, params)).rows;
-  });
+  const targetDb = req.clientDb || pool;
+  const query = `
+    SELECT r.*,
+           u.name AS requester_name,
+           u.email AS requester_email,
+           app.name AS approver_name,
+           iss.name AS issued_by_name,
+           p.name AS target_asset_name
+    FROM asset_requisitions r
+    JOIN users u ON u.id = r.requester_id
+    LEFT JOIN users app ON app.id = r.approver_id
+    LEFT JOIN users iss ON iss.id = r.issued_by_id
+    LEFT JOIN products p ON p.id = r.target_asset_id
+    WHERE ${conditions.join(" AND ")}
+    ORDER BY r.created_at DESC
+    LIMIT 100
+  `;
+  const result = (await targetDb.query(query, params)).rows;
 
   res.json({ requisitions: result });
 });
@@ -125,7 +124,8 @@ router.post("/", async (req, res) => {
     throw new BadRequestError("Department code is required");
   }
 
-  const createdRequisition = await tenantTransaction(req.user.schemaName, async (client) => {
+  const targetDb = req.clientDb || pool;
+  const createdRequisition = await transaction(async (client) => {
     // Validate department exists
     const deptCheck = await client.query(
       "SELECT code FROM organization_departments WHERE code = $1 AND active = true",
@@ -175,7 +175,7 @@ router.post("/", async (req, res) => {
     });
 
     return result;
-  });
+  }, targetDb);
 
   res.status(201).json({ requisition: createdRequisition });
 });
@@ -188,7 +188,8 @@ router.patch("/:id/approval", async (req, res) => {
     throw new BadRequestError("Decision must be either 'approve' or 'reject'");
   }
 
-  const updated = await tenantTransaction(req.user.schemaName, async (client) => {
+  const targetDb = req.clientDb || pool;
+  const updated = await transaction(async (client) => {
     const existing = (
       await client.query("SELECT * FROM asset_requisitions WHERE id = $1 FOR UPDATE", [req.params.id])
     ).rows[0];
@@ -234,7 +235,7 @@ router.patch("/:id/approval", async (req, res) => {
     });
 
     return result;
-  });
+  }, targetDb);
 
   res.json({ requisition: updated });
 });
@@ -249,7 +250,8 @@ router.patch("/:id/fulfillment", async (req, res) => {
     throw new BadRequestError("A valid asset ID must be scanned or selected for issuance");
   }
 
-  const result = await tenantTransaction(req.user.schemaName, async (client) => {
+  const targetDb = req.clientDb || pool;
+  const result = await transaction(async (client) => {
     const reqRow = (
       await client.query("SELECT * FROM asset_requisitions WHERE id = $1 FOR UPDATE", [req.params.id])
     ).rows[0];
@@ -319,7 +321,7 @@ router.patch("/:id/fulfillment", async (req, res) => {
     });
 
     return updatedReq;
-  });
+  }, targetDb);
 
   res.json({ requisition: result });
 });
@@ -334,7 +336,8 @@ router.patch("/:id/return", async (req, res) => {
     throw new BadRequestError("Return condition must be 'good', 'minor_wear', or 'damaged'");
   }
 
-  const result = await tenantTransaction(req.user.schemaName, async (client) => {
+  const targetDb = req.clientDb || pool;
+  const result = await transaction(async (client) => {
     const reqRow = (
       await client.query("SELECT * FROM asset_requisitions WHERE id = $1 FOR UPDATE", [req.params.id])
     ).rows[0];
@@ -386,7 +389,7 @@ router.patch("/:id/return", async (req, res) => {
     });
 
     return updated;
-  });
+  }, targetDb);
 
   res.json({ requisition: result });
 });

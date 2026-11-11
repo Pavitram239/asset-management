@@ -12,16 +12,16 @@ export const organizationCommand = ({operationId,authorize,execute,readResult,re
   const key=req.get('Idempotency-Key');
   if(typeof key!=='string'||!/^[A-Za-z0-9_-]{16,100}$/.test(key))throw new BadRequestError('A stable Idempotency-Key of 16–100 letters, digits, underscores or hyphens is required');
   const hash=commandHash(req.path,req.body);
+  const targetPool = req.clientDb || pool;
   try {
     const result=await transaction(async db=>{
       await db.query("SET LOCAL lock_timeout='3s'");
       const identity=[req.user.userId,req.user.organizationId,operationId,key];
-      const company=(await db.query('SELECT * FROM organizations WHERE id=$1 AND active FOR UPDATE',[req.user.organizationId])).rows[0];
+      const company=(await pool.query('SELECT * FROM organizations WHERE id=$1 AND active AND status != \'suspended\'',[req.user.organizationId])).rows[0];
       if(!company)throw new UnauthorizedError('Workspace unavailable');
       const actor={...req.user,grants:await resolveGrants(req.user.userId,req.user.organizationId,db)};
       await authorize(db,actor);
-      // Claim after the organization lock: the actor FK must not hold a key-share
-      // user lock while another command holds this company and checks that user.
+      // Claim after the organization check
       await db.query(`INSERT INTO api_commands(actor_id,organization_id,operation_id,idempotency_key,request_hash)
         VALUES($1,$2,$3,$4,$5) ON CONFLICT DO NOTHING`,[...identity,hash]);
       const command=(await db.query(`SELECT * FROM api_commands WHERE actor_id=$1 AND organization_id=$2 AND operation_id=$3 AND idempotency_key=$4`,identity)).rows[0];
@@ -33,7 +33,7 @@ export const organizationCommand = ({operationId,authorize,execute,readResult,re
       const result={data};
       await db.query('UPDATE api_commands SET resource_type=$2,resource_id=$3,result=$4,committed_at=clock_timestamp() WHERE id=$1',[command.id,resourceType,data.id,result]);
       return result;
-    });
+    }, targetPool);
     res.status(statusCode).json(result);
   }catch(error){
     if(error.code==='55P03') {res.setHeader('Retry-After','1');throw conflict('COMMAND_IN_PROGRESS','Another workspace command is in progress. Retry with the same key.');}

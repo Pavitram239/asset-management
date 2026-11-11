@@ -32,6 +32,7 @@ router.get("/effective", async (req, res) =>
 router.get("/management", async (req, res) => {
   const actor = req.user,
     org = actor.organizationId;
+  const targetDb = req.clientDb || pool;
   const canAccessManagement = [
     'access.manage',
     'role.manage',
@@ -54,7 +55,7 @@ router.get("/management", async (req, res) => {
     ) &&
       allows(actor, "access.manage")) ||
     (permission === "department.manage" && ['membership.manage','catalog.manage','inventory.opening'].some(code=>allows(actor,code)))
-      ? (await pool.query(sql, [org])).rows
+      ? (await targetDb.query(sql, [org])).rows
       : [];
   res.json({
     permissions: PERMISSIONS,
@@ -66,31 +67,44 @@ router.get("/management", async (req, res) => {
     ).rows[0],
     departments: await read(
       "department.manage",
-      "SELECT code,name,active FROM organization_departments WHERE organization_id=$1 ORDER BY name",
+      "SELECT code,name,active FROM organization_departments WHERE organization_id=$1 OR organization_id IS NULL ORDER BY name",
     ),
-    locations: allows(actor,'access.manage') || allows(actor,'location.manage') ? (await pool.query('SELECT id,name,active,parent_id AS "parentId" FROM locations WHERE organization_id=$1 ORDER BY name',[org])).rows : [],
+    locations: allows(actor,'access.manage') || allows(actor,'location.manage') ? (await targetDb.query('SELECT id,name,active,parent_id AS "parentId" FROM locations WHERE organization_id=$1 OR organization_id IS NULL ORDER BY name',[org])).rows : [],
     roles: await read(
       "role.manage",
-      `SELECT r.*,COALESCE((SELECT json_agg(permission_id ORDER BY permission_id) FROM role_permissions WHERE role_id=r.id),'[]') AS permissions FROM roles r WHERE organization_id=$1 ORDER BY name`,
+      `SELECT r.*,COALESCE((SELECT json_agg(permission_id ORDER BY permission_id) FROM role_permissions WHERE role_id=r.id),'[]') AS permissions FROM roles r WHERE organization_id=$1 OR organization_id IS NULL ORDER BY name`,
     ),
-    memberships: await read(
-      "membership.manage",
-      `SELECT m.user_id AS id,u.name,u.email,u.email_verified_at IS NOT NULL AS "emailVerified",m.department_code AS department,m.active FROM memberships m JOIN users u ON u.id=m.user_id WHERE m.organization_id=$1 ORDER BY u.name`,
-    ),
+    memberships: await (async () => {
+      if (!allows(actor, "membership.manage") && !allows(actor, "access.manage")) return [];
+      return (await pool.query(
+        `SELECT m.user_id AS id,u.name,u.email,u.email_verified_at IS NOT NULL AS "emailVerified",m.department_code AS department,m.active 
+         FROM memberships m 
+         JOIN users u ON u.id=m.user_id 
+         WHERE m.organization_id=$1 
+         ORDER BY u.name`,
+        [org]
+      )).rows;
+    })(),
     assignments: await read(
       "access.manage",
-      "SELECT * FROM user_roles WHERE organization_id=$1 ORDER BY user_id",
+      "SELECT * FROM user_roles WHERE organization_id=$1 OR organization_id IS NULL ORDER BY user_id",
     ),
     directGrants: await read(
       "access.manage",
-      "SELECT * FROM user_permissions WHERE organization_id=$1 ORDER BY user_id",
+      "SELECT * FROM user_permissions WHERE organization_id=$1 OR organization_id IS NULL ORDER BY user_id",
     ),
-    owners: allows(actor,'access.manage') || allows(actor,'ownership.manage') ? (await pool.query('SELECT user_id AS "userId" FROM organization_owners WHERE organization_id=$1 ORDER BY user_id',[org])).rows : [],
+    owners: allows(actor,'access.manage') || allows(actor,'ownership.manage') ? (await targetDb.query(`
+      SELECT ur.user_id AS "userId" 
+      FROM user_roles ur 
+      JOIN roles r ON r.id = ur.role_id AND r.name = 'Organization owner' AND r.active 
+      WHERE (ur.organization_id = $1 OR ur.organization_id IS NULL) 
+      ORDER BY ur.user_id`, [org])).rows : [],
   });
 });
 router.get("/members/:id/effective", async (req, res) => {
   authorize(req.user, "access.manage");
   uuid(req.params.id);
+  const targetDb = req.clientDb || pool;
   const m = await pool.query(
     "SELECT active FROM memberships WHERE organization_id=$1 AND user_id=$2",
     [req.user.organizationId, req.params.id],
@@ -98,22 +112,23 @@ router.get("/members/:id/effective", async (req, res) => {
   requireRow(m);
   res.json({
     grants: m.rows[0].active
-      ? await resolveGrants(req.params.id, req.user.organizationId)
+      ? await resolveGrants(req.params.id, req.user.organizationId, targetDb)
       : [],
   });
 });
 router.get("/audit", async (req, res) => {
   authorize(req.user, "audit.read");
+  const targetDb = req.clientDb || pool;
   const before = req.query.before
     ? Number(req.query.before)
     : Number.MAX_SAFE_INTEGER;
   if (!Number.isSafeInteger(before) || before < 1)
     throw new BadRequestError("Invalid audit cursor");
-  const { rows } = await pool.query(
+  const { rows } = await targetDb.query(
     `SELECT a.*, u.name AS actor_name, u.email AS actor_email 
      FROM audit_events a 
      LEFT JOIN users u ON a.actor_id = u.id 
-     WHERE a.organization_id=$1 AND a.id<$2 
+     WHERE (a.organization_id=$1 OR a.organization_id IS NULL) AND a.id<$2 
      ORDER BY a.id DESC LIMIT 100`,
     [req.user.organizationId, before],
   );

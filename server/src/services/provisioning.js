@@ -3,20 +3,23 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomBytes, randomUUID, createHash } from 'node:crypto';
 import pg from 'pg';
-import { pool as platformPool } from '../../db/pool.js';
+import { pool as platformPool, transaction } from '../../db/pool.js';
 import { getClientPool, getBaseDatabaseUrl } from '../../db/clientPoolManager.js';
+import { runClientMigrations } from '../../db/clientMigrator.js';
 import { PERMISSIONS } from '../utils/authorization.js';
-import { enqueueDelivery } from './outbox.js';
+import { enqueueDelivery, cancelDelivery } from './outbox.js';
 import { identityConfiguration } from './identity.js';
+import { conflict } from '../utils/commands.js';
+import { BadRequestError } from '../errors/customErrors.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const tokenHash = (token) => createHash('sha256').update(token).digest('hex');
+export const tokenHash = (token) => createHash('sha256').update(token).digest('hex');
 
 /**
  * Resolves connection string for privileged DDL operations (e.g. CREATE DATABASE).
- * Defaults to PROVISIONING_DATABASE_URL or derives from DATABASE_URL connecting to "postgres".
+ * Defaults to PROVISIONING_DATABASE_URL or derives from DATABASE_URL / PG* connecting to "postgres".
  */
 export const getPrivilegedAdminUrl = () => {
   if (process.env.PROVISIONING_DATABASE_URL) {
@@ -57,7 +60,6 @@ export const ensureDatabaseExists = async (databaseName) => {
     );
 
     if (rows.length === 0) {
-      // DDL requires identifier interpolation
       await adminClient.query(`CREATE DATABASE "${databaseName}"`);
     }
   } finally {
@@ -66,29 +68,22 @@ export const ensureDatabaseExists = async (databaseName) => {
 };
 
 /**
- * Applies the client DDL schema to the client database.
+ * Applies versioned client schema migrations to the client database.
  */
 export const applyClientSchema = async (clientDbPool) => {
-  const schemaPath = resolve(__dirname, '../../db/clientSchema.sql');
-  const ddl = readFileSync(schemaPath, 'utf8');
-
-  const client = await clientDbPool.connect();
-  try {
-    await client.query(ddl);
-  } finally {
-    client.release();
-  }
+  return runClientMigrations(clientDbPool);
 };
 
 /**
  * Seeds initial roles, permissions, departments, and location into the client database.
+ * Designed to be idempotent: never overwrites customized roles or re-inserts revoked grants.
  */
 export const seedClientDatabaseDefaults = async (clientDbPool, orgId, adminUserId) => {
   const client = await clientDbPool.connect();
   try {
     await client.query('BEGIN');
 
-    // 1. Starter Location
+    // 1. Starter Location (only if none exists)
     const locRes = await client.query('SELECT id FROM locations LIMIT 1');
     let locId = locRes.rows[0]?.id;
     if (!locId) {
@@ -119,7 +114,7 @@ export const seedClientDatabaseDefaults = async (clientDbPool, orgId, adminUserI
       );
     }
 
-    // 3. Roles
+    // 3. Starter Roles
     const rolesToCreate = [
       { name: 'Organization owner', perms: PERMISSIONS },
       { name: 'Administrator', perms: PERMISSIONS.filter(p => !['ownership.manage', 'organization.create'].includes(p)) },
@@ -143,7 +138,7 @@ export const seedClientDatabaseDefaults = async (clientDbPool, orgId, adminUserI
         ownerRoleId = roleId;
       }
 
-      // Seed permissions for role
+      // Seed default permissions for starter roles (DO NOTHING if already present)
       for (const p of r.perms) {
         await client.query(
           `INSERT INTO role_permissions (role_id, permission_id)
@@ -156,14 +151,13 @@ export const seedClientDatabaseDefaults = async (clientDbPool, orgId, adminUserI
 
     // 4. Assign Owner Role to admin user in the client database if provided
     if (adminUserId) {
-      // Sync local roster info for joins without cross-db queries
-      const userRow = (await platformPool.query('SELECT name, email FROM users WHERE id = $1', [adminUserId])).rows[0];
+      const userRow = (await platformPool.query('SELECT name, email, active FROM users WHERE id = $1', [adminUserId])).rows[0];
       if (userRow) {
         await client.query(
           `INSERT INTO users (id, name, email, active)
-           VALUES ($1, $2, $3, true)
+           VALUES ($1, $2, $3, $4)
            ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, email = EXCLUDED.email`,
-          [adminUserId, userRow.name, userRow.email]
+          [adminUserId, userRow.name, userRow.email, userRow.active]
         );
       }
 
@@ -193,65 +187,87 @@ export const seedClientDatabaseDefaults = async (clientDbPool, orgId, adminUserI
 };
 
 /**
- * Creates or retrieves the administrator user in the platform database and issues an invitation.
+ * Creates or retrieves the administrator user in the platform database and issues an expiring setup token.
+ * Never leaks the setup token to API responses or logs.
  */
 export const setupClientAdminUser = async (platformClient, orgId, adminEmail, adminName) => {
   const email = adminEmail.trim().toLowerCase();
-  let user = (await platformClient.query('SELECT id, email, active FROM users WHERE email = $1', [email])).rows[0];
+  let user = (await platformClient.query('SELECT id, email, active, password_hash FROM users WHERE email = $1', [email])).rows[0];
 
   if (!user) {
     const newUserId = randomUUID();
     const { rows } = await platformClient.query(
       `INSERT INTO users (id, name, email, password_hash, active, email_verified_at)
-       VALUES ($1, $2, $3, 'INVITED_SETUP_PENDING', true, now())
+       VALUES ($1, $2, $3, '!SETUP_PENDING', true, NULL)
        RETURNING id, email, active`,
       [newUserId, adminName || 'Client Administrator', email]
     );
     user = rows[0];
+  } else {
+    if (!user.active) {
+      throw new BadRequestError('Designated administrator user account is inactive. Please contact platform administration.');
+    }
   }
 
-  // Ensure membership in platform DB
+  // Record initial admin on organization
+  await platformClient.query(
+    `UPDATE organizations 
+     SET initial_admin_email = $2, initial_admin_id = $3
+     WHERE id = $1`,
+    [orgId, email, user.id]
+  );
+
+  // Inactive membership until setup is accepted
   await platformClient.query(
     `INSERT INTO memberships (organization_id, user_id, active)
-     VALUES ($1, $2, true)
-     ON CONFLICT (organization_id, user_id) DO UPDATE SET active = true`,
+     VALUES ($1, $2, false)
+     ON CONFLICT (organization_id, user_id) DO NOTHING`,
     [orgId, user.id]
   );
 
-  // Check if an invitation token is needed (if user hasn't set password or explicitly invited)
+  // Revoke any previous unconsumed setup tokens for this organization
+  const { rows: revoked } = await platformClient.query(
+    `UPDATE client_setup_tokens
+     SET revoked_at = clock_timestamp()
+     WHERE organization_id = $1 AND email = $2 AND consumed_at IS NULL AND revoked_at IS NULL
+     RETURNING outbox_id`,
+    [orgId, email]
+  );
+  for (const r of revoked) {
+    if (r.outbox_id) await cancelDelivery(platformClient, r.outbox_id);
+  }
+
+  // Issue secure setup token (7 day expiry)
   const token = randomBytes(32).toString('base64url');
   const tokenHashVal = tokenHash(token);
   const origin = identityConfiguration();
-  const invitationId = randomUUID();
+  const setupId = randomUUID();
   const expiresAt = (await platformClient.query("SELECT clock_timestamp() + interval '7 days' AS expiry")).rows[0].expiry;
 
-  // Record invitation for setup flow
   const outboxId = await enqueueDelivery(platformClient, {
-    topic: 'company.invitation',
-    key: `admin-setup:${invitationId}`,
+    topic: 'client.admin_setup',
+    key: `admin-setup:${setupId}`,
     payload: {
-      invitationId,
+      setupId,
       organizationId: orgId,
       email,
       token,
       origin,
-      isInitialAdmin: true,
     },
     expiresAt,
   });
 
   await platformClient.query(
-    `INSERT INTO organization_invitations (id, organization_id, email, inviter_id, token_hash, outbox_id, expires_at)
-     VALUES ($1, $2, $3, $4, $5, $6, $7)
-     ON CONFLICT DO NOTHING`,
-    [invitationId, orgId, email, user.id, tokenHashVal, outboxId, expiresAt]
+    `INSERT INTO client_setup_tokens (id, organization_id, email, token_hash, outbox_id, expires_at)
+     VALUES ($1, $2, $3, $4, $5, $6)`,
+    [setupId, orgId, email, tokenHashVal, outboxId, expiresAt]
   );
 
-  return { userId: user.id, email: user.email, setupToken: token, invitationId };
+  return { userId: user.id, email: user.email, setupInvitationPending: true };
 };
 
 /**
- * Orchestrates full, recoverable client database provisioning.
+ * Orchestrates full, recoverable, idempotent client database provisioning.
  */
 export const provisionClientDatabase = async ({
   name,
@@ -260,90 +276,165 @@ export const provisionClientDatabase = async ({
   currency = 'USD',
   timeZone = 'UTC',
   customDatabaseName = null,
+  idempotencyKey = null,
+  requestHash = null,
+  actorId = null,
 }) => {
+  // If idempotency key provided, check for prior command in platform DB
+  if (idempotencyKey && actorId) {
+    const prior = (await platformPool.query(
+      `SELECT * FROM api_commands 
+       WHERE actor_id = $1 AND organization_id IS NULL AND operation_id = 'createClient' AND idempotency_key = $2`,
+      [actorId, idempotencyKey]
+    )).rows[0];
+
+    if (prior) {
+      if (prior.request_hash !== requestHash) {
+        throw conflict('IDEMPOTENCY_MISMATCH', 'This idempotency key already identifies a different client creation request');
+      }
+      if (prior.committed_at && prior.result?.data) {
+        return { ...prior.result.data, replayed: true };
+      }
+    }
+  }
+
   const orgId = randomUUID();
   const databaseName = customDatabaseName || generateClientDatabaseName(name, orgId);
 
   // 1. Register organization in platform database with 'provisioning' status
   const client = await platformPool.connect();
+  let adminResult = null;
   try {
     await client.query('BEGIN');
 
+    // Register idempotency command record if provided
+    if (idempotencyKey && actorId) {
+      await client.query(
+        `INSERT INTO api_commands (actor_id, organization_id, operation_id, idempotency_key, request_hash)
+         VALUES ($1, NULL, 'createClient', $2, $3)
+         ON CONFLICT DO NOTHING`,
+        [actorId, idempotencyKey, requestHash]
+      );
+    }
+
     const schemaName = 'tenant_' + orgId.replace(/-/g, '').slice(0, 12);
     const { rows } = await client.query(
-      `INSERT INTO organizations (id, name, schema_name, database_name, status, provisioning_status, currency, time_zone)
-       VALUES ($1, $2, $3, $4, 'provisioning', 'provisioning', $5, $6)
+      `INSERT INTO organizations (id, name, schema_name, database_name, status, provisioning_status, currency, time_zone, initial_admin_email)
+       VALUES ($1, $2, $3, $4, 'provisioning', 'provisioning', $5, $6, $7)
        RETURNING *`,
-      [orgId, name, schemaName, databaseName, currency, timeZone]
+      [orgId, name, schemaName, databaseName, currency, timeZone, adminEmail ? adminEmail.trim().toLowerCase() : null]
     );
     const org = rows[0];
 
-    // Setup admin user & membership in platform DB
-    let adminResult = null;
+    // Setup admin user & inactive membership in platform DB with expiring setup link
     if (adminEmail) {
       adminResult = await setupClientAdminUser(client, orgId, adminEmail, adminName);
     }
 
     await client.query('COMMIT');
-
-    // 2. Provision dedicated database
-    try {
-      await ensureDatabaseExists(databaseName);
-      const clientPool = await getClientPool(orgId);
-      await applyClientSchema(clientPool);
-      await seedClientDatabaseDefaults(clientPool, orgId, adminResult?.userId);
-
-      // 3. Mark client as active & fully provisioned
-      await platformPool.query(
-        `UPDATE organizations
-         SET status = 'active', provisioning_status = 'provisioned', provisioning_error = NULL, updated_at = now()
-         WHERE id = $1`,
-        [orgId]
-      );
-
-      return {
-        success: true,
-        organizationId: orgId,
-        name,
-        databaseName,
-        admin: adminResult,
-      };
-    } catch (provisionErr) {
-      console.error(`Provisioning step failed for ${name} [${databaseName}]:`, provisionErr.message);
-      await platformPool.query(
-        `UPDATE organizations
-         SET status = 'failed', provisioning_status = 'failed', provisioning_error = $2, updated_at = now()
-         WHERE id = $1`,
-        [orgId, provisionErr.message]
-      );
-      throw provisionErr;
-    }
   } catch (err) {
     try { await client.query('ROLLBACK'); } catch (_) {}
     throw err;
   } finally {
     client.release();
   }
+
+  // 2. Provision dedicated database
+  try {
+    await ensureDatabaseExists(databaseName);
+    const clientPool = await getClientPool(orgId, { internalProvisioning: true });
+    await runClientMigrations(clientPool);
+    await seedClientDatabaseDefaults(clientPool, orgId, adminResult?.userId);
+
+    // 3. Mark client as active & fully provisioned
+    await platformPool.query(
+      `UPDATE organizations
+       SET status = 'active', provisioning_status = 'provisioned', provisioning_error = NULL, updated_at = now()
+       WHERE id = $1`,
+      [orgId]
+    );
+
+    const clientData = {
+      success: true,
+      organizationId: orgId,
+      name,
+      databaseName,
+      status: 'active',
+      provisioningStatus: 'provisioned',
+      admin: adminResult,
+    };
+
+    // Commit idempotency command record if present
+    if (idempotencyKey && actorId) {
+      await platformPool.query(
+        `UPDATE api_commands
+         SET resource_type = 'client_organization',
+             resource_id = $2,
+             result = $3,
+             committed_at = clock_timestamp()
+         WHERE actor_id = $1 AND organization_id IS NULL AND operation_id = 'createClient' AND idempotency_key = $4`,
+        [actorId, orgId, JSON.stringify({ data: clientData }), idempotencyKey]
+      );
+    }
+
+    return clientData;
+  } catch (provisionErr) {
+    console.error(`Provisioning step failed for ${name} [${databaseName}]:`, provisionErr.message);
+    await platformPool.query(
+      `UPDATE organizations
+       SET status = 'failed', provisioning_status = 'failed', provisioning_error = $2, updated_at = now()
+       WHERE id = $1`,
+      [orgId, provisionErr.message]
+    );
+    throw provisionErr;
+  }
 };
 
 /**
- * Safe and idempotent retry for failed client provisioning.
+ * Safe, serialized and restricted retry for failed client provisioning.
  */
 export const retryClientProvisioning = async (organizationId) => {
-  const { rows } = await platformPool.query(
-    'SELECT * FROM organizations WHERE id = $1',
-    [organizationId]
-  );
-  const org = rows[0];
-  if (!org) throw new Error('Client organization not found');
+  const client = await platformPool.connect();
+  let org;
+  try {
+    await client.query('BEGIN');
 
-  // Mark status as provisioning
-  await platformPool.query(
-    `UPDATE organizations
-     SET status = 'provisioning', provisioning_status = 'provisioning', provisioning_error = NULL
-     WHERE id = $1`,
-    [organizationId]
-  );
+    // Serialize concurrent retries with row lock
+    const { rows } = await client.query(
+      'SELECT * FROM organizations WHERE id = $1 FOR UPDATE',
+      [organizationId]
+    );
+    org = rows[0];
+    if (!org) throw new BadRequestError('Client organization not found');
+
+    if (org.status === 'suspended') {
+      throw new BadRequestError('Cannot retry provisioning on a suspended client organization');
+    }
+
+    if (org.status === 'active' && org.provisioning_status === 'provisioned') {
+      await client.query('COMMIT');
+      return { success: true, organizationId, status: 'active', provisioningStatus: 'provisioned', alreadyProvisioned: true };
+    }
+
+    if (!['failed', 'provisioning', 'pending'].includes(org.provisioning_status)) {
+      throw new BadRequestError(`Cannot retry provisioning for organization in status '${org.provisioning_status}'`);
+    }
+
+    // Mark status as provisioning
+    await client.query(
+      `UPDATE organizations
+       SET status = 'provisioning', provisioning_status = 'provisioning', provisioning_error = NULL, updated_at = now()
+       WHERE id = $1`,
+      [organizationId]
+    );
+
+    await client.query('COMMIT');
+  } catch (e) {
+    try { await client.query('ROLLBACK'); } catch (_) {}
+    throw e;
+  } finally {
+    client.release();
+  }
 
   try {
     const databaseName = org.database_name || generateClientDatabaseName(org.name, org.id);
@@ -351,20 +442,21 @@ export const retryClientProvisioning = async (organizationId) => {
       await platformPool.query('UPDATE organizations SET database_name = $1 WHERE id = $2', [databaseName, organizationId]);
     }
 
-    // Idempotent database creation and schema application
+    // Idempotent database creation and versioned schema migration
     await ensureDatabaseExists(databaseName);
-    const clientPool = await getClientPool(organizationId);
-    await applyClientSchema(clientPool);
+    const clientPool = await getClientPool(organizationId, { internalProvisioning: true });
+    await runClientMigrations(clientPool);
 
-    // Find admin user if present
-    const memberRow = (await platformPool.query(
-      `SELECT m.user_id FROM memberships m WHERE m.organization_id = $1 LIMIT 1`,
-      [organizationId]
-    )).rows[0];
+    // Explicit admin user resolution: never infer from LIMIT 1 of memberships!
+    let adminUserId = org.initial_admin_id;
+    if (!adminUserId && org.initial_admin_email) {
+      const u = (await platformPool.query('SELECT id FROM users WHERE email = $1', [org.initial_admin_email])).rows[0];
+      adminUserId = u?.id || null;
+    }
 
-    await seedClientDatabaseDefaults(clientPool, organizationId, memberRow?.user_id);
+    await seedClientDatabaseDefaults(clientPool, organizationId, adminUserId);
 
-    // Mark provisioned
+    // Mark provisioned & active
     await platformPool.query(
       `UPDATE organizations
        SET status = 'active', provisioning_status = 'provisioned', provisioning_error = NULL, updated_at = now()
@@ -382,5 +474,29 @@ export const retryClientProvisioning = async (organizationId) => {
       [organizationId, err.message]
     );
     throw err;
+  }
+};
+
+/**
+ * Delivery worker mail renderer for initial client administrator setup links.
+ */
+export const adminSetupRenderer = {
+  'client.admin_setup': async (payload, { event }) => {
+    const row = (await platformPool.query(
+      `SELECT t.*, o.name AS organization_name, o.status AS organization_status
+       FROM client_setup_tokens t
+       JOIN organizations o ON o.id = t.organization_id
+       WHERE t.id = $1 AND t.token_hash = $2 AND t.outbox_id = $3
+         AND t.consumed_at IS NULL AND t.revoked_at IS NULL AND t.expires_at > clock_timestamp()`,
+      [payload.setupId, tokenHash(payload.token), event.id]
+    )).rows[0];
+
+    if (!row || row.organization_status === 'suspended') return null;
+
+    return {
+      to: row.email,
+      subject: `Complete your administrator setup for ${row.organization_name}`,
+      text: `You have been appointed as the client administrator for ${row.organization_name}.\nTo verify your email and complete your setup, open this link:\n${payload.origin}/setup-admin#${payload.token}\nThis link expires in 7 days and can only be used once. If you did not expect this message, please ignore it.`
+    };
   }
 };

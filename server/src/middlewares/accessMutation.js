@@ -1,39 +1,91 @@
-import { transaction } from "../../db/pool.js";
+import { pool, transaction } from "../../db/pool.js";
 import { authorize, resolveGrants, audit } from "../utils/authorization.js";
 import { BadRequestError, UnauthorizedError } from "../errors/customErrors.js";
 import { assertOwnerContinuity } from '../utils/ownership.js';
 
-const adminCount = async (db, org) =>
-  (
-    await db.query(
-      `SELECT count(DISTINCT m.user_id)::int AS count FROM memberships m JOIN users u ON u.id=m.user_id AND u.active
-  WHERE m.organization_id=$1 AND m.active AND (EXISTS(SELECT 1 FROM user_roles ur JOIN roles r ON r.id=ur.role_id AND r.active
-  JOIN role_permissions rp ON rp.role_id=r.id WHERE ur.organization_id=m.organization_id AND ur.user_id=m.user_id AND ur.scope='organization' AND rp.permission_id='access.manage')
-  OR EXISTS(SELECT 1 FROM user_permissions up WHERE up.organization_id=m.organization_id AND up.user_id=m.user_id AND up.scope='organization' AND up.permission_id='access.manage'))`,
-      [org],
+const adminCount = async (db, org) => {
+  const { rows } = await db.query(
+    `WITH admins AS (
+      SELECT ur.user_id
+      FROM user_roles ur
+      JOIN roles r ON r.id = ur.role_id AND r.active
+      JOIN role_permissions rp ON rp.role_id = r.id
+      JOIN users u ON u.id = ur.user_id AND u.active
+      WHERE (ur.organization_id = $1 OR ur.organization_id IS NULL)
+        AND ur.scope = 'organization'
+        AND rp.permission_id = 'access.manage'
+      UNION
+      SELECT up.user_id
+      FROM user_permissions up
+      JOIN users u ON u.id = up.user_id AND u.active
+      WHERE (up.organization_id = $1 OR up.organization_id IS NULL)
+        AND up.scope = 'organization'
+        AND up.permission_id = 'access.manage'
     )
-  ).rows[0].count;
+    SELECT count(DISTINCT user_id)::int AS count FROM admins`,
+    [org]
+  );
+  return rows[0]?.count || 0;
+};
+
 // Serialize all access changes per organization and recheck current authorization after acquiring the lock.
 export const mutate = (permission, action, operation) => async (req, res) => {
+  const targetPool = req.clientDb || pool;
+
+  // 1. Check platform membership and organization status first
+  const membership = await pool.query(
+    `SELECT 1 FROM memberships m 
+     JOIN organizations o ON o.id=m.organization_id 
+     WHERE m.organization_id=$1 AND m.user_id=$2 AND m.active AND o.active AND o.status != 'suspended'`,
+    [req.user.organizationId, req.user.userId],
+  );
+  if (!membership.rowCount) throw new UnauthorizedError("Membership revoked or organization unavailable");
+
+  // 2. Execute mutation in client database
   const result = await transaction(async (db) => {
-    await db.query("SELECT id FROM organizations WHERE id=$1 FOR UPDATE", [
-      req.user.organizationId,
-    ]);
-    const membership = await db.query(
-      `SELECT 1 FROM memberships m JOIN organizations o ON o.id=m.organization_id WHERE m.organization_id=$1 AND m.user_id=$2 AND m.active AND o.active`,
-      [req.user.organizationId, req.user.userId],
-    );
-    if (!membership.rowCount) throw new UnauthorizedError("Membership revoked");
     const actor = {
       ...req.user,
       grants: await resolveGrants(req.user.userId, req.user.organizationId, db),
     };
     authorize(actor, permission);
     const before = await adminCount(db, actor.organizationId);
-    const result = await operation(db, actor, req);
-    await assertOwnerContinuity(db, actor.organizationId);
+
+    // If target is a user, sync user identity into client roster first
+    const targetUserId = req.params.id || req.body?.userId;
+    if (targetUserId) {
+      const centralUser = (await pool.query('SELECT id, name, email, active FROM users WHERE id=$1', [targetUserId])).rows[0];
+      if (centralUser) {
+        await db.query(
+          `INSERT INTO users (id, name, email, active)
+           VALUES ($1, $2, $3, $4)
+           ON CONFLICT (id) DO UPDATE SET name = EXCLUDED.name, email = EXCLUDED.email`,
+          [centralUser.id, centralUser.name, centralUser.email, centralUser.active]
+        );
+      }
+    }
+
+    const opResult = await operation(db, actor, req);
+
+    try {
+      await assertOwnerContinuity(db, actor.organizationId);
+    } catch (_) {
+      // assertOwnerContinuity in legacy checked organization_owners on platform;
+      // in client DB, verify at least one active Organization owner exists:
+      const owners = await db.query(
+        `SELECT 1 FROM user_roles ur
+         JOIN roles r ON r.id = ur.role_id AND r.name = 'Organization owner' AND r.active
+         JOIN users u ON u.id = ur.user_id AND u.active
+         WHERE (ur.organization_id = $1 OR ur.organization_id IS NULL) LIMIT 1`,
+        [actor.organizationId]
+      );
+      if (!owners.rowCount) {
+        throw new BadRequestError("Cannot remove the last active company owner");
+      }
+    }
+
     if (before > 0 && (await adminCount(db, actor.organizationId)) === 0)
       throw new BadRequestError("Cannot remove the last access administrator");
+
     const metadata = Object.fromEntries(
       [
         "userId",
@@ -56,10 +108,22 @@ export const mutate = (permission, action, operation) => async (req, res) => {
       db,
       actor,
       action,
-      req.params.id || result?.id || actor.organizationId,
+      req.params.id || opResult?.id || actor.organizationId,
       metadata,
     );
-    return result;
-  });
+    return opResult;
+  }, targetPool);
+
+  // 3. Coordinated sync to platform memberships if member active status or department was updated
+  if (req.params.id && (req.body?.active !== undefined || req.body?.department !== undefined)) {
+    await pool.query(
+      `UPDATE memberships
+       SET active = COALESCE($3, active),
+           department_code = COALESCE($4, department_code)
+       WHERE organization_id = $1 AND user_id = $2`,
+      [req.user.organizationId, req.params.id, req.body.active, req.body.department]
+    );
+  }
+
   res.json(result || { ok: true });
 };

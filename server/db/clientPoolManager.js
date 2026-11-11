@@ -2,11 +2,12 @@ import pg from 'pg';
 import { pool as platformPool } from './pool.js';
 import { UnauthorizedError } from '../src/errors/customErrors.js';
 
-// Cache of active client pools keyed by organization ID
+// Cache of active client pools: Map<organizationId, { pool: pg.Pool, lastAccessed: number }>
 const clientPools = new Map();
+const MAX_CACHED_POOLS = 50;
 
 /**
- * Resolves the base connection URL using DATABASE_URL or PG* environment variables.
+ * Resolves the base runtime connection URL using DATABASE_URL or PG* environment variables.
  */
 export const getBaseDatabaseUrl = () => {
   if (process.env.DATABASE_URL && process.env.DATABASE_URL.trim() !== '') {
@@ -43,8 +44,9 @@ export const getClientConnectionConfig = (org) => {
   const baseConnectionString = getBaseDatabaseUrl();
   const parsed = new URL(baseConnectionString);
   
-  // Client database name is determined strictly by the server-side organization record
-  const dbName = org.database_name || org.schema_name;
+  // Client database name is determined strictly by the server-side organization record.
+  // Legacy / unmigrated organizations fall back to the central platform database.
+  const dbName = org.database_name || getCurrentDatabaseName();
   if (!dbName) {
     throw new Error(`Organization ${org.id} does not have a database configured`);
   }
@@ -64,20 +66,53 @@ export const getClientConnectionConfig = (org) => {
 };
 
 /**
- * Get or initialize a client pool for an active organization.
+ * Safely inserts a pool into the LRU cache, evicting the oldest idle pool when full.
  */
-export const getClientPool = async (organizationId) => {
+const setCachedPool = (organizationId, pool) => {
+  if (clientPools.has(organizationId)) {
+    const entry = clientPools.get(organizationId);
+    entry.lastAccessed = Date.now();
+    return;
+  }
+
+  // Enforce max cache boundary by evicting oldest
+  if (clientPools.size >= MAX_CACHED_POOLS) {
+    let oldestId = null;
+    let oldestTime = Infinity;
+    for (const [id, entry] of clientPools.entries()) {
+      if (entry.pool !== platformPool && entry.lastAccessed < oldestTime) {
+        oldestTime = entry.lastAccessed;
+        oldestId = id;
+      }
+    }
+    if (oldestId) {
+      const evicted = clientPools.get(oldestId);
+      clientPools.delete(oldestId);
+      if (evicted && evicted.pool !== platformPool) {
+        evicted.pool.end().catch(() => null);
+      }
+    }
+  }
+
+  clientPools.set(organizationId, { pool, lastAccessed: Date.now() });
+};
+
+/**
+ * Get or initialize a client pool for an active organization.
+ * Rechecks status on EVERY call to guarantee suspension and lifecycle boundaries.
+ * 
+ * @param {string} organizationId
+ * @param {object} [options]
+ * @param {boolean} [options.internalProvisioning=false] - Allows internal provisioning path
+ */
+export const getClientPool = async (organizationId, options = {}) => {
   if (!organizationId) {
     throw new Error('Organization ID is required to resolve client database');
   }
 
-  if (clientPools.has(organizationId)) {
-    return clientPools.get(organizationId);
-  }
-
-  // Query platform database for client routing record
+  // 1. Query platform database for current client routing and lifecycle status
   const { rows } = await platformPool.query(
-    `SELECT id, name, status, database_name, database_host, database_port, database_user
+    `SELECT id, name, status, provisioning_status, database_name, database_host, database_port, database_user, schema_name
      FROM organizations
      WHERE id = $1`,
     [organizationId]
@@ -88,21 +123,42 @@ export const getClientPool = async (organizationId) => {
     throw new UnauthorizedError('Organization not found');
   }
 
+  // 2. Immediate fail-closed check for suspension (cached pools NEVER bypass suspension)
   if (org.status === 'suspended') {
+    await closeClientPool(organizationId);
     throw new UnauthorizedError('Client organization is currently suspended');
   }
 
-  if (org.provisioning_status === 'failed') {
-    throw new UnauthorizedError('Client database provisioning failed. Please contact platform administration.');
+  // 3. Lifecycle status boundary check
+  if (!options.internalProvisioning) {
+    if (org.provisioning_status === 'failed') {
+      throw new UnauthorizedError('Client database provisioning failed. Please contact platform administration.');
+    }
+    if (org.status !== 'active' || org.provisioning_status !== 'provisioned') {
+      throw new UnauthorizedError('Client organization is not active or fully provisioned');
+    }
+  } else {
+    // Internal provisioning path: only allow 'provisioning' or 'active' status
+    if (org.status !== 'provisioning' && org.status !== 'active') {
+      throw new UnauthorizedError(`Cannot perform internal provisioning on organization in status '${org.status}'`);
+    }
   }
 
-  // If database is the same as the platform database (or null in legacy single-db mode), return platformPool
+  // 4. Return cached pool if available
+  if (clientPools.has(organizationId)) {
+    const entry = clientPools.get(organizationId);
+    entry.lastAccessed = Date.now();
+    return entry.pool;
+  }
+
+  // 5. If database is the same as the platform database (or legacy single-db mode), return platformPool
   const currentDb = getCurrentDatabaseName();
   if (!org.database_name || org.database_name === currentDb) {
-    clientPools.set(organizationId, platformPool);
+    setCachedPool(organizationId, platformPool);
     return platformPool;
   }
 
+  // 6. Connect to dedicated client database
   const config = getClientConnectionConfig(org);
   const clientPool = new pg.Pool(config);
 
@@ -110,24 +166,22 @@ export const getClientPool = async (organizationId) => {
     console.error(`Client database pool error [${org.name}]:`, err.message);
   });
 
-  clientPools.set(organizationId, clientPool);
+  setCachedPool(organizationId, clientPool);
   return clientPool;
 };
 
 /**
- * Safely drains and closes a client pool (e.g., upon suspension or test cleanup).
+ * Safely drains and closes a client pool (e.g. upon suspension or test cleanup).
  */
 export const closeClientPool = async (organizationId) => {
-  const pool = clientPools.get(organizationId);
-  if (pool && pool !== platformPool) {
-    clientPools.delete(organizationId);
+  const entry = clientPools.get(organizationId);
+  clientPools.delete(organizationId);
+  if (entry && entry.pool && entry.pool !== platformPool) {
     try {
-      await pool.end();
+      await entry.pool.end();
     } catch (e) {
       console.warn(`Error closing client pool for ${organizationId}:`, e.message);
     }
-  } else {
-    clientPools.delete(organizationId);
   }
 };
 
@@ -136,9 +190,9 @@ export const closeClientPool = async (organizationId) => {
  */
 export const closeAllClientPools = async () => {
   const promises = [];
-  for (const [id, pool] of clientPools.entries()) {
-    if (pool !== platformPool) {
-      promises.push(pool.end().catch(() => null));
+  for (const [id, entry] of clientPools.entries()) {
+    if (entry.pool !== platformPool) {
+      promises.push(entry.pool.end().catch(() => null));
     }
   }
   clientPools.clear();
@@ -148,8 +202,8 @@ export const closeAllClientPools = async () => {
 /**
  * Helper to run a transactional operation against a client database.
  */
-export const clientTransaction = async (organizationId, operation) => {
-  const pool = await getClientPool(organizationId);
+export const clientTransaction = async (organizationId, operation, options = {}) => {
+  const pool = await getClientPool(organizationId, options);
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -163,4 +217,3 @@ export const clientTransaction = async (organizationId, operation) => {
     client.release();
   }
 };
-
