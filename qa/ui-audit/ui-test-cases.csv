@@ -1,40 +1,38 @@
 Test ID,Module,Scenario,Test Type,Steps,Expected Result,Actual Result,Viewport,Browser,Role,Status,Screenshot
 TC-FUNC-001,"Authentication","Login screen render & accessibility scan","A11y & Visual","1. Navigate to /
 2. Run axe-core accessibility scan.
-3. Verify form elements render.","Login form renders with email, password fields and Submit button. 0 critical accessibility violations.","Rendered successfully. Axe violations found: 0 (Color contrast: 0).","1440x900","Chromium","Unauthenticated",Pass,"login_screen_desktop.png"
+3. Verify form elements render.","Login form renders with email, password fields and Submit button. 0 serious/critical accessibility violations.","Rendered successfully. Axe serious/critical violations: 0.","1440x900","Chromium","Unauthenticated",Pass,"login_screen_desktop.png"
 TC-FUNC-002,"Authentication","Login empty submission validation","Functional","1. Click Submit on empty login form.
 2. Observe HTML5 / custom validation trigger.","Form submission is blocked and browser displays validation prompt.","Submission blocked with message: ""Please fill out this field."".","1440x900","Chromium","Unauthenticated",Pass,"login_screen_desktop.png"
 TC-FUNC-003,"Authentication","Register screen render & accessibility scan","A11y & Visual","1. Navigate to /register
 2. Run axe-core accessibility scan.
-3. Check inputs and terms link.","Registration form displays name, email, password, and organization fields without critical errors.","Registration rendered. Axe violations: 0.","1440x900","Chromium","Unauthenticated",Pass,"register_screen_desktop.png"
+3. Check inputs and terms link.","Registration form displays name, email, password, and organization fields without critical errors.","Registration rendered. Axe serious/critical violations: 0.","1440x900","Chromium","Unauthenticated",Pass,"register_screen_desktop.png"
 TC-FUNC-004,"Authentication","Forgot Password screen render","Functional","1. Navigate to /forgot-password
 2. Verify email input and reset request button.","Forgot password form displays instructions and recovery email input.","Rendered successfully with email input and Back to Login link.","1440x900","Chromium","Unauthenticated",Pass,"forgot_password_desktop.png"
 TC-FUNC-005,"Asset Register","Dashboard asset list rendering & axe-core scan","A11y & Visual","1. Open /dashboard as Owner.
 2. Verify seeded assets display in table.
-3. Run axe-core scan.","Dashboard loads synthetic assets (ThinkPad, MacBook, Chair) in data table. Axe violations captured.","Rendered table with rows. Axe violations: 2.","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
+3. Run axe-core scan.","Dashboard loads synthetic assets in data table with 0 serious/critical WCAG violations.","Rendered table with rows. Axe violations detected: 2 (color-contrast, label-content-name-mismatch).","1440x900","Chromium","Owner",Fail,"dashboard_owner_desktop.png"
 TC-FUNC-006,"Asset Register","Asset search query debounced filtering","Functional","1. Focus search input.
-2. Type ""ThinkPad"".
-3. Wait 500ms.
-4. Count matching table rows.","Table filters down to only matching assets (ThinkPad).","Table filtered successfully to 3 row(s).","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
-TC-FUNC-007,"Asset Register","Asset search query reset restoration","Functional","1. Clear search input.
-2. Wait 500ms.
-3. Count table rows.","Table restores all 3 synthetic assets.","Restored row count: 3.","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
-TC-FUNC-008,"Asset Register","Search empty state feedback","Functional","1. Type ""NONEXISTENT_ITEM_XYZ_999"" in search.
-2. Observe empty state message or zero rows.","UI displays graceful ""No assets found"" or empty table body.","Zero matching records displayed (0 elements).","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
+2. Type ""ThinkPad"" and submit.
+3. Count matching table rows.","Table filters down to exactly 1 matching asset (ThinkPad).","Table filtered to 1 row(s); first row contains ""ThinkPad"": true.","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
+TC-FUNC-007,"Asset Register","Asset search query reset restoration","Functional","1. Clear search input and submit.
+2. Count table rows.","Table restores all 3 synthetic assets.","Restored row count: 3.","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
+TC-FUNC-008,"Asset Register","Search empty state feedback","Functional","1. Submit non-matching query ""NONEXISTENT_ITEM_XYZ_999"".
+2. Verify visible .empty-state h3 message and 0 table rows.","UI renders visible empty-state heading ""No Assets in this View"" with 0 table rows.","Heading visible: true (""No Assets in this View""); Table rows: 0.","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
 TC-FUNC-009,"Navigation & History","Browser back and forward button state preservation","Functional","1. Navigate from Dashboard to Profile.
 2. Click browser Back.
 3. Assert Dashboard URL.
 4. Click browser Forward.
 5. Assert Profile URL.","Browser history navigates accurately between views without session loss.","Back to Dashboard: true; Forward to Profile: true.","1440x900","Chromium","Owner",Pass,"dashboard_owner_desktop.png"
 TC-FUNC-010,"Asset Creation","Add Asset form rendering & field verification","A11y & Visual","1. Navigate to /dashboard/add-product
-2. Verify input fields (name, department, company, qr).
-3. Run axe scan.","Add Asset form renders all necessary input groups with accessible labels.","Rendered successfully. Axe violations: 2.","1440x900","Chromium","Owner",Pass,"add_asset_desktop.png"
+2. Verify input fields.
+3. Run axe scan.","Add Asset form renders all inputs with 0 serious/critical accessibility violations.","Rendered successfully. Axe violations: 2 (color-contrast, label-content-name-mismatch).","1440x900","Chromium","Owner",Fail,"add_asset_desktop.png"
 TC-FUNC-011,"Requisitions","Requisitions list and action buttons verification","Functional & A11y","1. Open /dashboard/requisitions
-2. Verify REQ-2026-0001 displays with ""pending_approval"" status.
-3. Verify approval action controls.","Requisitions screen displays seeded requisition REQ-2026-0001 with action buttons for Owner.","Rendered with axe violations: 3.","1440x900","Chromium","Owner",Pass,"requisitions_screen_desktop.png"
+2. Verify REQ-2026-0001 displays.
+3. Run axe scan.","Requisitions screen displays seeded requisition with 0 serious/critical axe violations.","Rendered requisition. Axe violations: 3 (color-contrast, label-content-name-mismatch, select-name).","1440x900","Chromium","Owner",Fail,"requisitions_screen_desktop.png"
 TC-FUNC-012,"Access Control","Access Management tabs switching & permission review","Functional","1. Open /dashboard/access
-2. Click through Members, Departments, Roles tabs.
-3. Observe content change.","Tabs switch synchronously without page reload.","Switched through 0 tabs cleanly. Axe violations: 3.","1440x900","Chromium","Owner",Pass,"access_management_desktop.png"
+2. Click each sublink (Members, Departments, Roles, Company, Security).
+3. Assert .page-heading h2 matches expected tab title.","All 5 tabs switch and update .page-heading h2 accordingly.","Switched through 5/5 tabs cleanly: [members -> ""Team Members"" (matched: true); departments -> ""Departments"" (matched: true); roles -> ""Roles & Permissions"" (matched: true); organization -> ""Company & Ownership"" (matched: true); security -> ""Audit & Security Log"" (matched: true)].","1440x900","Chromium","Owner",Pass,"access_management_desktop.png"
 TC-FUNC-013,"Workspaces","Workspace switcher and creation UI rendering","Functional","1. Open /dashboard/workspaces
 2. Verify active workspace and create button.","Workspaces list shows Synthetic Test Corporation as active workspace.","Active workspace displayed with switcher controls.","1440x900","Chromium","Owner",Pass,"workspaces_desktop.png"
 TC-FUNC-014,"Theme & Styling","Dark theme toggle activation and token switching","Visual & Functional","1. Click theme toggle button.
@@ -44,15 +42,16 @@ TC-FUNC-015,"Role Isolation","Employee role Add Asset action hiding","Functional
 2. Inspect navigation and action buttons.
 3. Assert Add Asset button is hidden.","Add Asset button is not visible or accessible to Employee role.","Add Asset visible: false.","1440x900","Chromium","Employee",Pass,"dashboard_owner_desktop.png"
 TC-FUNC-016,"Role Isolation","Employee role direct URL block to Access Management","Functional / RBAC","1. Directly navigate to /dashboard/access as Employee.
-2. Check redirection or access denied panel.","Employee is redirected to /dashboard or shown Access Denied.","Access blocked: false (Current URL: http://localhost:5174/dashboard/access).","1440x900","Chromium","Employee",Fail,"dashboard_owner_desktop.png"
-TC-FUNC-017,"Accessibility / Reflow","WCAG 1.4.10 Reflow at 400% zoom (320px CSS viewport width)","A11y / Reflow","1. Set viewport to 320x800 (equivalent to 1280px display at 400% browser zoom).
-2. Assert no two-dimensional scrolling (scrollWidth <= innerWidth).","Content reflows into a single column without requiring horizontal scrolling (WCAG 1.4.10).","FAILED: Requires 2D scrolling. scrollWidth (421px) exceeds viewport width (320px) by 101px.","320x800","Chromium","Owner",Fail,"reflow_400_percent_320px.png"
-TC-FUNC-018,"Accessibility / Reflow","WCAG 1.4.10 Reflow at 200% zoom (640px CSS viewport width)","A11y / Reflow","1. Set viewport to 640x800 (equivalent to 1280px display at 200% browser zoom).
-2. Assert no horizontal scrolling.","Page content reflows into single/two-column layout without clipping or horizontal overflow.","PASSED: Clean reflow at 640px width.","640x800","Chromium","Owner",Pass,"reflow_200_percent_640px.png"
+2. Check redirection or access denied panel.","Employee is redirected to /dashboard or shown Access Denied.","Access blocked: false (Current URL: http://localhost:5174/dashboard/access). Client router allows navigation without guard.","1440x900","Chromium","Employee",Fail,"dashboard_owner_desktop.png"
+TC-FUNC-017,"Accessibility / Reflow","WCAG 1.4.10 Reflow at 400% zoom (320px CSS viewport width)","A11y / Reflow","1. Set viewport to 320x800.
+2. Measure scrollWidth vs innerWidth.
+3. Assert no two-dimensional scrolling.","Content reflows without requiring horizontal scrolling (WCAG 1.4.10).","FAILED: Requires 2D scrolling. scrollWidth (421px) exceeds viewport (320px) by 101px.","320x800","Chromium","Owner",Fail,"reflow_400_percent_320px.png"
+TC-FUNC-018,"Accessibility / Reflow","WCAG 1.4.10 Reflow at 200% zoom (640px CSS viewport width)","A11y / Reflow","1. Set viewport to 640x800.
+2. Measure scrollWidth vs innerWidth.
+3. Assert no horizontal scrolling.","Page content reflows into single/two-column layout without clipping or horizontal overflow.","PASSED: Clean reflow at 640px width (scrollWidth: 640px, innerWidth: 640px, delta: 0px).","640x800","Chromium","Owner",Pass,"reflow_200_percent_640px.png"
 TC-FUNC-019,"Cross-Browser","Firefox full login flow & dashboard rendering","Multi-Browser","1. Launch Firefox 159.0.
-2. Navigate to /
-3. Enter owner credentials and submit.
-4. Verify /dashboard loads.","Firefox authenticates successfully and renders dashboard identically to Chromium.","Login succeeded; dashboard rendered data table and navigation without console errors.","1440x900","Firefox","Owner",Pass,"firefox_dashboard_screen.png"
-TC-FUNC-020,"Cross-Browser","WebKit (Safari engine) login & CSS layout compatibility","Multi-Browser","1. Launch WebKit engine.
-2. Perform login and load dashboard.
-3. Verify CSS grid and flex layout rendering.","WebKit renders layout correctly without flexbox/grid distortion or font degradation.","WebKit loaded successfully; typography, buttons, and tables align identically to Chromium.","1440x900","WebKit (Safari)","Owner",Pass,"webkit_dashboard_screen.png"
+2. Perform login.
+3. Verify dashboard table renders.","Firefox authenticates and renders dashboard without errors.","Login succeeded; dashboard rendered data table cleanly.","1440x900","Firefox","Owner",Pass,"firefox_dashboard_screen.png"
+TC-FUNC-020,"Cross-Browser","WebKit (Safari engine) login & CSS layout compatibility","Multi-Browser","1. Launch WebKit.
+2. Perform login.
+3. Verify CSS layout.","WebKit renders layout cleanly without distortions.","WebKit loaded successfully; alignment matches Chromium.","1440x900","WebKit (Safari)","Owner",Pass,"webkit_dashboard_screen.png"

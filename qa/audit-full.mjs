@@ -10,9 +10,13 @@ fs.mkdirSync(outDir, { recursive: true });
 
 const BASE_URL = process.env.QA_BASE_URL || 'http://localhost:5174';
 const OWNER_EMAIL = process.env.QA_OWNER_EMAIL || 'test.owner@example.test';
-const OWNER_PASSWORD = process.env.QA_OWNER_PASSWORD || 'SyntheticTestPass123!';
+const OWNER_PASSWORD = process.env.QA_OWNER_PASSWORD || process.env.QA_TEST_PASSWORD;
 const EMPLOYEE_EMAIL = process.env.QA_EMPLOYEE_EMAIL || 'test.employee@example.test';
-const EMPLOYEE_PASSWORD = process.env.QA_EMPLOYEE_PASSWORD || 'SyntheticTestPass123!';
+const EMPLOYEE_PASSWORD = process.env.QA_EMPLOYEE_PASSWORD || process.env.QA_TEST_PASSWORD;
+
+if (!OWNER_PASSWORD || !EMPLOYEE_PASSWORD) {
+  throw new Error('QA_OWNER_PASSWORD and QA_EMPLOYEE_PASSWORD (or QA_TEST_PASSWORD) are required.');
+}
 
 const ALL_VIEWPORTS = [
   { name: '320x568_iphone_se1', width: 320, height: 568 },
