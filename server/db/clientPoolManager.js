@@ -6,19 +6,45 @@ import { UnauthorizedError } from '../src/errors/customErrors.js';
 const clientPools = new Map();
 
 /**
+ * Resolves the base connection URL using DATABASE_URL or PG* environment variables.
+ */
+export const getBaseDatabaseUrl = () => {
+  if (process.env.DATABASE_URL && process.env.DATABASE_URL.trim() !== '') {
+    return process.env.DATABASE_URL;
+  }
+  const host = process.env.PGHOST || 'localhost';
+  const port = process.env.PGPORT || 5432;
+  const user = encodeURIComponent(process.env.PGUSER || 'asset_user');
+  const password = process.env.PGPASSWORD ? `:${encodeURIComponent(process.env.PGPASSWORD)}` : '';
+  const database = encodeURIComponent(process.env.PGDATABASE || 'asset_management');
+  return `postgresql://${user}${password}@${host}:${port}/${database}`;
+};
+
+/**
+ * Resolves current platform database name safely.
+ */
+export const getCurrentDatabaseName = () => {
+  if (process.env.PGDATABASE && process.env.PGDATABASE.trim() !== '') {
+    return process.env.PGDATABASE;
+  }
+  const url = getBaseDatabaseUrl();
+  try {
+    return decodeURIComponent(new URL(url).pathname.replace(/^\//, ''));
+  } catch {
+    return 'asset_management';
+  }
+};
+
+/**
  * Builds connection options for a client database.
  * Never leaks credentials to caller or logs.
  */
 export const getClientConnectionConfig = (org) => {
-  const baseConnectionString = process.env.DATABASE_URL;
-  if (!baseConnectionString) {
-    throw new Error('DATABASE_URL is not configured');
-  }
-
+  const baseConnectionString = getBaseDatabaseUrl();
   const parsed = new URL(baseConnectionString);
   
   // Client database name is determined strictly by the server-side organization record
-  const dbName = org.database_name;
+  const dbName = org.database_name || org.schema_name;
   if (!dbName) {
     throw new Error(`Organization ${org.id} does not have a database configured`);
   }
@@ -70,9 +96,9 @@ export const getClientPool = async (organizationId) => {
     throw new UnauthorizedError('Client database provisioning failed. Please contact platform administration.');
   }
 
-  // If database is the same as the platform database (e.g. legacy/single-db mode), return platformPool
-  const currentDb = decodeURIComponent(new URL(process.env.DATABASE_URL).pathname.replace(/^\//, ''));
-  if (org.database_name === currentDb) {
+  // If database is the same as the platform database (or null in legacy single-db mode), return platformPool
+  const currentDb = getCurrentDatabaseName();
+  if (!org.database_name || org.database_name === currentDb) {
     clientPools.set(organizationId, platformPool);
     return platformPool;
   }

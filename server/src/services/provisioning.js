@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { randomBytes, randomUUID, createHash } from 'node:crypto';
 import pg from 'pg';
 import { pool as platformPool } from '../../db/pool.js';
-import { getClientPool } from '../../db/clientPoolManager.js';
+import { getClientPool, getBaseDatabaseUrl } from '../../db/clientPoolManager.js';
 import { PERMISSIONS } from '../utils/authorization.js';
 import { enqueueDelivery } from './outbox.js';
 import { identityConfiguration } from './identity.js';
@@ -22,9 +22,7 @@ export const getPrivilegedAdminUrl = () => {
   if (process.env.PROVISIONING_DATABASE_URL) {
     return process.env.PROVISIONING_DATABASE_URL;
   }
-  const appUrl = process.env.DATABASE_URL;
-  if (!appUrl) throw new Error('DATABASE_URL is not set');
-
+  const appUrl = getBaseDatabaseUrl();
   const parsed = new URL(appUrl);
   parsed.pathname = '/postgres';
   return parsed.toString();

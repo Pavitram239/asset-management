@@ -1,4 +1,5 @@
 import { pool, transaction } from "../../db/pool.js";
+import { getClientPool } from "../../db/clientPoolManager.js";
 import { resolveGrants, assetScope, audit } from "../utils/authorization.js";
 import { isUUID } from "../utils/accessPolicy.js";
 import { BadRequestError, UnauthorizedError } from "../errors/customErrors.js";
@@ -25,7 +26,15 @@ export const getCurrentUser = async (req, res) => {
     throw new UnauthorizedError("Organization membership required");
   
   user.isSuperAdmin = !!current.isSuperAdmin;
-  user.grants = id ? await resolveGrants(req.user.userId, id) : [];
+  let clientDb = pool;
+  if (id) {
+    try {
+      clientDb = await getClientPool(id);
+    } catch {
+      clientDb = pool;
+    }
+  }
+  user.grants = id ? await resolveGrants(req.user.userId, id, clientDb) : [];
   user.department = organizations.find((o) => o.id === id)?.department || null;
   res.json({ user, organizations, activeOrganizationId: id || null });
 };
