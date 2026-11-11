@@ -32,6 +32,7 @@ import configurationRouter, {configurationCommandLookup,configurationOperations}
 import catalogRouter,{inventoryOperations,inventoryCommandLookup} from './routes/catalogRoutes.js';
 import attachmentRouter,{attachmentOperations,attachmentCommandLookup} from './routes/attachmentRoutes.js';
 import requisitionRouter from './routes/requisitionRoutes.js';
+import platformRouter from './routes/platformRoutes.js';
 import { organizationContext } from './utils/authorization.js';
 
 const app = express();
@@ -97,6 +98,7 @@ app.use('/api/v1',(req,res,next)=>/^\/(locations|categories|units-of-measure)(\/
 app.use('/api/v1',(req,res,next)=>/^\/(catalog|inventory)(\/|$)/.test(req.path)?catalogRouter(req,res,next):next());
 app.use('/api/v1/attachments',attachmentRouter);
 app.use('/api/v1/requisitions', authenticateUser, organizationContext, requisitionRouter);
+app.use('/api/v1/platform', platformRouter);
 
 // Auth Routes
 app.use('/api/v1/auth', identityRouter);

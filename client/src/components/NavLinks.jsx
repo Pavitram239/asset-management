@@ -15,6 +15,7 @@ const NavLinks = ({ mobile = false }) => {
 
   const visibleLinks = links.filter(
     (link) =>
+      (!link.superAdminOnly || user?.isSuperAdmin) &&
       (!link.permission || hasPermission(user, link.permission)) &&
       (!link.permissions || link.permissions.some((permission) => hasPermission(user, permission))) &&
       (!mobile || ['.', 'requisitions', 'add-product', 'profile'].includes(link.path))
@@ -59,28 +60,25 @@ const NavLinks = ({ mobile = false }) => {
                 ▼
               </span>
             </button>
-
             {dropdownOpen && (
-              <div className="nav-sub-links">
+              <div className="nav-sublinks">
                 {subLinks
-                  .filter((sub) => {
-                    if (sub.permission && !hasPermission(user, sub.permission)) return false;
-                    if (sub.permissions && !sub.permissions.some((p) => hasPermission(user, p))) return false;
-                    return true;
-                  })
+                  .filter(
+                    (sub) =>
+                      (!sub.permission || hasPermission(user, sub.permission)) &&
+                      (!sub.permissions || sub.permissions.some((p) => hasPermission(user, p)))
+                  )
                   .map((sub) => {
-                    const isSubActive = isAccessRoute && activeQueryTab === sub.tab;
+                    const isTabActive = isAccessRoute && activeQueryTab === sub.tab;
                     return (
                       <Link
-                        key={sub.tab}
+                        key={sub.path}
                         to={sub.path}
-                        className={`nav-sub-link ${isSubActive ? 'active' : ''}`}
+                        className={`nav-sublink ${isTabActive ? 'active' : ''}`}
                         title={sub.text}
                       >
-                        <span className="sub-dot" />
-                        <span className="nav-label" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {sub.text}
-                        </span>
+                        <span className="sublink-dot" />
+                        <span className="nav-label">{sub.text}</span>
                       </Link>
                     );
                   })}
@@ -90,24 +88,22 @@ const NavLinks = ({ mobile = false }) => {
         ) : (
           <NavLink
             to={path}
-            key={path}
-            end={path === '.'}
-            title={text}
+            key={text}
             className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
+            end
+            title={text}
           >
-            {({ isActive }) => (
-              <>
-                <DesignIcon name={isActive ? `${icon}-${mobile ? 'mobile-active' : 'active'}` : icon} />
-                <span className="nav-label">{text}</span>
-              </>
-            )}
+            <DesignIcon name={icon} />
+            <span className="nav-label">{text}</span>
           </NavLink>
         );
 
         return (
-          <React.Fragment key={path}>
+          <React.Fragment key={path || text}>
             {showSection && (
-              <div className="nav-section-title">{section}</div>
+              <div className="nav-section-header">
+                <span>{section}</span>
+              </div>
             )}
             {linkElement}
           </React.Fragment>

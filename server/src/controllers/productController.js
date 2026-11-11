@@ -56,10 +56,11 @@ export const getAllProducts = async (req, res) => {
     status: productStatus === "all" ? undefined : productStatus,
     warrantyStatus: productWarranty === "all" ? undefined : productWarranty,
   };
+  const db = req.clientDb || pool;
   const paging = pagination(req.query);
   const [items, totalProducts] = await Promise.all([
-    products.list(filters, paging, sort),
-    products.count(filters),
+    products.list(filters, paging, sort, db),
+    products.count(filters, db),
   ]);
   res.json({
     products: items.map((x) => presentAsset(x, req.user)),
@@ -97,6 +98,7 @@ const uploadFiles = async (req, id) => {
   return fields;
 };
 export const createProduct = async (req, res) => {
+  const db = req.clientDb || pool;
   const input = assetInput(req.body, req.user);
   await validateDestination(input, req.user, "asset.create");
   input._id = randomUUID();
@@ -106,12 +108,13 @@ export const createProduct = async (req, res) => {
     width: 300,
   });
   const files = await uploadFiles(req, input._id);
-  const product = await products.create({ ...input, ...files }, req.user);
+  const product = await products.create({ ...input, ...files }, req.user, db);
   res.status(201).json({ product: presentAsset(product, req.user) });
 };
 export const getProduct = async (req, res) =>
   res.json({ product: presentAsset(req.product, req.user) });
 export const updateProduct = async (req, res) => {
+  const db = req.clientDb || pool;
   if(req.product.catalogItemId)throw conflict('WORKFLOW_REQUIRED','Use the inventory workflow for catalog-linked units');
   const input = assetInput(req.body, req.user, true);
   if (
@@ -126,28 +129,33 @@ export const updateProduct = async (req, res) => {
     req.params.id,
     { ...input, ...files },
     req.user,
+    db
   );
   res.json({
     message: "Product Updated",
     updatedProduct: presentAsset(updatedProduct, req.user),
   });
 };
-export const deleteProduct = async (req, res) =>
+export const deleteProduct = async (req, res) => {
+  const db = req.clientDb || pool;
   res.json({
     message: "Product deleted",
     removedProduct: presentAsset(
-      await products.remove(req.params.id, req.user),
+      await products.remove(req.params.id, req.user, db),
       req.user,
     ),
   });
+};
 export const getOverview = async (req, res) => {
-  const result = await products.overview(req.user);
+  const db = req.clientDb || pool;
+  const result = await products.overview(req.user, db);
   res.json({
     ...result,
     recent: result.recent.map((x) => presentAsset(x, req.user)),
   });
 };
 export const downloadFile = async (req, res) => {
+  const db = req.clientDb || pool;
   authorize(req.user, "asset.file.read", req.product);
   if (!["image", "invoice"].includes(req.params.category))
     throw new BadRequestError("Invalid file category");
@@ -158,7 +166,7 @@ export const downloadFile = async (req, res) => {
     value,
     req.params.category,
   );
-  await audit(pool, req.user, "asset.file.read", req.product._id, {
+  await audit(db, req.user, "asset.file.read", req.product._id, {
     category: req.params.category,
   });
   res.set({

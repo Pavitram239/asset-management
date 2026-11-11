@@ -18,7 +18,8 @@ import upload from "../middlewares/multerMiddleware.js";
 import { checkForTestUser } from '../middlewares/authMiddleware.js';
 
 router.get('/:id/history', authorizePermissions('asset.read'), validateProductIdParam, async(req,res)=>{
-  const {rows}=await pool.query('SELECT id,actor_id,previous_department,department,previous_user_id,user_id,created_at FROM asset_assignment_history WHERE organization_id=$1 AND asset_id=$2 ORDER BY id DESC LIMIT 100',[req.user.organizationId,req.params.id]);
+  const db = req.clientDb || pool;
+  const {rows}=await db.query('SELECT id,actor_id,previous_department,department,previous_user_id,user_id,created_at FROM asset_assignment_history WHERE organization_id=$1 AND asset_id=$2 ORDER BY id DESC LIMIT 100',[req.user.organizationId,req.params.id]);
   res.json({history:rows});
 });
 router.get('/overview', authorizePermissions('asset.read'), getOverview);

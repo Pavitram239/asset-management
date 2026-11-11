@@ -38,7 +38,7 @@ export const validateUpdateUserInput = withValidationErrors([
 export const validateProductIdParam = async (req, res, next) => {
   if (!isUUID(req.params.id)) throw new BadRequestError('Invalid asset ID');
   const permission = req.params.category ? 'asset.file.read' : req.method === 'GET' ? 'asset.read' : req.method === 'DELETE' ? 'asset.delete' : 'asset.update';
-  const product = await products.findById(req.params.id, req.user, permission);
+  const product = await products.findById(req.params.id, req.user, permission, req.clientDb || pool);
   if (!product) throw new NotFoundError('Asset not found');
   req.product = product;
   next();

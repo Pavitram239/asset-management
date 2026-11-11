@@ -13,9 +13,9 @@ export const authenticateUser = async (req, res, next) => {
     if (!isUUID(userId)) throw new UnauthenticatedError('Authentication invalid');
     const user = await users.findById(userId);
     if (!user || user.active === false || !Number.isInteger(sessionVersion) || sessionVersion !== (user.sessionVersion ?? 0)) throw new UnauthenticatedError('Authentication invalid');
-    const { name } = user;
+    const { name, isSuperAdmin } = user;
     const testUser = user.isDemo;
-    req.user = { userId, testUser, name, sessionVersion };
+    req.user = { userId, testUser, name, sessionVersion, isSuperAdmin: !!isSuperAdmin };
     next();
   } catch (error) {
     throw new UnauthenticatedError("Authentication invalid");

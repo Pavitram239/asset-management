@@ -2,7 +2,7 @@ import { pool, transaction } from '../../db/pool.js';
 
 const columns = `id AS "_id", name, first_name AS "firstName", email, location,
   active, role, department_code AS department, avatar, avatar_public_id AS "avatarPublicId",
-  is_demo AS "isDemo", email_verified_at IS NOT NULL AS "emailVerified", session_version AS "sessionVersion",
+  is_demo AS "isDemo", is_super_admin AS "isSuperAdmin", email_verified_at IS NOT NULL AS "emailVerified", session_version AS "sessionVersion",
   created_at AS "createdAt", updated_at AS "updatedAt"`;
 
 export const users = {

@@ -9,6 +9,8 @@
     "test": "node --test",
     "db:migrate": "node db/migrate.js",
     "test:integration": "node --test --test-concurrency=1 tests/*.integration.test.js",
+    "tenant:migrate": "node scripts/migrate-to-database-per-tenant.js",
+    "bootstrap:superadmin": "node scripts/bootstrap-superadmin.js",
     "bootstrap:owner": "node scripts/bootstrap-owner.js",
     "ownership:review": "node scripts/review-owner.js",
     "storage:cleanup": "node scripts/storage-cleanup.js",

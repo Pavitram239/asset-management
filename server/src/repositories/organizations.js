@@ -41,10 +41,10 @@ export const provisionOrganization = async (db, userId, name, orgType = null) =>
       [d.code, d.name, org.id]
     );
     await db.query(
-      `INSERT INTO public.organization_departments (code, name, active, organization_id)
+      `INSERT INTO organization_departments (code, name, active, organization_id)
        VALUES ($1, $2, true, $3) ON CONFLICT (organization_id, code) DO NOTHING`,
       [d.code, d.name, org.id]
-    );
+    ).catch(() => null);
   }
 
   // 3. Pre-seed Organization Owner Role in Tenant Schema

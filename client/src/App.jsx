@@ -13,6 +13,8 @@ import {
   AllProducts,
   AddProduct,
   EditProduct,
+  PlatformAdmin,
+  platformAdminLoader,
 } from "./pages";
 import { action as registerAction } from "./pages/Register";
 import { action as loginAction } from "./pages/Login";
@@ -35,6 +37,7 @@ import AcceptInvitation from './pages/AcceptInvitation';
 import InventorySetup from './pages/InventorySetup';
 import CatalogInventory from './pages/CatalogInventory';
 import Requisitions from './pages/Requisitions';
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -73,6 +76,7 @@ const router = createBrowserRouter([
           },
           { path: "access", element: <AccessManagement /> },
           { path: 'workspaces', element: <Workspaces /> },
+          { path: 'platform', element: <PlatformAdmin />, loader: platformAdminLoader },
           { path: 'invitations', element: <Invitations /> },
           { path: 'inventory-setup', element: <InventorySetup /> },
           { path: 'catalog', element: <CatalogInventory /> },

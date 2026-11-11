@@ -11,8 +11,8 @@ export const pool = new pg.Pool({
 });
 pool.on('error', (error) => console.error('PostgreSQL pool error:', error.message));
 
-export const transaction = async (operation) => {
-  const client = await pool.connect();
+export const transaction = async (operation, targetPool = pool) => {
+  const client = await targetPool.connect();
   try {
     await client.query('BEGIN');
     const result = await operation(client);

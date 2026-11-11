@@ -32,7 +32,12 @@ const DashboardLayout = () => {
   const { user, organizations, activeOrganizationId, workspaceUnavailable } = useLoaderData();
   const revalidator=useRevalidator();
   const switchOrganization=(id)=>{
-    sessionStorage.setItem(organizationKey,id);
+    // Clear client-specific cached data and intents before switching tenant context
+    for (let i = sessionStorage.length - 1; i >= 0; i--) {
+      const key = sessionStorage.key(i);
+      if (key && key !== 'theme') sessionStorage.removeItem(key);
+    }
+    sessionStorage.setItem(organizationKey, id);
     window.location.assign('/dashboard');
   };
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);

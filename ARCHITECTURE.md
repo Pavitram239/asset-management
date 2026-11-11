@@ -12,7 +12,29 @@ Migrations 003/004 implement protected ownership, nullable legacy company settin
 
 ## Target architecture
 
-B04 now adds verified self-service workspace creation, starter roles and invitation proposal/acceptance with current inviter/delegation rechecks and tenant FKs. Account/company command lookup covers those write families. Company commands acquire the organization lock before the actor-FK command insert; acceptance locks company then affected users in UUID order. Existing admin provisioning remains compatible, and no existing company's roles are broadened. See [onboarding evidence](docs/WORKSPACE-ONBOARDING-VERIFICATION.md). The remaining module descriptions below are targets rather than implemented claims.
+### Database-per-Client SaaS Model
+
+AssetOS operates as a multi-tenant SaaS platform where:
+1. **Platform Super Admin**: Operates the platform from a dedicated, protected `/platform` area. Creates, lists, monitors provisioning status, suspends, and reactivates client organizations. Platform admins have no automatic access to client business records unless explicitly holding an active client membership.
+2. **Central Platform Database**:
+   - Stores central authentication credentials (`users` table, password hashes, `is_super_admin`, session versions).
+   - Stores the client registry and routing (`organizations` table with `database_name`, lifecycle `status`, and `provisioning_status`).
+   - Tracks client memberships (`memberships` table).
+   - Tracks platform-level setup outbox and invitations (`organization_invitations`, `delivery_outbox`).
+   - Stores platform audit events (`platform_audit_events`).
+3. **Dedicated Client Databases**:
+   - Each client organization is provisioned with its own separate physical PostgreSQL database (`client_asset_<slug>_<id>`).
+   - All client business tables (`products`, `catalog_items`, `inventory_*`, `attachments`, `requisitions`, `locations`, `roles`, `user_roles`, `audit_events`, `api_commands`) reside in the standard `public` schema of that dedicated database.
+   - Overlapping IDs (e.g. identical product or role UUIDs across Client A and Client B) are physically separated and cannot leak or collide.
+4. **Secure Server-Side Tenant Routing**:
+   - Connection pools are managed dynamically via `clientPoolManager.js` with LRU caching, sensible connection limits (max 5 connections per client), and idle eviction.
+   - Client routing is resolved strictly server-side from verified membership and organization status records. Browser-supplied database names or connection strings are never accepted.
+   - Suspended client organizations fail closed immediately, returning 403 Forbidden and draining active tenant connection pools while safely preserving data.
+5. **Client Administrator Onboarding**:
+   - Public self-service workspace creation is replaced by Super-Admin-managed client onboarding.
+   - Initial client administrators receive an expiring setup invitation link to set up their account and take ownership of their private client database.
+   - Client administrators manage their own employees, roles, departments, locations, and inventory, but cannot access platform administration or view other clients.
+   - Users with memberships in multiple clients can switch between authorized workspaces, which purges client-side cached state before establishing the new context.
 
 Use one modular Express application and one PostgreSQL database. Add a separately runnable worker from the same server package for email/outbox delivery, scheduled reminders and recovery work. React remains a same-origin client through Vite in development or Nginx in deployment. No new microservices, message broker or separate frontend framework are needed for the first release.
 

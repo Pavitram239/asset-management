@@ -1,4 +1,5 @@
 const links = [
+  { section: 'Platform', text: 'Platform Clients', path: 'platform', icon: 'shield', superAdminOnly: true },
   { section: 'Operations', text: 'Inventory', path: '.', icon: 'package', permission: 'asset.read' },
   { section: 'Operations', text: 'Requisitions', path: 'requisitions', icon: 'package', permissions: ['requisition.read', 'requisition.create', 'requisition.approve', 'requisition.fulfill'] },
   { section: 'Operations', text: 'Add asset', path: 'add-product', icon: 'plus', permission: 'asset.create' },
@@ -6,6 +7,7 @@ const links = [
   { section: 'Stock & Setup', text: 'Inventory setup', path: 'inventory-setup', icon: 'package', permissions: ['location.manage', 'category.manage', 'unit.manage'] },
   { section: 'Management', text: 'Team directory', path: 'users', icon: 'users', permission: 'directory.read' },
   { section: 'Management', text: 'Invitations', path: 'invitations', icon: 'users', permission: 'membership.manage' },
+  { section: 'Management', text: 'Workspaces', path: 'workspaces', icon: 'users' },
   { section: 'Management', text: 'Statistics', path: 'admin', icon: 'chart', permission: 'statistics.read' },
   {
     section: 'Management',

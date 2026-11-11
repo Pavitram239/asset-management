@@ -54,7 +54,7 @@ export const products = {
     );
     return rows[0] ? dto(rows[0]) : null;
   },
-  async list(filters, { limit, skip }, sort) {
+  async list(filters, { limit, skip }, sort, db = pool) {
     const { where, values } = productFilter(filters);
     const sorts = {
       newest: "p.created_at DESC",
@@ -63,25 +63,25 @@ export const products = {
       "z-a": "p.name DESC",
     };
     const order = Object.hasOwn(sorts, sort) ? sorts[sort] : sorts.newest;
-    const { rows } = await pool.query(
+    const { rows } = await db.query(
       `${select} ${where} ORDER BY ${order}, p.id LIMIT $${values.length + 1} OFFSET $${values.length + 2}`,
       [...values, limit, skip],
     );
     return rows.map(dto);
   },
-  async count(filters) {
+  async count(filters, db = pool) {
     const { where, values } = productFilter(filters);
-    const { rows } = await pool.query(
+    const { rows } = await db.query(
       `SELECT count(*)::int AS count FROM products p ${where}`,
       values,
     );
     return rows[0].count;
   },
-  async create(input, actor) {
-    return transaction(async (db) => {
-      actor = await lockActor(db, actor, "asset.create");
-      await validateDestination(input, actor, "asset.create", undefined, db);
-      await db.query(
+  async create(input, actor, db = pool) {
+    return transaction(async (tx) => {
+      actor = await lockActor(tx, actor, "asset.create");
+      await validateDestination(input, actor, "asset.create", undefined, tx);
+      await tx.query(
         `INSERT INTO products (id,organization_id,name,company,department_code,creator_id,assigned_to_id,
         created_by,status,purchase_date,warranty_date,warranty_status,product_img,invoice,qr,attributes)
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)`,
@@ -108,7 +108,7 @@ export const products = {
           ),
         ],
       );
-      await db.query(
+      await tx.query(
         `INSERT INTO asset_assignment_history(organization_id,asset_id,actor_id,department,user_id) VALUES($1,$2,$3,$4,$5)`,
         [
           actor.organizationId,
@@ -118,28 +118,28 @@ export const products = {
           input.assignedToId || null,
         ],
       );
-      await audit(db, actor, "asset.create", input._id);
-      return this.findById(input._id, actor, "asset.create", db);
-    });
+      await audit(tx, actor, "asset.create", input._id);
+      return this.findById(input._id, actor, "asset.create", tx);
+    }, db);
   },
-  async update(id, input, actor) {
-    return transaction(async (db) => {
-      actor = await lockActor(db, actor, "asset.update");
+  async update(id, input, actor, db = pool) {
+    return transaction(async (tx) => {
+      actor = await lockActor(tx, actor, "asset.update");
       const scope = assetScope(actor, "asset.update");
-      const locked = await db.query(
+      const locked = await tx.query(
         `SELECT p.id,p.catalog_item_id FROM products p WHERE ${scope.sql} AND p.id=$${scope.values.length + 1} FOR UPDATE`,
         [...scope.values, id],
       );
       if (!locked.rowCount) throw new NotFoundError("Asset not found");
       if(locked.rows[0].catalog_item_id)throw conflict('WORKFLOW_REQUIRED','Use the inventory workflow for catalog-linked units');
-      const previous = await this.findById(id, actor, "asset.update", db);
+      const previous = await this.findById(id, actor, "asset.update", tx);
       if (
         input.department &&
         input.department !== previous.department &&
         !("assignedToId" in input)
       )
         input.assignedToId = "";
-      await validateDestination(input, actor, "asset.update", previous, db);
+      await validateDestination(input, actor, "asset.update", previous, tx);
       const fields = {
         name: "name",
         company: "company",
@@ -203,41 +203,41 @@ export const products = {
         fields: Object.keys(input),
       });
       // Permission may no longer cover the destination after a transfer; never return an unrestricted row.
-      return this.findById(id, actor, "asset.update", db);
-    });
+      return this.findById(id, actor, "asset.update", tx);
+    }, db);
   },
-  async remove(id, actor) {
-    return transaction(async (db) => {
-      actor = await lockActor(db, actor, "asset.delete");
+  async remove(id, actor, db = pool) {
+    return transaction(async (tx) => {
+      actor = await lockActor(tx, actor, "asset.delete");
       const scope = assetScope(actor, "asset.delete");
-      const locked = await db.query(
+      const locked = await tx.query(
         `SELECT p.id,p.catalog_item_id FROM products p WHERE ${scope.sql} AND p.id=$${scope.values.length + 1} FOR UPDATE`,
         [...scope.values, id],
       );
       if (!locked.rowCount) throw new NotFoundError("Asset not found");
       if(locked.rows[0].catalog_item_id)throw conflict('WORKFLOW_REQUIRED','Use the inventory workflow for catalog-linked units');
-      const previous = await this.findById(id, actor, "asset.delete", db);
-      await db.query("UPDATE products SET deleted_at=now() WHERE id=$1", [id]);
-      await audit(db, actor, "asset.delete", id);
+      const previous = await this.findById(id, actor, "asset.delete", tx);
+      await tx.query("UPDATE products SET deleted_at=now() WHERE id=$1", [id]);
+      await audit(tx, actor, "asset.delete", id);
       // Soft deletion retains files and history for operator-defined retention.
       return previous;
-    });
+    }, db);
   },
-  async overview(actor) {
+  async overview(actor, db = pool) {
     const { where, values } = productFilter({ actor });
     const [summary, groups, recent] = await Promise.all([
-      pool.query(
+      db.query(
         `SELECT count(*)::int AS total,
         count(*) FILTER (WHERE p.assigned_to_id IS NOT NULL)::int AS assigned,
         count(*) FILTER (WHERE p.status = 'Out of campus')::int AS outside,
         count(*) FILTER (WHERE ${warranty} = 'expired')::int AS expired FROM products p ${where}`,
         values,
       ),
-      pool.query(
+      db.query(
         `SELECT p.department_code AS "_id", count(*)::int AS count FROM products p ${where} GROUP BY p.department_code ORDER BY count DESC, p.department_code`,
         values,
       ),
-      pool.query(
+      db.query(
         `${select} ${where} ORDER BY p.updated_at DESC, p.id LIMIT 5`,
         values,
       ),
