@@ -1,25 +1,28 @@
 import { createHash } from 'node:crypto';
-import { transaction } from '../../db/pool.js';
+import { pool, transaction } from '../../db/pool.js';
 import { resolveGrants } from './authorization.js';
 import { BadRequestError, UnauthorizedError } from '../errors/customErrors.js';
 
 export const conflict = (code, message) => Object.assign(new Error(message), {statusCode:409,apiCode:code});
 const canonical = value => Array.isArray(value) ? value.map(canonical) :
   value && typeof value === 'object' ? Object.fromEntries(Object.keys(value).sort().map(k=>[k,canonical(value[k])])) : value;
-export const commandHash = (path, body) => createHash('sha256').update(JSON.stringify(canonical({path,body}))).digest('hex');
+export const commandHash = (pathOrBody, maybeBody) => {
+  const payload = maybeBody !== undefined ? { path: pathOrBody, body: maybeBody } : pathOrBody;
+  return createHash('sha256').update(JSON.stringify(canonical(payload))).digest('hex');
+};
 
-export const organizationCommand = ({operationId,authorize,execute,readResult,resourceType='workspace',statusCode=200}) => async (req,res) => {
+export const organizationCommand = ({operationId,authorize,execute,readResult,resourceType='workspace',statusCode=200,usePlatformPool=false}) => async (req,res) => {
   const key=req.get('Idempotency-Key');
   if(typeof key!=='string'||!/^[A-Za-z0-9_-]{16,100}$/.test(key))throw new BadRequestError('A stable Idempotency-Key of 16–100 letters, digits, underscores or hyphens is required');
   const hash=commandHash(req.path,req.body);
-  const targetPool = req.clientDb || pool;
+  const targetPool = usePlatformPool ? pool : (req.clientDb || pool);
   try {
     const result=await transaction(async db=>{
       await db.query("SET LOCAL lock_timeout='3s'");
       const identity=[req.user.userId,req.user.organizationId,operationId,key];
       const company=(await pool.query('SELECT * FROM organizations WHERE id=$1 AND active AND status != \'suspended\'',[req.user.organizationId])).rows[0];
       if(!company)throw new UnauthorizedError('Workspace unavailable');
-      const actor={...req.user,grants:await resolveGrants(req.user.userId,req.user.organizationId,db)};
+      const actor={...req.user,grants:req.user.grants || (await resolveGrants(req.user.userId,req.user.organizationId,req.clientDb || db))};
       await authorize(db,actor);
       // Claim after the organization check
       await db.query(`INSERT INTO api_commands(actor_id,organization_id,operation_id,idempotency_key,request_hash)

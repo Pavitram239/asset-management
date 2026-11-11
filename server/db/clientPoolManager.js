@@ -138,9 +138,9 @@ export const getClientPool = async (organizationId, options = {}) => {
       throw new UnauthorizedError('Client organization is not active or fully provisioned');
     }
   } else {
-    // Internal provisioning path: only allow 'provisioning' or 'active' status
-    if (org.status !== 'provisioning' && org.status !== 'active') {
-      throw new UnauthorizedError(`Cannot perform internal provisioning on organization in status '${org.status}'`);
+    // Internal provisioning path: allow 'provisioning', 'active', or 'failed' (during retry)
+    if (org.status === 'suspended') {
+      throw new UnauthorizedError(`Cannot perform internal provisioning on suspended organization`);
     }
   }
 

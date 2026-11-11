@@ -37,7 +37,8 @@ export const permissionScopes = permission => assetPermission(permission)?['orga
   permission === 'requisition.approve'?['organization','department']:
   businessScoped.has(permission)?['organization','department','location']:['organization'];
 
-export const resolveGrants = async (userId, organizationId, db = pool) => {
+export const resolveGrants = async (userId, organizationId, db) => {
+  if (!db) throw new Error('Client database connection is required to resolve grants');
   const { rows } = await db.query(
     `SELECT rp.permission_id AS permission, ur.scope, ur.department_code AS department,
             ur.location_id AS "locationId",

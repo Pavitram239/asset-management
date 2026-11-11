@@ -11,7 +11,7 @@ const limit = sharedRateLimit({ namespace: 'onboarding', max: 30, keyFor: req =>
 router.post('/workspaces', limit, createWorkspace);
 router.post('/invitations/acceptance', limit, acceptInvitation);
 router.get('/invitations', organizationContext, listInvitations);
-const invitationCommand = options => organizationCommand({ authorize: invitationAuthority, resourceType: 'invitation',
+const invitationCommand = options => organizationCommand({ authorize: invitationAuthority, resourceType: 'invitation', usePlatformPool: true,
   readResult: (db, actor, command) => invitationDto(db, command.resource_id, actor.organizationId), ...options });
 router.post('/invitations', limit, organizationContext, invitationCommand({ operationId: 'inviteEmployee', statusCode: 201, execute: inviteEmployee }));
 router.post('/invitations/:id/revocations', limit, organizationContext, invitationCommand({ operationId: 'revokeInvitation', execute: revokeInvitation }));

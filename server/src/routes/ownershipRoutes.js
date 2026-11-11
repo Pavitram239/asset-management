@@ -20,14 +20,20 @@ router.post('/appointments',organizationCommand({operationId:'appointOwner',auth
   fields(req.body,['expectedVersion','userId']);
   expectedVersion(req.body.expectedVersion,company.version);
   const userId=uuid(req.body.userId);
-  const target=(await db.query(`SELECT u.email_verified_at FROM memberships m JOIN users u ON u.id=m.user_id
-    WHERE m.organization_id=$1 AND m.user_id=$2 AND m.active AND u.active FOR UPDATE OF u`,[actor.organizationId,userId])).rows[0];
+  const target=(await pool.query(`SELECT u.email_verified_at, u.name, u.email, u.active FROM memberships m JOIN users u ON u.id=m.user_id
+    WHERE m.organization_id=$1 AND m.user_id=$2 AND m.active AND u.active`,[actor.organizationId,userId])).rows[0];
   if(!target?.email_verified_at)throw new BadRequestError('Choose a verified active workspace member');
   if((await db.query('SELECT 1 FROM organization_owners WHERE organization_id=$1 AND user_id=$2',[actor.organizationId,userId])).rowCount)
     throw conflict('ALREADY_OWNER','This member is already an owner');
+  // Ensure user in client DB
+  await db.query(
+    `INSERT INTO users (id, name, email, active) VALUES ($1, $2, $3, $4)
+     ON CONFLICT (id) DO UPDATE SET active = EXCLUDED.active, name = EXCLUDED.name, email = EXCLUDED.email`,
+    [userId, target.name, target.email, target.active]
+  );
   await db.query('INSERT INTO organization_owners(organization_id,user_id,created_by) VALUES($1,$2,$3)',[actor.organizationId,userId,actor.userId]);
   await db.query("INSERT INTO user_permissions(organization_id,user_id,permission_id,scope) VALUES($1,$2,'ownership.manage','organization') ON CONFLICT DO NOTHING",[actor.organizationId,userId]);
-  await db.query('UPDATE organizations SET version=version+1 WHERE id=$1',[actor.organizationId]);
+  await pool.query('UPDATE organizations SET version=version+1 WHERE id=$1',[actor.organizationId]);
   await audit(db,actor,'ownership.appoint',userId,{command:'appointOwner'});
   return workspaceDto(db,actor.organizationId);
 }}));
@@ -38,14 +44,16 @@ router.post('/:id/removals',organizationCommand({operationId:'removeOwner',autho
   const removed=await db.query('DELETE FROM organization_owners WHERE organization_id=$1 AND user_id=$2 RETURNING user_id',[actor.organizationId,userId]);
   if(!removed.rowCount)throw new NotFoundError('Owner not found in this workspace');
   await assertOwnerContinuity(db,actor.organizationId);
-  await db.query('UPDATE organizations SET version=version+1 WHERE id=$1',[actor.organizationId]);
+  await db.query("DELETE FROM user_permissions WHERE organization_id=$1 AND user_id=$2 AND permission_id='ownership.manage'",[actor.organizationId,userId]);
+  await pool.query('UPDATE organizations SET version=version+1 WHERE id=$1',[actor.organizationId]);
   await audit(db,actor,'ownership.remove',userId,{reason});
   return workspaceDto(db,actor.organizationId);
 }}));
 export const ownershipCommandLookup=async(req,res)=>{
-  await requireOwner(pool,req.user);
+  const targetDb = req.clientDb || pool;
+  await requireOwner(targetDb,req.user);
   if(!['appointOwner','removeOwner'].includes(req.params.operationId))throw new NotFoundError('Command not found');
-  const command=(await pool.query(`SELECT operation_id,idempotency_key,resource_type,resource_id,committed_at FROM api_commands
+  const command=(await targetDb.query(`SELECT operation_id,idempotency_key,resource_type,resource_id,committed_at FROM api_commands
     WHERE organization_id=$1 AND actor_id=$2 AND operation_id=$3 AND idempotency_key=$4 AND committed_at IS NOT NULL`,
     [req.user.organizationId,req.user.userId,req.params.operationId,req.params.idempotencyKey])).rows[0];
   if(!command)throw new NotFoundError('Command not found');

@@ -94,11 +94,11 @@ router.get("/management", async (req, res) => {
       "SELECT * FROM user_permissions WHERE organization_id=$1 OR organization_id IS NULL ORDER BY user_id",
     ),
     owners: allows(actor,'access.manage') || allows(actor,'ownership.manage') ? (await targetDb.query(`
-      SELECT ur.user_id AS "userId" 
-      FROM user_roles ur 
-      JOIN roles r ON r.id = ur.role_id AND r.name = 'Organization owner' AND r.active 
-      WHERE (ur.organization_id = $1 OR ur.organization_id IS NULL) 
-      ORDER BY ur.user_id`, [org])).rows : [],
+      SELECT own.user_id AS "userId" 
+      FROM organization_owners own
+      JOIN users u ON u.id = own.user_id AND u.active
+      WHERE (own.organization_id = $1 OR own.organization_id IS NULL) 
+      ORDER BY own.user_id`, [org])).rows : [],
   });
 });
 router.get("/members/:id/effective", async (req, res) => {

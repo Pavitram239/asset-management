@@ -66,22 +66,7 @@ export const mutate = (permission, action, operation) => async (req, res) => {
 
     const opResult = await operation(db, actor, req);
 
-    try {
-      await assertOwnerContinuity(db, actor.organizationId);
-    } catch (_) {
-      // assertOwnerContinuity in legacy checked organization_owners on platform;
-      // in client DB, verify at least one active Organization owner exists:
-      const owners = await db.query(
-        `SELECT 1 FROM user_roles ur
-         JOIN roles r ON r.id = ur.role_id AND r.name = 'Organization owner' AND r.active
-         JOIN users u ON u.id = ur.user_id AND u.active
-         WHERE (ur.organization_id = $1 OR ur.organization_id IS NULL) LIMIT 1`,
-        [actor.organizationId]
-      );
-      if (!owners.rowCount) {
-        throw new BadRequestError("Cannot remove the last active company owner");
-      }
-    }
+    await assertOwnerContinuity(db, actor.organizationId);
 
     if (before > 0 && (await adminCount(db, actor.organizationId)) === 0)
       throw new BadRequestError("Cannot remove the last access administrator");

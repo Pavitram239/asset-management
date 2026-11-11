@@ -60,7 +60,20 @@ export const ensureDatabaseExists = async (databaseName) => {
     );
 
     if (rows.length === 0) {
-      await adminClient.query(`CREATE DATABASE "${databaseName}"`);
+      try {
+        await adminClient.query(`CREATE DATABASE "${databaseName}"`);
+      } catch (createErr) {
+        if (
+          createErr.code === '42P04' ||
+          createErr.code === '23505' ||
+          createErr.message?.includes('already exists') ||
+          createErr.message?.includes('pg_database_datname_index')
+        ) {
+          // Concurrent creation won the race; database exists physically
+        } else {
+          throw createErr;
+        }
+      }
     }
   } finally {
     await adminClient.end();
@@ -82,6 +95,7 @@ export const seedClientDatabaseDefaults = async (clientDbPool, orgId, adminUserI
   const client = await clientDbPool.connect();
   try {
     await client.query('BEGIN');
+    await client.query('SELECT pg_advisory_xact_lock(84910303)');
 
     // 1. Starter Location (only if none exists)
     const locRes = await client.query('SELECT id FROM locations LIMIT 1');
@@ -175,6 +189,20 @@ export const seedClientDatabaseDefaults = async (clientDbPool, orgId, adminUserI
           );
         }
       }
+
+      // Record protected ownership in client database
+      await client.query(
+        `INSERT INTO organization_owners (organization_id, user_id, created_by)
+         VALUES ($1, $2, $2)
+         ON CONFLICT (organization_id, user_id) DO NOTHING`,
+        [orgId, adminUserId]
+      );
+      await client.query(
+        `INSERT INTO user_permissions (organization_id, user_id, permission_id, scope)
+         VALUES ($1, $2, 'ownership.manage', 'organization')
+         ON CONFLICT DO NOTHING`,
+        [orgId, adminUserId]
+      );
     }
 
     await client.query('COMMIT');
@@ -280,64 +308,105 @@ export const provisionClientDatabase = async ({
   requestHash = null,
   actorId = null,
 }) => {
-  // If idempotency key provided, check for prior command in platform DB
-  if (idempotencyKey && actorId) {
-    const prior = (await platformPool.query(
-      `SELECT * FROM api_commands 
-       WHERE actor_id = $1 AND organization_id IS NULL AND operation_id = 'createClient' AND idempotency_key = $2`,
-      [actorId, idempotencyKey]
-    )).rows[0];
-
-    if (prior) {
-      if (prior.request_hash !== requestHash) {
-        throw conflict('IDEMPOTENCY_MISMATCH', 'This idempotency key already identifies a different client creation request');
-      }
-      if (prior.committed_at && prior.result?.data) {
-        return { ...prior.result.data, replayed: true };
-      }
-    }
-  }
-
-  const orgId = randomUUID();
-  const databaseName = customDatabaseName || generateClientDatabaseName(name, orgId);
-
-  // 1. Register organization in platform database with 'provisioning' status
-  const client = await platformPool.connect();
+  let orgId;
+  let databaseName;
   let adminResult = null;
+  let commandId = null;
+
+  // 1. Atomically register command and reserve organization in platform database
+  const client = await platformPool.connect();
   try {
     await client.query('BEGIN');
+    await client.query("SET LOCAL lock_timeout = '10s'");
 
-    // Register idempotency command record if provided
+    let commandRow = null;
     if (idempotencyKey && actorId) {
       await client.query(
         `INSERT INTO api_commands (actor_id, organization_id, operation_id, idempotency_key, request_hash)
          VALUES ($1, NULL, 'createClient', $2, $3)
-         ON CONFLICT DO NOTHING`,
+         ON CONFLICT (actor_id, organization_id, operation_id, idempotency_key) DO NOTHING`,
         [actorId, idempotencyKey, requestHash]
       );
+
+      const cmdRes = await client.query(
+        `SELECT id, request_hash, resource_id, result, committed_at
+         FROM api_commands
+         WHERE actor_id = $1 AND organization_id IS NULL AND operation_id = 'createClient' AND idempotency_key = $2
+         FOR UPDATE`,
+        [actorId, idempotencyKey]
+      );
+      commandRow = cmdRes.rows[0];
+
+      if (commandRow) {
+        commandId = commandRow.id;
+        if (commandRow.request_hash !== requestHash) {
+          throw conflict('IDEMPOTENCY_MISMATCH', 'This idempotency key already identifies a different client creation request');
+        }
+        if (commandRow.committed_at && commandRow.result?.data) {
+          await client.query('COMMIT');
+          client.release();
+          return { ...commandRow.result.data, replayed: true };
+        }
+      }
     }
 
-    const schemaName = 'tenant_' + orgId.replace(/-/g, '').slice(0, 12);
-    const { rows } = await client.query(
-      `INSERT INTO organizations (id, name, schema_name, database_name, status, provisioning_status, currency, time_zone, initial_admin_email)
-       VALUES ($1, $2, $3, $4, 'provisioning', 'provisioning', $5, $6, $7)
-       RETURNING *`,
-      [orgId, name, schemaName, databaseName, currency, timeZone, adminEmail ? adminEmail.trim().toLowerCase() : null]
-    );
-    const org = rows[0];
+    // Check if an existing organization was already reserved for this command
+    let existingOrg = null;
+    if (commandId) {
+      const orgLookup = await client.query(
+        `SELECT * FROM organizations WHERE command_id = $1 FOR UPDATE`,
+        [commandId]
+      );
+      existingOrg = orgLookup.rows[0];
+    }
 
-    // Setup admin user & inactive membership in platform DB with expiring setup link
-    if (adminEmail) {
-      adminResult = await setupClientAdminUser(client, orgId, adminEmail, adminName);
+    if (existingOrg) {
+      orgId = existingOrg.id;
+      databaseName = existingOrg.database_name;
+      if (existingOrg.provisioning_status === 'provisioned') {
+        const cachedData = {
+          success: true,
+          organizationId: orgId,
+          name: existingOrg.name,
+          databaseName: existingOrg.database_name,
+          status: existingOrg.status,
+          provisioningStatus: existingOrg.provisioning_status,
+        };
+        if (commandRow && !commandRow.committed_at) {
+          await client.query(
+            `UPDATE api_commands
+             SET resource_type = 'client_organization', resource_id = $1, result = $2, committed_at = clock_timestamp()
+             WHERE id = $3`,
+            [orgId, JSON.stringify({ data: cachedData }), commandId]
+          );
+        }
+        await client.query('COMMIT');
+        client.release();
+        return { ...cachedData, replayed: true };
+      }
+    } else {
+      orgId = randomUUID();
+      databaseName = customDatabaseName || generateClientDatabaseName(name, orgId);
+      const schemaName = 'tenant_' + orgId.replace(/-/g, '').slice(0, 12);
+      await client.query(
+        `INSERT INTO organizations (id, name, schema_name, database_name, status, provisioning_status, currency, time_zone, initial_admin_email, command_id)
+         VALUES ($1, $2, $3, $4, 'provisioning', 'provisioning', $5, $6, $7, $8)`,
+        [orgId, name, schemaName, databaseName, currency, timeZone, adminEmail ? adminEmail.trim().toLowerCase() : null, commandId]
+      );
+
+      // Setup admin user & inactive membership in platform DB with expiring setup link
+      if (adminEmail) {
+        adminResult = await setupClientAdminUser(client, orgId, adminEmail, adminName);
+      }
     }
 
     await client.query('COMMIT');
   } catch (err) {
     try { await client.query('ROLLBACK'); } catch (_) {}
-    throw err;
-  } finally {
     client.release();
+    throw err;
   }
+  client.release();
 
   // 2. Provision dedicated database
   try {
@@ -365,16 +434,22 @@ export const provisionClientDatabase = async ({
     };
 
     // Commit idempotency command record if present
-    if (idempotencyKey && actorId) {
-      await platformPool.query(
+    if (commandId) {
+      const { rowCount } = await platformPool.query(
         `UPDATE api_commands
          SET resource_type = 'client_organization',
              resource_id = $2,
              result = $3,
              committed_at = clock_timestamp()
-         WHERE actor_id = $1 AND organization_id IS NULL AND operation_id = 'createClient' AND idempotency_key = $4`,
-        [actorId, orgId, JSON.stringify({ data: clientData }), idempotencyKey]
+         WHERE id = $1 AND committed_at IS NULL`,
+        [commandId, orgId, JSON.stringify({ data: clientData })]
       );
+      if (rowCount === 0) {
+        const committedRow = (await platformPool.query('SELECT result FROM api_commands WHERE id = $1', [commandId])).rows[0];
+        if (committedRow?.result?.data) {
+          return { ...committedRow.result.data, replayed: true };
+        }
+      }
     }
 
     return clientData;

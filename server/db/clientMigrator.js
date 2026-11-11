@@ -12,6 +12,9 @@ const __dirname = dirname(__filename);
 export const runClientMigrations = async (clientPool) => {
   const client = await clientPool.connect();
   try {
+    // Serialize migrations across concurrent requests on this client database
+    await client.query('SELECT pg_advisory_lock(84910302)');
+
     // 1. Create client schema migrations tracking table
     await client.query(`
       CREATE TABLE IF NOT EXISTS client_schema_migrations (
@@ -52,6 +55,7 @@ export const runClientMigrations = async (clientPool) => {
 
     return applied;
   } finally {
+    try { await client.query('SELECT pg_advisory_unlock(84910302)'); } catch (_) {}
     client.release();
   }
 };

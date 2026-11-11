@@ -1,6 +1,7 @@
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
 import { body, validationResult } from 'express-validator';
 import { pool, transaction } from '../../db/pool.js';
+import { getClientPool } from '../../db/clientPoolManager.js';
 import { authorize, audit, PERMISSIONS, resolveGrants, permissionScopes } from '../utils/authorization.js';
 import { text, uuid, activeDepartment } from '../utils/accessInput.js';
 import { companySettings, expectedVersion } from '../utils/companyInput.js';
@@ -17,14 +18,16 @@ export const fields = (body, allowed) => {
   if (!body || typeof body !== 'object' || Array.isArray(body) || Object.keys(body).some(key => !allowed.includes(key))) throw bad('Unexpected request fields');
 };
 export const verifiedAccount = async (db, userId, sessionVersion) => {
-  const user = (await db.query('SELECT id,email,active,email_verified_at,is_demo,session_version FROM users WHERE id=$1', [userId])).rows[0];
+  const targetDb = db || pool;
+  const user = (await targetDb.query('SELECT id,email,active,email_verified_at,is_demo,session_version FROM users WHERE id=$1', [userId])).rows[0];
   if (!user?.active || (sessionVersion !== undefined && user.session_version !== sessionVersion)) throw identityError(401, 'UNAUTHENTICATED', 'Authentication invalid');
   if (!user.email_verified_at || user.is_demo) throw denied('Verify your email before continuing');
   return user;
 };
 export const invitationAuthority = async (db, actor) => {
-  await db.query('SELECT id FROM users WHERE id=$1 FOR UPDATE', [actor.userId]);
-  await verifiedAccount(db, actor.userId, actor.sessionVersion);
+  const targetDb = db || pool;
+  await targetDb.query('SELECT id FROM users WHERE id=$1 FOR UPDATE', [actor.userId]);
+  await verifiedAccount(targetDb, actor.userId, actor.sessionVersion);
   authorize(actor, 'membership.manage'); authorize(actor, 'access.manage');
 };
 const resourcePermission = code => permissionScopes(code).includes('department') && code!=='cost.read';
@@ -140,7 +143,8 @@ export const inviteEmployee = async (db, actor, req) => {
   await body('email').isString().bail().trim().isEmail().run(req);
   const email = text(req.body.email, 254).toLowerCase();
   if (!validationResult(req).isEmpty()) throw bad('Enter a valid email');
-  const grants = await validateInvitationGrants(db, actor, req.body.grants);
+  const clientDb = req.clientDb || (await getClientPool(actor.organizationId));
+  const grants = await validateInvitationGrants(clientDb, actor, req.body.grants);
   const existing = await db.query(`SELECT 1 FROM memberships m JOIN users u ON u.id=m.user_id WHERE m.organization_id=$1 AND u.email=$2`, [actor.organizationId, email]);
   if (existing.rowCount) throw conflict('MEMBERSHIP_EXISTS', 'This account already has a membership. Manage it explicitly instead.');
   const expired = (await db.query(`UPDATE organization_invitations SET state='expired',version=version+1
@@ -156,7 +160,7 @@ export const inviteEmployee = async (db, actor, req) => {
     VALUES($1,$2,$3,$4,$5,$6,$7)`, [id, actor.organizationId, email, actor.userId, tokenHash(token), outboxId, expiresAt]);
   for (const grant of grants) await db.query(`INSERT INTO invitation_grants(organization_id,invitation_id,role_id,permission_id,scope,department_code,permission_snapshot,location_id)
     VALUES($1,$2,$3,$4,$5,$6,$7,$8)`, [actor.organizationId, id, grant.roleId || null, grant.permissionCode || null, grant.scope, grant.departmentCode || null, grant.permissions,grant.locationId||null]);
-  await audit(db, actor, 'invitation.create', id, { grantCount: grants.length });
+  await audit(clientDb, actor, 'invitation.create', id, { grantCount: grants.length });
   return invitationDto(db, id, actor.organizationId);
 };
 export const revokeInvitation = async (db, actor, req) => {
@@ -168,7 +172,8 @@ export const revokeInvitation = async (db, actor, req) => {
   if (invitation.state !== 'pending' || !invitation.unexpired) throw conflict('INVITATION_CLOSED', 'This invitation is no longer pending');
   await db.query("UPDATE organization_invitations SET state='revoked',revoked_at=clock_timestamp(),version=version+1 WHERE id=$1", [id]);
   await cancelDelivery(db, invitation.outbox_id);
-  await audit(db, actor, 'invitation.revoke', id, { reason });
+  const clientDb = req.clientDb || (await getClientPool(actor.organizationId));
+  await audit(clientDb, actor, 'invitation.revoke', id, { reason });
   return invitationDto(db, id, actor.organizationId);
 };
 
@@ -188,20 +193,33 @@ export const acceptInvitation = accountCommand({ operationId: 'acceptInvitation'
     // Re-read after locks: revocation and competing acceptance serialize on company.
     const current = (await db.query('SELECT *,expires_at>clock_timestamp() AS unexpired FROM organization_invitations WHERE id=$1 FOR UPDATE', [invitation.id])).rows[0];
     if (current.state !== 'pending' || !current.unexpired) throw conflict('INVITATION_CLOSED', 'This invitation is no longer pending');
-    const inviter = { userId: current.inviter_id, organizationId: current.organization_id, grants: await resolveGrants(current.inviter_id, current.organization_id, db) };
+    const clientPool = await getClientPool(current.organization_id);
+    const inviter = { userId: current.inviter_id, organizationId: current.organization_id, grants: await resolveGrants(current.inviter_id, current.organization_id, clientPool) };
     await invitationAuthority(db, inviter);
-    const grants = await validateInvitationGrants(db, inviter, await savedGrants(db, current.id, current.organization_id), true);
+    const grants = await validateInvitationGrants(clientPool, inviter, await savedGrants(db, current.id, current.organization_id), true);
     if ((await db.query('SELECT 1 FROM memberships WHERE organization_id=$1 AND user_id=$2', [current.organization_id, user.id])).rowCount)
       throw conflict('MEMBERSHIP_EXISTS', 'An existing membership must be managed explicitly');
-    await db.query('INSERT INTO memberships(organization_id,user_id,invitation_id) VALUES($1,$2,$3)', [current.organization_id, user.id, current.id]);
+
+    // Sync user into client DB
+    await clientPool.query(
+      `INSERT INTO users (id, name, email, active)
+       VALUES ($1, $2, $3, true)
+       ON CONFLICT (id) DO UPDATE SET active = true, email = EXCLUDED.email, name = EXCLUDED.name`,
+      [user.id, user.name || user.email.split('@')[0], user.email]
+    );
+
+    // Apply role and permission grants in client DB
     for (const grant of grants) {
-      if (grant.roleId) await db.query('INSERT INTO user_roles(organization_id,user_id,role_id,scope,department_code,location_id) VALUES($1,$2,$3,$4,$5,$6)', [current.organization_id, user.id, grant.roleId, grant.scope, grant.departmentCode || null,grant.locationId||null]);
-      else await db.query('INSERT INTO user_permissions(organization_id,user_id,permission_id,scope,department_code,location_id) VALUES($1,$2,$3,$4,$5,$6)', [current.organization_id, user.id, grant.permissionCode, grant.scope, grant.departmentCode || null,grant.locationId||null]);
+      if (grant.roleId) await clientPool.query('INSERT INTO user_roles(organization_id,user_id,role_id,scope,department_code,location_id) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT DO NOTHING', [current.organization_id, user.id, grant.roleId, grant.scope, grant.departmentCode || null,grant.locationId||null]);
+      else await clientPool.query('INSERT INTO user_permissions(organization_id,user_id,permission_id,scope,department_code,location_id) VALUES($1,$2,$3,$4,$5,$6) ON CONFLICT DO NOTHING', [current.organization_id, user.id, grant.permissionCode, grant.scope, grant.departmentCode || null,grant.locationId||null]);
     }
+
+    const primaryDept = grants.find(g => g.departmentCode)?.departmentCode || null;
+    await db.query('INSERT INTO memberships(organization_id,user_id,invitation_id,department_code,active) VALUES($1,$2,$3,$4,true)', [current.organization_id, user.id, current.id, primaryDept]);
     await db.query("UPDATE organization_invitations SET state='accepted',accepted_by=$2,accepted_at=clock_timestamp(),version=version+1 WHERE id=$1", [current.id, user.id]);
     await cancelDelivery(db, current.outbox_id);
-    await audit(db, { userId: user.id, organizationId: current.organization_id }, 'invitation.accept', current.id);
-    return memberWorkspace(db, current.organization_id);
+    await audit(clientPool, { userId: user.id, organizationId: current.organization_id }, 'invitation.accept', current.id);
+    return memberWorkspace(clientPool, current.organization_id);
   },
 });
 
@@ -241,8 +259,9 @@ export const invitationRenderers = { 'company.invitation': async (payload, { eve
   const row = (await pool.query(`SELECT * FROM organization_invitations WHERE id=$1 AND organization_id=$2 AND email=$3 AND token_hash=$4
     AND outbox_id=$5 AND state='pending' AND expires_at>clock_timestamp()`, [payload.invitationId, payload.organizationId, payload.email, tokenHash(payload.token), event.id])).rows[0];
   if (!row) return null;
-  const actor = { userId: row.inviter_id, organizationId: row.organization_id, grants: await resolveGrants(row.inviter_id, row.organization_id) };
-  try { await invitationAuthority(pool, actor); await validateInvitationGrants(pool, actor, await savedGrants(pool, row.id, row.organization_id), true); }
+  const clientPool = await getClientPool(row.organization_id);
+  const actor = { userId: row.inviter_id, organizationId: row.organization_id, grants: await resolveGrants(row.inviter_id, row.organization_id, clientPool) };
+  try { await invitationAuthority(pool, actor); await validateInvitationGrants(clientPool, actor, await savedGrants(pool, row.id, row.organization_id), true); }
   catch (error) { if (error.statusCode >= 400 && error.statusCode < 500) return null; throw error; }
   return { to: row.email, subject: 'Your AssetOS workspace invitation', text: `You have been invited to an AssetOS workspace. Sign in or register with this email, verify it, then open this link to accept:\n${payload.origin}/invite#${payload.token}\nThis link expires in seven days. Ignore it if you did not expect this invitation.` };
 } };

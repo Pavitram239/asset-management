@@ -314,10 +314,20 @@ CREATE TABLE IF NOT EXISTS api_commands (
   resource_id uuid,
   result jsonb,
   response jsonb,
-  status text DEFAULT 'committed',
+  status text,
   expires_at timestamptz,
-  committed_at timestamptz DEFAULT now(),
-  created_at timestamptz NOT NULL DEFAULT now()
+  committed_at timestamptz,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  CONSTRAINT api_commands_idempotency_unique UNIQUE NULLS NOT DISTINCT (actor_id, organization_id, operation_id, idempotency_key)
+);
+
+-- 9b. Organization Owners (Protected Ownership)
+CREATE TABLE IF NOT EXISTS organization_owners (
+  organization_id uuid NOT NULL,
+  user_id uuid NOT NULL,
+  created_by uuid,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (organization_id, user_id)
 );
 
 -- 10. Attachments & Links

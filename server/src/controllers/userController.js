@@ -26,15 +26,11 @@ export const getCurrentUser = async (req, res) => {
     throw new UnauthorizedError("Organization membership required");
   
   user.isSuperAdmin = !!current.isSuperAdmin;
-  let clientDb = pool;
+  let clientDb = null;
   if (id) {
-    try {
-      clientDb = await getClientPool(id);
-    } catch {
-      clientDb = pool;
-    }
+    clientDb = await getClientPool(id);
   }
-  user.grants = id ? await resolveGrants(req.user.userId, id, clientDb) : [];
+  user.grants = id && clientDb ? await resolveGrants(req.user.userId, id, clientDb) : [];
   user.department = organizations.find((o) => o.id === id)?.department || null;
   res.json({ user, organizations, activeOrganizationId: id || null });
 };
